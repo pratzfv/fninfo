@@ -1,84 +1,253 @@
-import React from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortnite Fan Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Teko:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide-react@0.378.0/dist/lucide-react.min.js"></script>
+    <style>
+        body {
+            font-family: 'Teko', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .nav-link {
+            @apply text-lg uppercase tracking-wider transition-colors duration-300 hover:text-cyan-400;
+        }
+        .section-title {
+            @apply text-5xl font-bold text-center mb-12 text-white drop-shadow-lg;
+        }
+        .card {
+            @apply bg-slate-800/60 backdrop-blur-sm border border-cyan-500/20 rounded-2xl p-6 shadow-xl transition-all duration-300 hover:border-cyan-400 hover:shadow-cyan-500/20;
+        }
+        .tag {
+            @apply bg-cyan-500 text-slate-900 text-xs font-bold uppercase px-3 py-1 rounded-full;
+        }
+        .btn {
+            @apply inline-block bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold uppercase tracking-wider px-8 py-3 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105;
+        }
+        #countdown-container .time-block {
+            @apply text-center;
+        }
+        #countdown-container .time-value {
+            @apply text-6xl md:text-8xl font-bold text-cyan-400;
+        }
+        #countdown-container .time-label {
+            @apply text-xl md:text-2xl uppercase text-white;
+        }
+        .drop-spot {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 255, 255, 0.7);
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .drop-spot:hover {
+            transform: scale(1.5);
+            background-color: rgba(255, 255, 0, 0.9);
+        }
+        .drop-spot .tooltip {
+            visibility: hidden;
+            width: 160px;
+            background-color: #1a1a2e;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -80px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+        }
+        .drop-spot:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
 
-const weapons = [
-  { name: "Hammer Pump Shotgun", type: "Shotgun", rarity: "Legendary", damage: "103", fire_rate: "0.7", mag_size: "8" },
-  { name: "Striker AR", type: "Assault Rifle", rarity: "Legendary", damage: "26", fire_rate: "7.8", mag_size: "25" },
-  { name: "Ranger Pistol", type: "Pistol", rarity: "Epic", damage: "28", fire_rate: "6.75", mag_size: "16" },
-  { name: "Reaper Sniper Rifle", type: "Sniper", rarity: "Legendary", damage: "116", fire_rate: "0.65", mag_size: "3" },
-  { name: "Thunder Burst SMG", type: "SMG", rarity: "Legendary", damage: "24", fire_rate: "8.5", mag_size: "30" },
-  { name: "Nemesis AR", type: "Assault Rifle", rarity: "Epic", damage: "34", fire_rate: "5.5", mag_size: "28" },
-];
-
-export default function WeaponGuideScreen({ setView }) {
-  const [filterType, setFilterType] = React.useState("All");
-  const [searchTerm, setSearchTerm] = React.useState("");
-
-  const rarityColor = {
-    "Legendary": "bg-yellow-500/20 border-yellow-500",
-    "Epic": "bg-purple-500/20 border-purple-500",
-  };
-
-  const filteredWeapons = weapons.filter(weapon =>
-    (filterType === "All" || weapon.type === filterType) &&
-    weapon.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  return (
-    <div className="p-4 md:p-8">
-      <h2 className="font-bungee text-4xl text-center text-purple-400 mb-8">Weapon Guide</h2>
-
-      {/* Filter Controls */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8 justify-center">
-        <select
-          value={filterType}
-          onChange={e => setFilterType(e.target.value)}
-          className="bg-gray-700 text-white px-4 py-2 rounded-md"
-        >
-          <option value="All">All Types</option>
-          <option value="Assault Rifle">Assault Rifles</option>
-          <option value="Shotgun">Shotguns</option>
-          <option value="Sniper">Snipers</option>
-          <option value="SMG">SMGs</option>
-          <option value="Pistol">Pistols</option>
-        </select>
-
-        <input
-          type="text"
-          placeholder="Search by name"
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-          className="bg-gray-700 text-white px-4 py-2 rounded-md"
-        />
-      </div>
-
-      {/* Weapon Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredWeapons.map((weapon, index) => (
-          <div key={index} className={`border-2 ${rarityColor[weapon.rarity]} rounded-xl p-4 shadow-lg bg-gray-800 flex flex-col`}>
-            <h3 className="font-bold text-2xl text-white">{weapon.name}</h3>
-            <p className={`font-semibold text-lg ${weapon.rarity === 'Legendary' ? 'text-yellow-400' : 'text-purple-400'}`}>
-              {weapon.rarity} {weapon.type}
-            </p>
-            <div className="mt-4 grid grid-cols-2 gap-2 text-gray-300">
-              <p><span className="font-bold text-white">Damage:</span> {weapon.damage}</p>
-              <p><span className="font-bold text-white">Fire Rate:</span> {weapon.fire_rate}</p>
-              <p><span className="font-bold text-white">Mag Size:</span> {weapon.mag_size}</p>
+    <!-- Header & Navigation -->
+    <header class="bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-cyan-500/20">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold text-white uppercase">FN<span class="text-cyan-400">HUB</span></a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#weapons" class="nav-link">Weapons</a>
+                <a href="#creative" class="nav-link">Creative</a>
+                <a href="#competitive" class="nav-link">Competitive</a>
+                <a href="#reload" class="nav-link">Reload POIs</a>
+                <a href="#drop-map" class="nav-link">Drop Map</a>
             </div>
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
+            <a href="#home" class="block nav-link">Home</a>
+            <a href="#weapons" class="block nav-link">Weapons</a>
+            <a href="#creative" class="block nav-link">Creative</a>
+            <a href="#competitive" class="block nav-link">Competitive</a>
+            <a href="#reload" class="block nav-link">Reload POIs</a>
+            <a href="#drop-map" class="block nav-link">Drop Map</a>
+        </div>
+    </header>
 
-            {/* Visual Damage Bar */}
-            <div className="mt-4 w-full bg-gray-700 h-2 rounded-full">
-              <div
-                className="bg-yellow-500 h-2 rounded-full"
-                style={{ width: `${Math.min(+weapon.damage * 0.75, 100)}%` }}
-              ></div>
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat" style="background-image: url('https://placehold.co/1920x1080/1a1a2e/00ffff?text=Fortnite+Chapter+6');">
+            <div class="bg-black/60 p-8 md:p-16 rounded-xl text-center">
+                <h1 class="text-6xl md:text-8xl font-bold text-white mb-4">Chapter 6 Season 3</h1>
+                <p class="text-2xl text-cyan-400 mb-8">The Countdown Has Begun</p>
+                <div id="countdown-container" class="flex justify-center space-x-4 md:space-x-8 mb-12">
+                    <div class="time-block"><div id="days" class="time-value">00</div><div class="time-label">Days</div></div>
+                    <div class="time-block"><div id="hours" class="time-value">00</div><div class="time-label">Hours</div></div>
+                    <div class="time-block"><div id="minutes" class="time-value">00</div><div class="time-label">Minutes</div></div>
+                    <div class="time-block"><div id="seconds" class="time-value">00</div><div class="time-label">Seconds</div></div>
+                </div>
+                <a href="#competitive" class="btn">Prepare for Battle</a>
             </div>
-          </div>
-        ))}
-      </div>
+        </section>
 
-      <button onClick={() => setView('home')} className="mt-8 text-purple-400 hover:text-purple-300 transition">
-        &larr; Back to Home
-      </button>
-    </div>
-  );
-}
+        <!-- Subscribe Section -->
+        <section id="subscribe" class="py-20 bg-slate-900">
+            <div class="container mx-auto px-6 text-center">
+                <div class="card max-w-4xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl mb-4">Stay Ahead of the Game!</h2>
+                    <p class="text-xl text-gray-300 mb-6">For the best tips, tricks, and gameplay analysis, make sure you're subscribed to one of the top up-and-coming creators in the scene.</p>
+                    <a href="https://www.youtube.com/@Pratzhimself" target="_blank" rel="noopener noreferrer" class="btn text-2xl">
+                        Subscribe to Pratzhimself!
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-youtube inline-block ml-2"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17Z"/><path d="m10 15 5-3-5-3z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Weapons Section -->
+        <section id="weapons" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Weapon Intel</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Shotguns -->
+                    <div class="card">
+                        <h3 class="text-3xl mb-4 text-cyan-400">Shotguns</h3>
+                        <div class="space-y-4">
+                            <div><strong>Thunder Pump Shotgun:</strong> Reload: 4.8s</div>
+                            <div><strong>Auto Frenzy Shotgun:</strong> Reload: 5.1s</div>
+                            <div><strong>Gatekeeper Shotgun:</strong> Reload: 4.5s</div>
+                        </div>
+                    </div>
+                    <!-- SMGs -->
+                    <div class="card">
+                        <h3 class="text-3xl mb-4 text-cyan-400">SMGs</h3>
+                        <div class="space-y-4">
+                            <div><strong>Thunder Burst SMG:</strong> Reload: 2.5s</div>
+                            <div><strong>Harbinger SMG:</strong> Reload: 2.2s</div>
+                            <div><strong>Ranger Pistol:</strong> Reload: 1.5s</div>
+                        </div>
+                    </div>
+                    <!-- Assault Rifles -->
+                    <div class="card">
+                        <h3 class="text-3xl mb-4 text-cyan-400">Assault Rifles</h3>
+                        <div class="space-y-4">
+                            <div><strong>Nemesis AR:</strong> Reload: 3.2s</div>
+                            <div><strong>Warforged AR:</strong> Reload: 3.6s</div>
+                            <div><strong>Tactical DMR:</strong> Reload: 4.0s</div>
+                        </div>
+                    </div>
+                    <!-- Snipers -->
+                    <div class="card">
+                        <h3 class="text-3xl mb-4 text-cyan-400">Snipers</h3>
+                        <div class="space-y-4">
+                            <div><strong>Reaper Sniper Rifle:</strong> Reload: 3.8s</div>
+                            <div><strong>Hunter DMR:</strong> Reload: 4.2s</div>
+                        </div>
+                    </div>
+                    <!-- Rocket Launchers -->
+                    <div class="card">
+                        <h3 class="text-3xl mb-4 text-cyan-400">Explosives</h3>
+                        <div class="space-y-4">
+                            <div><strong>Anvil Rocket Launcher:</strong> Reload: 3.5s</div>
+                            <div><strong>Cluster Clingers:</strong> N/A</div>
+                        </div>
+                    </div>
+                    <!-- Pro Players -->
+                    <div class="card">
+                        <h3 class="text-3xl mb-4 text-cyan-400">Pro Players</h3>
+                        <div class="space-y-4">
+                            <div><strong>Bugha:</strong> 2019 World Cup Champion. Known for his game sense.</div>
+                            <div><strong>Clix:</strong> W-key extraordinaire. Famous for his mechanics and aggressive plays.</div>
+                            <div><strong>Mongraal:</strong> UK legend, known for his fast edits and competitive drive.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Creative Maps -->
+        <section id="creative" class="py-20 bg-slate-900">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Top Creative Maps</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/1a1a2e/00ffff?text=Aim+Duels" alt="Aim Duels Map" class="rounded-lg mb-4">
+                        <h3 class="text-2xl mb-2">The Ultimate Aim Trainer</h3>
+                        <p class="text-gray-400 mb-4">The best map to warm up your aim before hopping into a real match.</p>
+                        <div class="tag">1659-1898-8528</div>
+                    </div>
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/1a1a2e/00ffff?text=Edit+Course" alt="Edit Course Map" class="rounded-lg mb-4">
+                        <h3 class="text-2xl mb-2">Piece Control Palace</h3>
+                        <p class="text-gray-400 mb-4">Master piece control with these realistic scenarios and drills.</p>
+                        <div class="tag">7222-5584-1323</div>
+                    </div>
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/1a1a2e/00ffff?text=Box+Fights" alt="Box Fights Map" class="rounded-lg mb-4">
+                        <h3 class="text-2xl mb-2">The Pit - Free For All</h3>
+                        <p class="text-gray-400 mb-4">Classic fast-paced action. Great for practicing your mechanics under pressure.</p>
+                        <div class="tag">4590-4493-7113</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Competitive Section -->
+        <section id="competitive" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title">Competitive Corner</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="card">
+                        <h3 class="text-3xl mb-4 text-cyan-400">How to Earn in Fortnite</h3>
+                        <p class="text-lg text-gray-300">Making earnings in Fortnite requires dedication. Focus on these key areas:</p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-lg">
+                            <li><strong>FNCS & Cash Cups:</strong> Consistently place high in official Epic tournaments. This is the primary way to earn prize money.</li>
+                            <li><strong>Content Creation:</strong> Build a brand on YouTube or Twitch. Create engaging content, grow your audience, and secure sponsorships.</li>
+                            <li><strong>Wagers & Scrims:</strong> Participate in community-run wagers and pro scrims to sharpen your skills and win money.</li>
+                            <li><strong>Join an Org:</strong> Getting signed by an esports organization can provide a salary, support, and exposure.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-3xl mb-4 text-cyan-400">Gameplay Videos & Tricks</h3>
+                        <p class="text-lg text-gray-300 mb-4">Watch and learn from the best. Here are some essential techniques to master:</p>
+                        <div class="aspect-w-16 aspect-h-9 mb-4">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="rounded-l
