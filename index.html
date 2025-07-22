@@ -1,0 +1,85 @@
+import React from "react";
+
+// Example weapon data (you can move this to a separate file if needed)
+const weapons = [
+  { name: "Hammer Pump Shotgun", type: "Shotgun", rarity: "Legendary", damage: "103", fire_rate: "0.7", mag_size: "8" },
+  { name: "Striker AR", type: "Assault Rifle", rarity: "Legendary", damage: "26", fire_rate: "7.8", mag_size: "25" },
+  { name: "Ranger Pistol", type: "Pistol", rarity: "Epic", damage: "28", fire_rate: "6.75", mag_size: "16" },
+  { name: "Reaper Sniper Rifle", type: "Sniper", rarity: "Legendary", damage: "116", fire_rate: "0.65", mag_size: "3" },
+  { name: "Thunder Burst SMG", type: "SMG", rarity: "Legendary", damage: "24", fire_rate: "8.5", mag_size: "30" },
+  { name: "Nemesis AR", type: "Assault Rifle", rarity: "Epic", damage: "34", fire_rate: "5.5", mag_size: "28" },
+];
+
+export default function WeaponGuideScreen({ setView }) {
+  const [filterType, setFilterType] = React.useState("All");
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const rarityColor = {
+    "Legendary": "bg-yellow-500/20 border-yellow-500",
+    "Epic": "bg-purple-500/20 border-purple-500",
+  };
+
+  const filteredWeapons = weapons.filter(weapon =>
+    (filterType === "All" || weapon.type === filterType) &&
+    weapon.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="p-4 md:p-8">
+      <h2 className="font-bungee text-4xl text-center text-purple-400 mb-8">Weapon Guide</h2>
+
+      {/* Filter Controls */}
+      <div className="flex flex-col md:flex-row gap-4 mb-8 justify-center">
+        <select
+          value={filterType}
+          onChange={e => setFilterType(e.target.value)}
+          className="bg-gray-700 text-white px-4 py-2 rounded-md"
+        >
+          <option value="All">All Types</option>
+          <option value="Assault Rifle">Assault Rifles</option>
+          <option value="Shotgun">Shotguns</option>
+          <option value="Sniper">Snipers</option>
+          <option value="SMG">SMGs</option>
+          <option value="Pistol">Pistols</option>
+        </select>
+
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          className="bg-gray-700 text-white px-4 py-2 rounded-md"
+        />
+      </div>
+
+      {/* Weapon Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredWeapons.map((weapon, index) => (
+          <div key={index} className={`border-2 ${rarityColor[weapon.rarity]} rounded-xl p-4 shadow-lg bg-gray-800 flex flex-col`}>
+            <h3 className="font-bold text-2xl text-white">{weapon.name}</h3>
+            <p className={`font-semibold text-lg ${weapon.rarity === 'Legendary' ? 'text-yellow-400' : 'text-purple-400'}`}>
+              {weapon.rarity} {weapon.type}
+            </p>
+            <div className="mt-4 grid grid-cols-2 gap-2 text-gray-300">
+              <p><span className="font-bold text-white">Damage:</span> {weapon.damage}</p>
+              <p><span className="font-bold text-white">Fire Rate:</span> {weapon.fire_rate}</p>
+              <p><span className="font-bold text-white">Mag Size:</span> {weapon.mag_size}</p>
+            </div>
+
+            {/* Visual Damage Bar */}
+            <div className="mt-4 w-full bg-gray-700 h-2 rounded-full">
+              <div
+                className="bg-yellow-500 h-2 rounded-full"
+                style={{ width: `${Math.min(+weapon.damage * 0.75, 100)}%` }}
+              ></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button onClick={() => setView('home')} className="mt-8 text-purple-400 hover:text-purple-300 transition">
+        &larr; Back to Home
+      </button>
+    </div>
+  );
+}
