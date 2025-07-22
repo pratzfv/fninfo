@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Fortnite Competitive Hub</title>
+  <title>Fortnite Competitive Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
@@ -15,32 +15,30 @@
       color: #f1f5f9;
     }
     .container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: auto;
-      padding: 40px 20px;
+      padding: 30px;
     }
     h1 {
       text-align: center;
       font-size: 3rem;
       color: #38bdf8;
-      margin-bottom: 1rem;
     }
-    .nav-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 30px;
+    .nav {
+      text-align: center;
+      margin: 30px 0;
     }
-    .nav-buttons button {
+    .nav button {
       background-color: #334155;
       color: #fff;
       border: none;
       padding: 12px 24px;
+      margin: 0 10px;
       border-radius: 8px;
       font-size: 1rem;
       cursor: pointer;
     }
-    .nav-buttons button:hover {
+    .nav button:hover {
       background-color: #475569;
     }
     .card {
@@ -57,6 +55,11 @@
       border-radius: 12px;
       margin-top: 10px;
     }
+    .map-img {
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -67,29 +70,30 @@
       return (
         <div className="container">
           <h1>Fortnite Competitive Hub</h1>
-          <div className="nav-buttons">
-            <button onClick={() => setView("overview")}>🏆 Competitive Info</button>
-            <button onClick={() => setView("videos")}>🎬 Watch Guides</button>
+          <div className="nav">
+            <button onClick={() => setView("info")}>🏆 Competitive Info</button>
+            <button onClick={() => setView("videos")}>🎬 Guides</button>
+            <button onClick={() => setView("maps")}>🗺️ Maps</button>
           </div>
         </div>
       );
     }
 
-    function Overview() {
+    function Info() {
       return (
         <div className="container">
-          <h1>Competitive Modes</h1>
+          <h1>Comp Overview</h1>
           <div className="card">
             <h2>FNCS - Fortnite Champion Series</h2>
-            <p>Top-tier tournament with regional qualifiers and massive prize pools. Held seasonally and includes solos, duos, or trios formats depending on the chapter.</p>
+            <p>Seasonal tournaments with millions in prizes and global qualifiers. Includes solos, duos, or trios depending on chapter rules.</p>
           </div>
           <div className="card">
             <h2>Ranked Mode</h2>
-            <p>Climb from Bronze to Unreal through placement and elimination points in Battle Royale or Zero Build playlists.</p>
+            <p>Progress through ranks: Bronze → Silver → Gold → Platinum → Diamond → Elite → Champion → Unreal. Unreal players appear on the global leaderboard.</p>
           </div>
           <div className="card">
-            <h2>Cash Cups & Victory Cups</h2>
-            <p>Weekly tournaments that reward top performers with real prizes or in-game cosmetics. Free to enter.</p>
+            <h2>Earnings & Events</h2>
+            <p>Play Cash Cups and Victory Cups to earn real money or cosmetics. FNCS winners can earn thousands or even millions.</p>
           </div>
         </div>
       );
@@ -104,12 +108,28 @@
             <iframe src="https://www.youtube.com/embed/j8BiPBvKArQ" allowFullScreen></iframe>
           </div>
           <div className="card">
-            <h2>Rank Tips & Rotation Strategy</h2>
+            <h2>Rank Tips & Rotations</h2>
             <iframe src="https://www.youtube.com/embed/RqNkc1ZSkZg" allowFullScreen></iframe>
           </div>
           <div className="card">
-            <h2>Zero Build Competitive Guide</h2>
-            <iframe src="https://www.youtube.com/embed/-Q6T5BCYj4g" allowFullScreen></iframe>
+            <h2>How to Earn Money Competing</h2>
+            <iframe src="https://www.youtube.com/embed/FR62qmnU3dI" allowFullScreen></iframe>
+          </div>
+        </div>
+      );
+    }
+
+    function Maps() {
+      return (
+        <div className="container">
+          <h1>Maps & Drop Zones</h1>
+          <div className="card">
+            <h2>Battle Royale Drop Map</h2>
+            <img src="https://fortnite.gg/img/maps/br_large.jpg" alt="Battle Royale Map" className="map-img" />
+          </div>
+          <div className="card">
+            <h2>Reload Mode Map</h2>
+            <img src="https://fortnite.gg/img/maps/reload.jpg" alt="Reload Map" className="map-img" />
           </div>
         </div>
       );
@@ -117,13 +137,12 @@
 
     function App() {
       const [view, setView] = React.useState("home");
-
       const screens = {
         home: <Home setView={setView} />,
-        overview: <Overview />,
+        info: <Info />,
         videos: <Videos />,
+        maps: <Maps />
       };
-
       return screens[view];
     }
 
