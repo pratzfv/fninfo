@@ -19,98 +19,42 @@
       margin: auto;
       padding: 30px;
     }
-    .nav { text-align: center; margin: 20px 0; }
+    .nav {
+      text-align: center;
+      margin-bottom: 30px;
+    }
     .nav button {
       background-color: #334155;
       color: #fff;
       border: none;
       padding: 10px 20px;
-      margin: 0 10px;
+      margin: 10px;
       border-radius: 8px;
       font-size: 1rem;
       cursor: pointer;
     }
-    .nav button:hover { background-color: #475569; }
+    .nav button:hover {
+      background-color: #475569;
+    }
     .card {
       background-color: #1e293b;
       padding: 20px;
       margin: 20px 0;
       border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.4);
       border-left: 5px solid #38bdf8;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
     }
-    h1, h2 { color: #38bdf8; text-align: center; }
+    h1, h2 {
+      color: #38bdf8;
+      text-align: center;
+    }
+    ul {
+      padding-left: 20px;
+    }
     iframe {
       width: 100%;
       height: 300px;
       border-radius: 12px;
       margin-top: 10px;
     }
-    ul { padding-left: 20px; }
-    .timer { font-size: 1.5rem; text-align: center; margin-top: 10px; color: #facc15; }
-    .map-img { width: 100%; border-radius: 12px; margin-top: 10px; }
-    a { color: #facc15; text-decoration: underline; }
-  </style>
-</head>
-<body>
-  <div id="root"></div>
-
-  <script type="text/babel">
-    function CountdownTimer() {
-      const [timeLeft, setTimeLeft] = React.useState("");
-
-      React.useEffect(() => {
-        const target = new Date("2025-08-24T00:00:00Z");
-        const tick = () => {
-          const now = new Date();
-          const diff = target - now;
-          if (diff < 0) return setTimeLeft("Season has ended!");
-          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-          const minutes = Math.floor((diff / (1000 * 60)) % 60);
-          setTimeLeft(`${days}d ${hours}h ${minutes}m`);
-        };
-        tick();
-        const interval = setInterval(tick, 60000);
-        return () => clearInterval(interval);
-      }, []);
-
-      return <div className="timer">Next Season in: {timeLeft}</div>;
-    }
-
-    function WeaponStats() {
-      const weapons = [
-        { type: "Shotgun", name: "Hammer Pump", reload: "4.8s", damage: "103" },
-        { type: "SMG", name: "Thunder Burst", reload: "2.6s", damage: "24" },
-        { type: "AR", name: "Striker AR", reload: "2.7s", damage: "26" },
-        { type: "Sniper", name: "Reaper Sniper", reload: "3.2s", damage: "116" },
-        { type: "Rocket Launcher", name: "Quad Rocket", reload: "3.9s", damage: "120+" }
-      ];
-      return (
-        <div className="card">
-          <h2>Weapon Stats</h2>
-          <ul>
-            {weapons.map((w, i) => (
-              <li key={i}><strong>{w.type}:</strong> {w.name} – Reload: {w.reload}, Damage: {w.damage}</li>
-            ))}
-          </ul>
-        </div>
-      );
-    }
-
-    function RegionPrizes() {
-      const prizes = [
-        { event: "Solo Victory Cup", region: "NA Central", prize: "$300–$800" },
-        { event: "Solo Victory Cup", region: "EU", prize: "$350–$900" },
-        { event: "Solo Victory Cup", region: "Asia", prize: "$200–$600" },
-        { event: "FNCS Major 3", region: "NA Central", prize: "$1.5M total, ~$200K for 1st" },
-        { event: "FNCS Major 3", region: "EU", prize: "$1.2M total, ~$180K for 1st" },
-        { event: "FNCS Major 3", region: "Asia", prize: "$200K total, ~$30K for 1st" },
-        { event: "Cash Cup Duos", region: "NA Central", prize: "$250–$1,000 per duo" },
-        { event: "Cash Cup Duos", region: "EU", prize: "$300–$1,200 per duo" },
-      ];
-      return (
-        <div className="card">
-          <h2>💰 Regional Prize Info</h2>
-          <ul>{prizes.map((p, i) => (
-            <li key={i}><strong>{p.event}</strong
+    .map
