@@ -2,53 +2,198 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spy Network Challenge</title>
-  <link rel="stylesheet" href="style.css"/>
+  <title>Fortnite Companion Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Bungee', sans-serif;
+      background-color: #0f172a;
+      color: #f1f5f9;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 30px;
+    }
+    .nav { text-align: center; margin: 20px 0; }
+    .nav button {
+      background-color: #334155;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .nav button:hover { background-color: #475569; }
+    .card {
+      background-color: #1e293b;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
+      border-left: 5px solid #38bdf8;
+    }
+    h1, h2 { color: #38bdf8; text-align: center; }
+    iframe {
+      width: 100%;
+      height: 300px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+    ul { padding-left: 20px; }
+    .timer { font-size: 1.5rem; text-align: center; margin-top: 10px; color: #facc15; }
+    .map-img { width: 100%; border-radius: 12px; margin-top: 10px; }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>🕵️‍♂️ Spy Network Hideout</h1>
-    <p>Uncover clues, track agents, and vote on drop zones!</p>
-  </header>
+  <div id="root"></div>
 
-  <section id="clue-board">
-    <h2>Clue Board</h2>
-    <button onclick="revealClue()">Reveal New Clue</button>
-    <p id="clue-text">🕵️ Hidden clues will appear here...</p>
-  </section>
+  <script type="text/babel">
+    function CountdownTimer() {
+      const [timeLeft, setTimeLeft] = React.useState("");
 
-  <section id="drop-vote">
-    <h2>Drop Zone Voting</h2>
-    <form>
-      <label><input type="radio" name="drop" value="Lazy Lake"> Lazy Lake</label><br>
-      <label><input type="radio" name="drop" value="Tilted Towers"> Tilted Towers</label><br>
-      <label><input type="radio" name="drop" value="Retail Row"> Retail Row</label><br>
-      <button type="button" onclick="submitVote()">Vote</button>
-    </form>
-    <p id="vote-result">🔍 Your vote will appear here.</p>
-  </section>
+      React.useEffect(() => {
+        const target = new Date("2025-08-24T00:00:00Z"); // example season end date
+        const tick = () => {
+          const now = new Date();
+          const diff = target - now;
+          if (diff < 0) {
+            setTimeLeft("Season has ended!");
+            return;
+          }
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((diff / (1000 * 60)) % 60);
+          setTimeLeft(`${days}d ${hours}h ${minutes}m`);
+        };
+        tick();
+        const interval = setInterval(tick, 60000);
+        return () => clearInterval(interval);
+      }, []);
 
-  <script>
-    const clues = [
-      "💾 File corrupted. Check basement server room.",
-      "🚁 Helicopter spotted landing outside Misty Meadows.",
-      "🧥 Red coat agent seen near Slurpy Swamp billboard."
-    ];
-
-    function revealClue() {
-      const clue = clues[Math.floor(Math.random() * clues.length)];
-      document.getElementById("clue-text").textContent = clue;
+      return <div className="timer">Next Season in: {timeLeft}</div>;
     }
 
-    function submitVote() {
-      const choice = document.querySelector('input[name="drop"]:checked');
-      if (choice) {
-        document.getElementById("vote-result").textContent = `✅ You voted for ${choice.value}`;
-      } else {
-        document.getElementById("vote-result").textContent = "⚠️ Please select a drop zone!";
-      }
+    function WeaponStats() {
+      const weapons = [
+        { type: "Shotgun", name: "Hammer Pump", reload: "4.8s", damage: "103" },
+        { type: "SMG", name: "Thunder Burst", reload: "2.6s", damage: "24" },
+        { type: "Assault Rifle", name: "Striker AR", reload: "2.7s", damage: "26" },
+        { type: "Sniper", name: "Reaper Sniper", reload: "3.2s", damage: "116" },
+        { type: "Rocket Launcher", name: "Quad Rocket", reload: "3.9s", damage: "120+" }
+      ];
+      return (
+        <div className="card">
+          <h2>Weapon Stats</h2>
+          <ul>
+            {weapons.map((w, i) => (
+              <li key={i}><strong>{w.type}:</strong> {w.name} – Reload: {w.reload}, Damage: {w.damage}</li>
+            ))}
+          </ul>
+        </div>
+      );
     }
-  </script>
-</body>
-</html>
+
+    function CompetitiveInfo() {
+      return (
+        <div className="card">
+          <h2>Competitive Play & Earnings</h2>
+          <p>Rank up through Bronze → Unreal to enter Cash Cups and FNCS. FNCS winners earn thousands or more. Stay consistent in arena, practice rotations, and play Duo tournaments for better synergy.</p>
+        </div>
+      );
+    }
+
+    function CreativeMaps() {
+      const maps = [
+        "Box PvP Training [Code: 1234-5678-9012]",
+        "Sniper Arena [Code: 8765-4321-0001]",
+        "Edit & Aim Course [Code: 2345-1111-4444]"
+      ];
+      return (
+        <div className="card">
+          <h2>Top Creative Maps</h2>
+          <ul>{maps.map((m, i) => <li key={i}>{m}</li>)}</ul>
+        </div>
+      );
+    }
+
+    function VideoGuides() {
+      return (
+        <div className="container">
+          <h1>Video Guides</h1>
+          <div className="card">
+            <h2>FNCS Highlights</h2>
+            <iframe src="https://www.youtube.com/embed/j8BiPBvKArQ" allowFullScreen></iframe>
+          </div>
+          <div className="card">
+            <h2>How to Earn in Fortnite</h2>
+            <iframe src="https://www.youtube.com/embed/FR62qmnU3dI" allowFullScreen></iframe>
+          </div>
+          <div className="card">
+            <h2>Tricks & Rotations</h2>
+            <iframe src="https://www.youtube.com/embed/RqNkc1ZSkZg" allowFullScreen></iframe>
+          </div>
+        </div>
+      );
+    }
+
+    function FeaturedPlayers() {
+      return (
+        <div className="card">
+          <h2>Good Fortnite Players</h2>
+          <ul>
+            <li><strong>Bugha</strong> – World Cup Champion</li>
+            <li><strong>Mero</strong> – Multiple FNCS wins</li>
+            <li><strong>Queasy</strong> – Elite strategist</li>
+            <li><strong>Pratzhimself</strong> – Creative and comp master – <a href="https://www.youtube.com/@Pratzhimself" target="_blank" style={{color:"#facc15"}}>Subscribe here!</a></li>
+          </ul>
+        </div>
+      );
+    }
+
+    function MapsView() {
+      return (
+        <div className="container">
+          <h1>Maps</h1>
+          <div className="card">
+            <h2>Battle Royale Drop Map</h2>
+            <img src="https://fortnite.gg/img/maps/br_large.jpg" alt="BR Map" className="map-img" />
+          </div>
+          <div className="card">
+            <h2>Reload Mode Map</h2>
+            <img src="https://fortnite.gg/img/maps/reload.jpg" alt="Reload Map" className="map-img" />
+          </div>
+        </div>
+      );
+    }
+
+    function Home({ setView }) {
+      return (
+        <div className="container">
+          <h1>Fortnite Portal</h1>
+          <CountdownTimer />
+          <div className="nav">
+            <button onClick={() => setView("info")}>📘 Info</button>
+            <button onClick={() => setView("videos")}>🎬 Videos</button>
+            <button onClick={() => setView("maps")}>🗺️ Maps</button>
+          </div>
+          <WeaponStats />
+          <CreativeMaps />
+          <CompetitiveInfo />
+          <FeaturedPlayers />
+        </div>
+      );
+    }
+
+    function App() {
+      const [view, setView] = React.useState("home");
+      const screens = {
+        home: <Home setView={setView} />,
+        info: <CompetitiveInfo />,
+        videos: <VideoGuides
