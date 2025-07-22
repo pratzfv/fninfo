@@ -2,59 +2,147 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Fortnite Companion Portal</title>
+  <title>Fortnite Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Bungee', sans-serif;
-      background-color: #0f172a;
-      color: #f1f5f9;
-    }
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 30px;
-    }
-    .nav {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .nav button {
-      background-color: #334155;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      margin: 10px;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .nav button:hover {
-      background-color: #475569;
-    }
-    .card {
-      background-color: #1e293b;
-      padding: 20px;
-      margin: 20px 0;
-      border-radius: 12px;
-      border-left: 5px solid #38bdf8;
-      box-shadow: 0 0 12px rgba(0,0,0,0.4);
-    }
-    h1, h2 {
-      color: #38bdf8;
-      text-align: center;
-    }
-    ul {
-      padding-left: 20px;
-    }
-    iframe {
-      width: 100%;
-      height: 300px;
-      border-radius: 12px;
-      margin-top: 10px;
-    }
-    .map
+    body { font-family: 'Bungee', sans-serif; background: #0f172a; color: #f1f5f9; margin:0; padding:0; }
+    .container { max-width: 1200px; margin: auto; padding: 30px; }
+    .card { background: #1e293b; margin: 20px 0; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #000; border-left: 5px solid #38bdf8; }
+    h1, h2 { text-align: center; color: #38bdf8; }
+    .nav button { margin: 10px; padding: 10px 20px; background: #334155; color: white; border: none; border-radius: 8px; cursor: pointer; }
+    iframe { width: 100%; height: 300px; border-radius: 12px; margin-top: 10px; }
+    .map-img { width: 100%; border-radius: 12px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const App = () => {
+      const [view, setView] = React.useState("home");
+
+      const Countdown = () => {
+        const [timeLeft, setTimeLeft] = React.useState("");
+        React.useEffect(() => {
+          const target = new Date("2025-08-24T00:00:00Z");
+          const tick = () => {
+            const now = new Date();
+            const diff = target - now;
+            if (diff < 0) return setTimeLeft("Season ended");
+            const d = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000)/3600000);
+            const m = Math.floor((diff % 3600000)/60000);
+            setTimeLeft(`${d}d ${h}h ${m}m`);
+          };
+          tick(); const i = setInterval(tick,60000); return ()=>clearInterval(i);
+        }, []);
+        return <div style={{textAlign:'center',color:'#facc15',fontSize:'1.5rem'}}>Next Season In: {timeLeft}</div>;
+      };
+
+      const Home = () => (
+        <div className="container">
+          <h1>Fortnite Companion Portal</h1>
+          <Countdown />
+          <div className="nav">
+            <button onClick={() => setView("info")}>Competitive Info</button>
+            <button onClick={() => setView("videos")}>Videos</button>
+            <button onClick={() => setView("maps")}>Maps</button>
+          </div>
+          <ItemStats />
+          <CreativeMaps />
+          <FeaturedPlayers />
+        </div>
+      );
+
+      const ItemStats = () => {
+        const items = [
+          { type: "Shotgun", name: "Hammer Pump", reload: "4.8s", damage: "103" },
+          { type: "SMG", name: "Thunder Burst", reload: "2.6s", damage: "24" },
+          { type: "AR", name: "Striker AR", reload: "2.7s", damage: "26" },
+          { type: "Sniper", name: "Reaper Sniper", reload: "3.2s", damage: "116" },
+          { type: "Rocket", name: "Quad Rocket", reload: "3.9s", damage: "120+" },
+        ];
+        return (
+          <div className="card">
+            <h2>Weapon Stats</h2>
+            <ul>{items.map((w, i) => (
+              <li key={i}><strong>{w.type}</strong> – {w.name}: Reload {w.reload}, Damage {w.damage}</li>
+            ))}</ul>
+          </div>
+        );
+      };
+
+      const CreativeMaps = () => {
+        const codes = [
+          "Edit/Aim Course – 2345-1111-4444",
+          "Box PvP Arena – 1234-5678-9012",
+          "Sniper Mini-Game – 8765-4321-0001"
+        ];
+        return (
+          <div className="card">
+            <h2>Top Creative Maps</h2>
+            <ul>{codes.map((c, i) => <li key={i}>{c}</li>)}</ul>
+          </div>
+        );
+      };
+
+      const FeaturedPlayers = () => (
+        <div className="card">
+          <h2>Players to Watch</h2>
+          <ul>
+            <li><strong>Bugha</strong> – World Cup Champion</li>
+            <li><strong>Mero</strong> – Multi-FNCS Winner</li>
+            <li><strong>Pratzhimself</strong> – Creator & Competitor 👉 <a href="https://www.youtube.com/@Pratzhimself" target="_blank" style={{color:"#facc15"}}>Subscribe</a></li>
+          </ul>
+        </div>
+      );
+
+      const Videos = () => (
+        <div className="container">
+          <h1>Videos & Tips</h1>
+          <div className="nav"><button onClick={() => setView("home")}>← Back</button></div>
+          <div className="card"><h2>FNCS Highlights</h2>
+            <iframe src="https://www.youtube.com/embed/j8BiPBvKArQ" allowFullScreen></iframe></div>
+          <div className="card"><h2>How to Earn Money</h2>
+            <iframe src="https://www.youtube.com/embed/FR62qmnU3dI" allowFullScreen></iframe></div>
+        </div>
+      );
+
+      const Maps = () => (
+        <div className="container">
+          <h1>Maps & POIs</h1>
+          <div className="nav"><button onClick={() => setView("home")}>← Back</button></div>
+          <div className="card"><h2>Battle Royale: Chapter 6 Season 3</h2>
+            <ul>
+              <li>Brutal Bastion</li>
+              <li>Hazy Hillside</li>
+              <li>Slumberyard</li>
+              <li>Lavish Lair</li>
+              <li>...and more</li>
+            </ul>
+          </div>
+          <div className="card"><h2>Reload POIs</h2>
+            <ul>
+              <li>Slurp Rush</li>
+              <li>Venture Valley</li>
+              <li>Squad Stadium (Squid Game)</li>
+            </ul>
+          </div>
+          <div className="card"><h2>Best Tournament Drop Spots</h2>
+            <p>For Chapter 6: Lavish Lair (loot, rotation), Slumberyard (zone control)</p>
+            <p>For Reload: Venture Valley (high loot), Slurp Rush (tactical escapes)</p>
+          </div>
+        </div>
+      );
+
+      return {
+        home: <Home />,
+        info: <CompetitiveSection />,
+        videos: <Videos />,
+        maps: <Maps />,
+      }[view] || <Home />;
+    };
+
+    ReactDOM.createRoot(document.getElementById("root")).
