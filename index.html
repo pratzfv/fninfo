@@ -1,104 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Fortnite Competitive Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet" />
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <style>
-      body {
-        background-color: #0f172a;
-        font-family: 'Bungee', sans-serif;
-        color: #f1f5f9;
-        margin: 0;
-        padding: 20px;
-      }
-      .container {
-        max-width: 960px;
-        margin: auto;
-      }
-      .card {
-        background-color: #1e293b;
-        padding: 20px;
-        margin: 16px 0;
-        border-radius: 12px;
-        box-shadow: 0 0 12px rgba(0,0,0,0.4);
-        border-left: 5px solid #38bdf8;
-      }
-      h1 {
-        color: #38bdf8;
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      h2 {
-        color: #facc15;
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
+<head>
+  <meta charset="UTF-8" />
+  <title>Fortnite Competitive Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Bungee', sans-serif;
+      background-color: #0f172a;
+      color: #f1f5f9;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      color: #38bdf8;
+      margin-bottom: 1rem;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .nav-buttons button {
+      background-color: #334155;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .nav-buttons button:hover {
+      background-color: #475569;
+    }
+    .card {
+      background-color: #1e293b;
+      padding: 20px;
+      margin: 16px 0;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
+      border-left: 5px solid #38bdf8;
+    }
+    iframe {
+      width: 100%;
+      height: 300px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
 
-    <script type="text/babel">
-      function CompetitiveCard({ title, children }) {
-        return (
+  <script type="text/babel">
+    function Home({ setView }) {
+      return (
+        <div className="container">
+          <h1>Fortnite Competitive Hub</h1>
+          <div className="nav-buttons">
+            <button onClick={() => setView("overview")}>🏆 Competitive Info</button>
+            <button onClick={() => setView("videos")}>🎬 Watch Guides</button>
+          </div>
+        </div>
+      );
+    }
+
+    function Overview() {
+      return (
+        <div className="container">
+          <h1>Competitive Modes</h1>
           <div className="card">
-            <h2>{title}</h2>
-            <div>{children}</div>
+            <h2>FNCS - Fortnite Champion Series</h2>
+            <p>Top-tier tournament with regional qualifiers and massive prize pools. Held seasonally and includes solos, duos, or trios formats depending on the chapter.</p>
           </div>
-        );
-      }
-
-      function App() {
-        return (
-          <div className="container">
-            <h1>Fortnite Competitive Overview</h1>
-
-            <CompetitiveCard title="🎮 Competitive Modes">
-              <ul>
-                <li>Battle Royale Ranked (Solo/Duos)</li>
-                <li>Zero Build Ranked</li>
-                <li>FNCS (Fortnite Champion Series)</li>
-                <li>Cash Cups & Solo Victory Cups</li>
-              </ul>
-            </CompetitiveCard>
-
-            <CompetitiveCard title="📈 Rank Tiers">
-              <p>Players progress through ranks: Bronze → Silver → Gold → Platinum → Diamond → Elite → Champion → Unreal</p>
-              <p><strong>Unreal</strong> players are placed on the global leaderboard and cannot derank.</p>
-            </CompetitiveCard>
-
-            <CompetitiveCard title="🧠 Game Formats">
-              <ul>
-                <li>Point System: Elimination + Placement multipliers</li>
-                <li>Rounds with top players advancing to finals</li>
-                <li>Zone control, loadout efficiency, and rotations matter heavily</li>
-              </ul>
-            </CompetitiveCard>
-
-            <CompetitiveCard title="💰 Prize Pools & Events">
-              <ul>
-                <li>FNCS Global Championship: over $10M USD</li>
-                <li>Weekly Cash Cups: typically $100–$2,000</li>
-                <li>DreamHack, Collegiate Cups, and Creator Challenges</li>
-              </ul>
-              <p>Winning means both bragging rights and bank 💸</p>
-            </CompetitiveCard>
-
-            <CompetitiveCard title="📅 Seasonal Updates">
-              <p>New competitive seasons usually align with Battle Pass resets and meta shifts.</p>
-              <p>Expect map changes, weapon balancing, and new tournament rules every season.</p>
-            </CompetitiveCard>
+          <div className="card">
+            <h2>Ranked Mode</h2>
+            <p>Climb from Bronze to Unreal through placement and elimination points in Battle Royale or Zero Build playlists.</p>
           </div>
-        );
-      }
+          <div className="card">
+            <h2>Cash Cups & Victory Cups</h2>
+            <p>Weekly tournaments that reward top performers with real prizes or in-game cosmetics. Free to enter.</p>
+          </div>
+        </div>
+      );
+    }
 
-      const root = ReactDOM.createRoot(document.getElementById("root"));
-      root.render(<App />);
-    </script>
-  </body>
+    function Videos() {
+      return (
+        <div className="container">
+          <h1>Watch & Learn</h1>
+          <div className="card">
+            <h2>FNCS Highlights</h2>
+            <iframe src="https://www.youtube.com/embed/j8BiPBvKArQ" allowFullScreen></iframe>
+          </div>
+          <div className="card">
+            <h2>Rank Tips & Rotation Strategy</h2>
+            <iframe src="https://www.youtube.com/embed/RqNkc1ZSkZg" allowFullScreen></iframe>
+          </div>
+          <div className="card">
+            <h2>Zero Build Competitive Guide</h2>
+            <iframe src="https://www.youtube.com/embed/-Q6T5BCYj4g" allowFullScreen></iframe>
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      const [view, setView] = React.useState("home");
+
+      const screens = {
+        home: <Home setView={setView} />,
+        overview: <Overview />,
+        videos: <Videos />,
+      };
+
+      return screens[view];
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
 </html>
