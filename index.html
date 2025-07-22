@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Fortnite Companion Hub</title>
+  <title>Fortnite Companion Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
     body {
@@ -60,6 +60,13 @@
     .map-img {
       width: 100%;
       border-radius: 12px;
+      margin-top: 10px;
+    }
+    .timer {
+      font-size: 1.5rem;
+      color: #facc15;
+      text-align: center;
+      margin-bottom: 20px;
     }
     a {
       color: #facc15;
@@ -72,16 +79,38 @@
     const App = () => {
       const [view, setView] = React.useState("home");
 
+      const CountdownTimer = () => {
+        const [timeLeft, setTimeLeft] = React.useState("");
+        React.useEffect(() => {
+          const target = new Date("2025-08-24T00:00:00Z");
+          const tick = () => {
+            const now = new Date();
+            const diff = target - now;
+            if (diff < 0) return setTimeLeft("Season ended!");
+            const days = Math.floor(diff / 86400000);
+            const hours = Math.floor((diff % 86400000) / 3600000);
+            const minutes = Math.floor((diff % 3600000) / 60000);
+            setTimeLeft(`${days}d ${hours}h ${minutes}m`);
+          };
+          tick();
+          const interval = setInterval(tick, 60000);
+          return () => clearInterval(interval);
+        }, []);
+        return <div className="timer">Next Season In: {timeLeft}</div>;
+      };
+
       const Home = () => (
         <div className="container">
-          <h1>Fortnite Companion Hub</h1>
+          <h1>Fortnite Companion Portal</h1>
+          <CountdownTimer />
           <div className="nav">
             <button onClick={() => setView("info")}>Competitive Info</button>
             <button onClick={() => setView("videos")}>Videos</button>
-            <button onClick={() => setView("dropmaps")}>Drop Maps</button>
+            <button onClick={() => setView("maps")}>Maps</button>
           </div>
           <WeaponStats />
           <CreativeMaps />
+          <CompetitiveSection />
           <FeaturedPlayers />
         </div>
       );
@@ -90,25 +119,50 @@
         const weapons = [
           { type: "Shotgun", name: "Hammer Pump", reload: "4.8s", damage: "103" },
           { type: "SMG", name: "Thunder Burst", reload: "2.6s", damage: "24" },
-          { type: "AR", name: "Striker AR", reload: "2.7s", damage: "26" },
+          { type: "Assault Rifle", name: "Striker AR", reload: "2.7s", damage: "26" },
           { type: "Sniper", name: "Reaper Sniper", reload: "3.2s", damage: "116" },
-          { type: "Rocket", name: "Quad Rocket", reload: "3.9s", damage: "120+" }
+          { type: "Rocket Launcher", name: "Quad Rocket", reload: "3.9s", damage: "120+" }
         ];
         return (
           <div className="card">
             <h2>Weapon Stats</h2>
             <ul>{weapons.map((w, i) => (
-              <li key={i}><strong>{w.type}</strong>: {w.name} – Reload: {w.reload}, Damage: {w.damage}</li>
+              <li key={i}><strong>{w.type}:</strong> {w.name} – Reload: {w.reload}, Damage: {w.damage}</li>
             ))}</ul>
           </div>
         );
       };
 
+      const CompetitiveSection = () => {
+        const prizes = [
+          { event: "Solo Victory Cup", region: "NA Central", prize: "$300–$800" },
+          { event: "Solo Victory Cup", region: "EU", prize: "$350–$900" },
+          { event: "FNCS Major", region: "NA Central", prize: "$1.5M, ~$200K for 1st" },
+          { event: "FNCS Major", region: "EU", prize: "$1.2M, ~$180K for 1st" },
+          { event: "Cash Cup", region: "NA Central", prize: "$250–$1,000 per duo" },
+          { event: "Cash Cup", region: "EU", prize: "$300–$1,200 per duo" }
+        ];
+        return (
+          <>
+            <div className="card">
+              <h2>Competitive Play & Earnings</h2>
+              <p>Earn through FNCS, Cash Cups & Victory Cups. Play Arena, build synergy, and rise to Unreal rank to unlock top-tier events.</p>
+            </div>
+            <div className="card">
+              <h2>Regional Prize Info</h2>
+              <ul>{prizes.map((p, i) => (
+                <li key={i}><strong>{p.event}</strong> – {p.region}: {p.prize}</li>
+              ))}</ul>
+            </div>
+          </>
+        );
+      };
+
       const CreativeMaps = () => {
         const maps = [
-          "Edit/Aim Course – 2345-1111-4444",
-          "Box PvP Arena – 1234-5678-9012",
-          "Sniper Mini-Game – 8765-4321-0001"
+          "Box PvP Training [1234-5678-9012]",
+          "Sniper Arena [8765-4321-0001]",
+          "Edit & Aim Course [2345-1111-4444]"
         ];
         return (
           <div className="card">
@@ -120,58 +174,20 @@
 
       const FeaturedPlayers = () => (
         <div className="card">
-          <h2>Featured Players</h2>
+          <h2>Top Fortnite Players</h2>
           <ul>
             <li><strong>Bugha</strong> – World Cup Champion</li>
-            <li><strong>Mero</strong> – FNCS Icon</li>
-            <li><strong>Queasy</strong> – High-level strategist</li>
-            <li><strong>Pratzhimself</strong> – <a href="https://www.youtube.com/@Pratzhimself" target="_blank">Subscribe Now</a></li>
+            <li><strong>Mero</strong> – FNCS icon</li>
+            <li><strong>Queasy</strong> – Smart strategist</li>
+            <li><strong>Pratzhimself</strong> – <a href="https://www.youtube.com/@Pratzhimself" target="_blank">Subscribe on YouTube</a></li>
           </ul>
         </div>
       );
 
-      const CompetitiveInfo = () => {
-        const prizes = [
-          { event: "Solo Victory Cup", region: "NA Central", prize: "$300–$800" },
-          { event: "Solo Victory Cup", region: "EU", prize: "$350–$900" },
-          { event: "FNCS Major", region: "NA Central", prize: "$1.5M, ~$200K for 1st" },
-          { event: "FNCS Major", region: "EU", prize: "$1.2M, ~$180K for 1st" },
-          { event: "Cash Cup", region: "NA Central", prize: "$250–$1,000 per duo" },
-          { event: "Cash Cup", region: "EU", prize: "$300–$1,200 per duo" }
-        ];
-        return (
-          <div className="container">
-            <h1>Competitive Info & Earnings</h1>
-            <div className="nav"><button onClick={() => setView("home")}>← Back</button></div>
-            <div className="card"><p>Earn money in Fortnite by ranking up to Unreal and competing in FNCS, Victory Cups, and Cash Cups.</p></div>
-            <div className="card">
-              <h2>Regional Prize Info</h2>
-              <ul>{prizes.map((p, i) => (
-                <li key={i}><strong>{p.event}</strong> – {p.region}: {p.prize}</li>
-              ))}</ul>
-            </div>
-          </div>
-        );
-      };
-
       const VideoGuides = () => (
         <div className="container">
-          <h1>Gameplay Videos & Tricks</h1>
+          <h1>Video Guides</h1>
           <div className="nav"><button onClick={() => setView("home")}>← Back</button></div>
           <div className="card"><h2>FNCS Highlights</h2><iframe src="https://www.youtube.com/embed/j8BiPBvKArQ" allowFullScreen></iframe></div>
-          <div className="card"><h2>How to Earn in Fortnite</h2><iframe src="https://www.youtube.com/embed/FR62qmnU3dI" allowFullScreen></iframe></div>
-          <div className="card"><h2>Rotation Tricks</h2><iframe src="https://www.youtube.com/embed/RqNkc1ZSkZg" allowFullScreen></iframe></div>
-        </div>
-      );
-
-      const DropMapGallery = () => {
-        const dropMaps = [
-          { name: "Lavish Lair", mode: "Battle Royale", image: "https://fortnite.gg/img/maps/br_large.jpg" },
-          { name: "Slumberyard", mode: "Battle Royale", image: "https://fortnite.gg/img/maps/slumberyard.jpg" },
-          { name: "Squid Stadium", mode: "Reload", image: "https://fortnite.gg/img/maps/squid.jpg" },
-          { name: "Slurp Rush", mode: "Reload", image: "https://fortnite.gg/img/maps/slurp_rush.jpg" },
-          { name: "Venture Valley", mode: "Reload", image: "https://fortnite.gg/img/maps/venture.jpg" }
-        ];
-        return (
-          <div className="container">
-            <h1>
+          <div className="card"><h2>How to Earn Money</h2><iframe src="https://www.youtube.com/embed/FR62qmnU3dI" allowFullScreen></iframe></div>
+          <
