@@ -1,84 +1,104 @@
-import React from "react";
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Fortnite Competitive Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      body {
+        background-color: #0f172a;
+        font-family: 'Bungee', sans-serif;
+        color: #f1f5f9;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 960px;
+        margin: auto;
+      }
+      .card {
+        background-color: #1e293b;
+        padding: 20px;
+        margin: 16px 0;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0,0,0,0.4);
+        border-left: 5px solid #38bdf8;
+      }
+      h1 {
+        color: #38bdf8;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      h2 {
+        color: #facc15;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
 
-// Example weapon data
-const weapons = [
-  { name: "Hammer Pump Shotgun", type: "Shotgun", rarity: "Legendary", damage: "103", fire_rate: "0.7", mag_size: "8" },
-  { name: "Striker AR", type: "Assault Rifle", rarity: "Legendary", damage: "26", fire_rate: "7.8", mag_size: "25" },
-  { name: "Ranger Pistol", type: "Pistol", rarity: "Epic", damage: "28", fire_rate: "6.75", mag_size: "16" },
-  { name: "Reaper Sniper Rifle", type: "Sniper", rarity: "Legendary", damage: "116", fire_rate: "0.65", mag_size: "3" },
-  { name: "Thunder Burst SMG", type: "SMG", rarity: "Legendary", damage: "24", fire_rate: "8.5", mag_size: "30" },
-  { name: "Nemesis AR", type: "Assault Rifle", rarity: "Epic", damage: "34", fire_rate: "5.5", mag_size: "28" },
-];
-
-export default function WeaponGuideScreen({ setView }) {
-  const [filterType, setFilterType] = React.useState("All");
-  const [searchTerm, setSearchTerm] = React.useState("");
-
-  const rarityColor = {
-    Legendary: "bg-yellow-500/20 border-yellow-500",
-    Epic: "bg-purple-500/20 border-purple-500",
-  };
-
-  const filteredWeapons = weapons.filter(
-    weapon =>
-      (filterType === "All" || weapon.type === filterType) &&
-      weapon.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  return (
-    <div className="p-8">
-      <h1 className="font-bungee text-4xl text-center text-purple-400 mb-6">Weapon Guide</h1>
-
-      {/* Filter Controls */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8 justify-center">
-        <select
-          value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
-          className="bg-gray-700 text-white px-4 py-2 rounded-md"
-        >
-          <option value="All">All</option>
-          <option value="Shotgun">Shotguns</option>
-          <option value="Assault Rifle">Assault Rifles</option>
-          <option value="Pistol">Pistols</option>
-          <option value="Sniper">Snipers</option>
-          <option value="SMG">SMGs</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Search by name"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="bg-gray-700 text-white px-4 py-2 rounded-md w-full md:w-64"
-        />
-      </div>
-
-      {/* Weapon Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredWeapons.map((weapon, index) => (
-          <div key={index} className={`border-2 ${rarityColor[weapon.rarity]} rounded-xl p-4 shadow-lg bg-gray-800`}>
-            <h2 className="text-white text-xl font-bold">{weapon.name}</h2>
-            <p className={`font-semibold ${weapon.rarity === 'Legendary' ? 'text-yellow-400' : 'text-purple-400'}`}>
-              {weapon.rarity} {weapon.type}
-            </p>
-            <div className="mt-4 space-y-1 text-gray-300">
-              <p><span className="font-bold text-white">Damage:</span> {weapon.damage}</p>
-              <p><span className="font-bold text-white">Fire Rate:</span> {weapon.fire_rate}</p>
-              <p><span className="font-bold text-white">Magazine Size:</span> {weapon.mag_size}</p>
-            </div>
-            {/* Visual Damage Bar */}
-            <div className="mt-4 h-2 bg-red-600 rounded-full overflow-hidden">
-              <div style={{ width: `${Math.min(Number(weapon.damage), 100)}%` }} className="h-full bg-red-400"></div>
-            </div>
+    <script type="text/babel">
+      function CompetitiveCard({ title, children }) {
+        return (
+          <div className="card">
+            <h2>{title}</h2>
+            <div>{children}</div>
           </div>
-        ))}
-      </div>
+        );
+      }
 
-      <button
-        onClick={() => setView("home")}
-        className="mt-10 text-purple-400 hover:text-purple-300 transition text-lg"
-      >
-        &larr; Back to Home
-      </button>
-    </div>
-  );
-}
+      function App() {
+        return (
+          <div className="container">
+            <h1>Fortnite Competitive Overview</h1>
+
+            <CompetitiveCard title="🎮 Competitive Modes">
+              <ul>
+                <li>Battle Royale Ranked (Solo/Duos)</li>
+                <li>Zero Build Ranked</li>
+                <li>FNCS (Fortnite Champion Series)</li>
+                <li>Cash Cups & Solo Victory Cups</li>
+              </ul>
+            </CompetitiveCard>
+
+            <CompetitiveCard title="📈 Rank Tiers">
+              <p>Players progress through ranks: Bronze → Silver → Gold → Platinum → Diamond → Elite → Champion → Unreal</p>
+              <p><strong>Unreal</strong> players are placed on the global leaderboard and cannot derank.</p>
+            </CompetitiveCard>
+
+            <CompetitiveCard title="🧠 Game Formats">
+              <ul>
+                <li>Point System: Elimination + Placement multipliers</li>
+                <li>Rounds with top players advancing to finals</li>
+                <li>Zone control, loadout efficiency, and rotations matter heavily</li>
+              </ul>
+            </CompetitiveCard>
+
+            <CompetitiveCard title="💰 Prize Pools & Events">
+              <ul>
+                <li>FNCS Global Championship: over $10M USD</li>
+                <li>Weekly Cash Cups: typically $100–$2,000</li>
+                <li>DreamHack, Collegiate Cups, and Creator Challenges</li>
+              </ul>
+              <p>Winning means both bragging rights and bank 💸</p>
+            </CompetitiveCard>
+
+            <CompetitiveCard title="📅 Seasonal Updates">
+              <p>New competitive seasons usually align with Battle Pass resets and meta shifts.</p>
+              <p>Expect map changes, weapon balancing, and new tournament rules every season.</p>
+            </CompetitiveCard>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
