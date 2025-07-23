@@ -16,9 +16,7 @@
             --bg-light: #1a1a1a;
             --border-color: #2a2a2a;
         }
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
@@ -61,23 +59,15 @@
             letter-spacing: -1px;
             margin-bottom: 2.5rem;
         }
-        .nav-link {
-            position: relative;
-            padding-bottom: 4px;
-        }
+        .nav-link { position: relative; padding-bottom: 4px; }
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
+            bottom: 0; left: 0; width: 0; height: 2px;
             background: linear-gradient(90deg, var(--fn-pink), var(--fn-yellow));
             transition: width 0.3s ease;
         }
-        .nav-link:hover::after {
-            width: 100%;
-        }
+        .nav-link:hover::after { width: 100%; }
         .countdown-item {
             background: rgba(42, 42, 42, 0.8);
             backdrop-filter: blur(5px);
@@ -85,28 +75,61 @@
             padding: 1rem;
             text-align: center;
         }
-        /* Item Rarity Borders */
+        /* Rarity Borders */
         .rarity-legendary { border-left: 5px solid #ffc94d; }
         .rarity-epic { border-left: 5px solid #7b2ff7; }
         .rarity-rare { border-left: 5px solid #2adcf9; }
         .rarity-uncommon { border-left: 5px solid #50c878; }
-
         /* Modal Styles */
         .modal { display: none; }
         .modal.active { display: flex; }
-
         /* Mobile Menu */
-        #mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-        }
-        #mobile-menu.active {
-            transform: translateX(0);
-        }
+        #mobile-menu { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
+        #mobile-menu.active { transform: translateX(0); }
 
-        /* Stats Display Animation */
-        #stats-display { max-height: 0; overflow: hidden; transition: max-height 0.7s ease-in-out; }
-        #stats-display.active { max-height: 1000px; /* Adjust as needed */ }
+        /* Interactive Map Styles */
+        .poi-marker {
+            position: absolute;
+            width: 24px; height: 24px;
+            background-color: rgba(249, 42, 127, 0.8); /* pink */
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 15px rgba(249, 42, 127, 0.7);
+        }
+        .poi-marker:hover {
+            transform: scale(1.2);
+            background-color: var(--fn-pink);
+        }
+        .poi-marker::after { /* Pulsing effect */
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background-color: var(--fn-pink);
+            transform: translate(-50%, -50%);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        #poi-tooltip {
+            position: absolute;
+            display: none;
+            background-color: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            z-index: 10;
+            transition: opacity 0.2s ease;
+            pointer-events: none; /* Allows clicks to go through to map to close it */
+        }
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+            70% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -115,11 +138,9 @@
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-3xl font-black uppercase fortnite-gradient-text">FN HUB</a>
             <div class="hidden md:flex items-center space-x-8">
-                <a href="#map-evolution" class="nav-link text-white font-semibold"><i class="fas fa-map mr-2"></i>Map</a>
+                <a href="#map" class="nav-link text-white font-semibold"><i class="fas fa-map mr-2"></i>Map</a>
                 <a href="#shop" class="nav-link text-white font-semibold"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
-                <a href="#stats" class="nav-link text-white font-semibold"><i class="fas fa-chart-line mr-2"></i>Stats</a>
                 <a href="#leaks" class="nav-link text-white font-semibold"><i class="fas fa-eye mr-2"></i>Leaks</a>
-                <a href="#events" class="nav-link text-white font-semibold"><i class="fas fa-calendar-alt mr-2"></i>Events</a>
             </div>
             <div class="flex items-center space-x-4">
                 <button id="mobile-menu-btn" class="md:hidden text-white text-2xl z-50">
@@ -130,31 +151,58 @@
     </header>
 
     <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-40 flex flex-col items-center justify-center space-y-8 text-2xl md:hidden">
-        <a href="#map-evolution" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-map mr-2"></i>Map</a>
+        <a href="#map" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-map mr-2"></i>Map</a>
         <a href="#shop" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
-        <a href="#stats" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-chart-line mr-2"></i>Stats</a>
         <a href="#leaks" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-eye mr-2"></i>Leaks</a>
-        <a href="#events" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-calendar-alt mr-2"></i>Events</a>
     </div>
 
     <main class="container mx-auto px-6 py-12">
 
-        <section class="relative h-[70vh] rounded-2xl overflow-hidden mb-24 flex items-center justify-center text-center text-white" style="background: url('https://cdn2.unrealengine.com/fortnite-chapter-5-season-3-wrecked-1920x1080-2c8363719927.jpg') no-repeat center center/cover;">
+        <section class="relative h-[70vh] rounded-2xl overflow-hidden mb-24 flex items-center justify-center text-center text-white" style="background: url('https://placehold.co/1920x1080/1a1a1a/ffffff?text=Chapter+6+Season+3+Art') no-repeat center center/cover;">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
             <div class="relative z-10 p-8">
-                <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none fortnite-gradient-text">Wrecked</h1>
-                <p class="text-xl md:text-2xl font-light mt-4 mb-8 max-w-3xl mx-auto">Welcome to the Wasteland! A sandstorm has swept over the Island, creating a new biome and new threats.</p>
-                <button class="btn btn-primary px-10 py-4 text-lg">Battle Pass Details</button>
+                <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none fortnite-gradient-text">Catalyst</h1>
+                <p class="text-xl md:text-2xl font-light mt-4 mb-8 max-w-3xl mx-auto">The Zero Point is unstable. Reality is shifting, creating new worlds and revealing ancient secrets.</p>
+                <button class="btn btn-primary px-10 py-4 text-lg">Discover More</button>
             </div>
         </section>
         
-        <section id="season-countdown" class="mb-24 text-center">
-            <h2 class="section-title fortnite-gradient-text">Next Season Arrives In</h2>
+        <section id="season-status" class="mb-24 text-center">
+            <h2 class="section-title fortnite-gradient-text">Season Ends In</h2>
+            <div class="max-w-3xl mx-auto mb-8">
+                <div class="flex justify-between text-sm font-semibold mb-1">
+                    <span>Season Progress</span>
+                    <span id="season-percentage">0%</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-4">
+                    <div id="season-progress-bar" class="bg-gradient-to-r from-fn-pink to-fn-yellow h-4 rounded-full" style="width: 0%;"></div>
+                </div>
+            </div>
             <div id="countdown-timer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto">
                 <div class="countdown-item"><div id="days" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Days</div></div>
                 <div class="countdown-item"><div id="hours" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Hours</div></div>
                 <div class="countdown-item"><div id="minutes" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Minutes</div></div>
                 <div class="countdown-item"><div id="seconds" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Seconds</div></div>
+            </div>
+        </section>
+
+        <section id="map" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Chapter 6: Season 3 Map</h2>
+            <div class="card p-4">
+                <div id="map-container" class="relative w-full">
+                    <img src="https://placehold.co/1200x1200/1a1a1a/ffffff?text=C6S3+Interactive+Map" alt="Interactive Map of Chapter 6 Season 3" class="w-full rounded-lg">
+                    
+                    <div class="poi-marker" style="top: 25%; left: 30%;" data-name="Shifting Spires" data-desc="A towering city that phases between different architectural styles."></div>
+                    <div class="poi-marker" style="top: 50%; left: 50%;" data-name="The Core Anomaly" data-desc="The epicentre of the instability, rich with rare loot but heavily guarded."></div>
+                    <div class="poi-marker" style="top: 75%; left: 60%;" data-name="Sunken Secrets" data-desc="An ancient temple complex, partially submerged and full of mysteries."></div>
+                    <div class="poi-marker" style="top: 35%; left: 70%;" data-name="Crystalline Caverns" data-desc="A vast network of caves filled with glowing, harvestable crystals."></div>
+                    <div class="poi-marker" style="top: 60%; left: 20%;" data-name="Verdant Village" data-desc="A peaceful village that seems strangely untouched by the chaos."></div>
+                    
+                    <div id="poi-tooltip">
+                        <h4 id="tooltip-name" class="font-bold text-lg text-white"></h4>
+                        <p id="tooltip-desc" class="text-sm text-gray-300"></p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -164,87 +212,41 @@
                 </div>
         </section>
 
-        <section id="stats" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Track Your Stats</h2>
-            <div class="card p-6 max-w-4xl mx-auto">
-                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                    <input id="epic-username" type="text" placeholder="Enter Epic Username" class="flex-grow bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-pink-500">
-                    <button id="search-stats-btn" class="btn btn-primary px-6 py-3 flex items-center justify-center">
-                        <span id="search-text">Search</span>
-                        <i id="search-spinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
-                    </button>
-                </div>
-                <div id="stats-display" class="mt-6">
-                    <div class="text-center p-4" id="stats-placeholder">Enter a username to see detailed stats.</div>
-                    <div id="stats-content" class="hidden">
-                        </div>
-                </div>
-            </div>
-        </section>
-        
         <section id="leaks" class="mb-24">
             <h2 class="section-title fortnite-gradient-text text-center">Latest Leaks & Rumors</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="card p-4">
                     <img src="https://placehold.co/400x400/1a1a1a/ffc94d?text=Leaked+Skin+1" class="rounded-lg mb-4" alt="Leaked Skin">
-                    <h3 class="text-xl font-bold">"Cosmic Wanderer" Outfit</h3>
-                    <p class="text-gray-400">Files suggest a new celestial-themed skin.</p>
+                    <h3 class="text-xl font-bold">"Rift Raider" Outfit</h3>
+                    <p class="text-gray-400">A mysterious figure who can supposedly create mini-rifts.</p>
                     <span class="inline-block bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded-full mt-2">RUMORED</span>
                 </div>
                  <div class="card p-4">
-                    <img src="https://placehold.co/400x400/1a1a1a/7b2ff7?text=Leaked+Event" class="rounded-lg mb-4" alt="Leaked Event">
-                    <h3 class="text-xl font-bold">Live Event: "The Nexus Collapse"</h3>
-                    <p class="text-gray-400">Encrypted event files point to a map-changing event.</p>
+                    <img src="https://placehold.co/400x400/1a1a1a/7b2ff7?text=Leaked+LTM" class="rounded-lg mb-4" alt="Leaked LTM">
+                    <h3 class="text-xl font-bold">LTM: Reality Shift</h3>
+                    <p class="text-gray-400">A mode where the map's POIs randomly swap places mid-game.</p>
                     <span class="inline-block bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full mt-2">ENCRYPTED</span>
                 </div>
                  <div class="card p-4">
-                    <img src="https://placehold.co/400x400/1a1a1a/2adcf9?text=Leaked+Weapon" class="rounded-lg mb-4" alt="Leaked Weapon">
-                    <h3 class="text-xl font-bold">"Rift Blade" Melee Weapon</h3>
-                    <p class="text-gray-400">Confirmed in v31.20 patch notes for next update.</p>
+                    <img src="https://placehold.co/400x400/1a1a1a/2adcf9?text=Leaked+Collab" class="rounded-lg mb-4" alt="Leaked Collab">
+                    <h3 class="text-xl font-bold">New Creator Collab</h3>
+                    <p class="text-gray-400">Confirmed collaboration with a major content creator, icon skin incoming.</p>
                     <span class="inline-block bg-blue-400 text-white text-xs font-bold px-2 py-1 rounded-full mt-2">CONFIRMED</span>
                 </div>
             </div>
         </section>
-
-        <section id="map-evolution" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Map Evolution</h2>
-            <div class="card p-6">
-                <div class="relative">
-                    <img id="map-image" src="https://placehold.co/1200x800/1a1a1a/ffffff?text=Chapter+5+Map" alt="Fortnite Map" class="rounded-lg w-full">
-                    <div id="map-info" class="absolute top-4 left-4 bg-black/70 p-4 rounded-lg">
-                        <h3 class="text-xl font-bold">Chapter 5</h3>
-                        <p>The current island featuring new biomes like the Wasteland.</p>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <input id="map-slider" type="range" min="1" max="5" value="5" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
-                    <div class="flex justify-between text-xs text-white mt-2 px-1">
-                        <span>Ch. 1</span><span>Ch. 2</span><span>Ch. 3</span><span>Ch. 4</span><span>Ch. 5</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </main>
 
     <footer class="bg-black border-t border-gray-800 mt-16">
         <div class="container mx-auto px-6 py-8 text-center text-gray-400">
             <p>&copy; 2025 Fortnite Fan Hub. This is a fan-made website and is not affiliated with Epic Games.</p>
-            <p class="text-sm mt-2">All trademarks and copyrights belong to their respective owners.</p>
-            <div class="flex justify-center space-x-6 mt-4">
-                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-twitter text-2xl"></i></a>
-                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-youtube text-2xl"></i></a>
-                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-twitch text-2xl"></i></a>
-                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-discord text-2xl"></i></a>
-            </div>
         </div>
     </footer>
     
     <div id="item-modal" class="modal fixed inset-0 bg-black/80 z-50 items-center justify-center p-4">
       <div class="card max-w-lg w-full relative">
         <button id="modal-close-btn" class="absolute top-4 right-4 text-2xl text-gray-400 hover:text-white">&times;</button>
-        <div id="modal-content" class="p-6">
-          </div>
+        <div id="modal-content" class="p-6"></div>
       </div>
     </div>
 
@@ -260,41 +262,87 @@
 
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('active');
-            if (mobileMenu.classList.contains('active')) {
-                menuIcon.classList.remove('fa-bars');
-                menuIcon.classList.add('fa-times');
-            } else {
-                menuIcon.classList.remove('fa-times');
-                menuIcon.classList.add('fa-bars');
-            }
+            menuIcon.classList.toggle('fa-bars');
+            menuIcon.classList.toggle('fa-times');
         });
         
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.remove('active');
-                menuIcon.classList.remove('fa-times');
                 menuIcon.classList.add('fa-bars');
+                menuIcon.classList.remove('fa-times');
             });
         });
 
-        // --- Countdown Timer ---
-        const countdownDate = new Date("2025-10-24T06:00:00Z").getTime(); // Example: Oct 24, 2025, 6:00 AM UTC
+        // --- Countdown Timer & Season Progress ---
+        const seasonStartDate = new Date('2025-05-30T10:00:00+08:00').getTime(); // Assumed start date for C6S3
+        const countdownDate = new Date('2025-08-08T15:00:00+08:00').getTime(); // Friday, August 8, 2025 @ 3:00 PM Perth time
+        const seasonProgressBar = document.getElementById('season-progress-bar');
+        const seasonPercentageText = document.getElementById('season-percentage');
 
-        const countdownFunction = setInterval(() => {
+        const totalSeasonDuration = countdownDate - seasonStartDate;
+
+        const updateTimerAndProgress = () => {
             const now = new Date().getTime();
             const distance = countdownDate - now;
 
+            // Update Progress Bar
+            const elapsedDuration = now - seasonStartDate;
+            let progressPercentage = (elapsedDuration / totalSeasonDuration) * 100;
+            progressPercentage = Math.max(0, Math.min(100, progressPercentage)); // Clamp between 0 and 100
+
+            seasonProgressBar.style.width = `${progressPercentage}%`;
+            seasonPercentageText.textContent = `${progressPercentage.toFixed(2)}% Complete`;
+            
+            // Update Countdown
             if (distance < 0) {
-                clearInterval(countdownFunction);
-                document.getElementById("countdown-timer").innerHTML = "<div class='col-span-4 text-3xl font-bold'>The New Season is Here!</div>";
-                return;
+                document.getElementById("countdown-timer").innerHTML = "<div class='col-span-4 text-3xl font-bold'>The Season Has Ended!</div>";
+                seasonProgressBar.style.width = '100%';
+                seasonPercentageText.textContent = '100% Complete';
+                return false; // Stop the interval
             }
 
             document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
             document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
             document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
             document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
-        }, 1000);
+            return true; // Continue the interval
+        };
+        
+        // Run once immediately, then set interval
+        if (updateTimerAndProgress()) {
+            setInterval(updateTimerAndProgress, 1000);
+        }
+
+        // --- Interactive Map ---
+        const mapContainer = document.getElementById('map-container');
+        const poiMarkers = document.querySelectorAll('.poi-marker');
+        const tooltip = document.getElementById('poi-tooltip');
+        const tooltipName = document.getElementById('tooltip-name');
+        const tooltipDesc = document.getElementById('tooltip-desc');
+
+        poiMarkers.forEach(marker => {
+            marker.addEventListener('mouseenter', (e) => {
+                tooltipName.textContent = e.target.dataset.name;
+                tooltipDesc.textContent = e.target.dataset.desc;
+                
+                const markerRect = e.target.getBoundingClientRect();
+                const containerRect = mapContainer.getBoundingClientRect();
+                
+                // Position tooltip relative to the marker
+                let top = markerRect.top - containerRect.top + markerRect.height + 10; // 10px below marker
+                let left = markerRect.left - containerRect.left + (markerRect.width / 2); // Centered on marker
+                
+                tooltip.style.top = `${top}px`;
+                tooltip.style.left = `${left}px`;
+                tooltip.style.transform = 'translateX(-50%)'; // Center align
+                tooltip.style.display = 'block';
+            });
+
+            marker.addEventListener('mouseleave', () => {
+                tooltip.style.display = 'none';
+            });
+        });
 
         // --- Interactive Item Shop & Modal ---
         const itemShopGrid = document.getElementById('item-shop-grid');
@@ -303,10 +351,10 @@
         const modalCloseBtn = document.getElementById('modal-close-btn');
 
         const shopItems = [
-            { name: 'Magneto', rarity: 'legendary', price: 1800, img: 'https://placehold.co/300x300/ffc94d/000000?text=Magneto', desc: 'The master of magnetism arrives. Part of the Marvel series.', set: 'X-Men', release: '2025-07-20' },
-            { name: 'Wasteland Warrior', rarity: 'epic', price: 1500, img: 'https://placehold.co/300x300/7b2ff7/ffffff?text=Wasteland+Warrior', desc: 'Rule the ruined roads.', set: 'Wasteland Crew', release: '2025-07-15' },
-            { name: 'Nitro-Fueled', rarity: 'rare', price: 800, img: 'https://placehold.co/300x300/2adcf9/ffffff?text=Nitro-Fueled', desc: "Show 'em your style. Reactive: Glows after eliminations.", set: 'Wasteland Crew', release: '2025-07-15' },
-            { name: 'Sandstorm Surfer', rarity: 'epic', price: 1200, img: 'https://placehold.co/300x300/f92a7f/ffffff?text=Sandstorm+Surfer', desc: 'Ride the crimson storm.', set: 'Desert Drifters', release: '2025-07-22' },
+            { name: 'Chrono Guardian', rarity: 'legendary', price: 2000, img: 'https://placehold.co/300x300/ffc94d/000000?text=Chrono+Guardian', desc: 'Protector of the timestream. Reactive: Ages and de-ages with each elimination.', set: 'Timekeepers', release: '2025-07-23' },
+            { name: 'Reality Glitch', rarity: 'epic', price: 1500, img: 'https://placehold.co/300x300/7b2ff7/ffffff?text=Reality+Glitch', desc: 'Embrace the chaos of the shifting reality.', set: 'Anomaly Agents', release: '2025-07-20' },
+            { name: 'Crystalline Axe', rarity: 'rare', price: 800, img: 'https://placehold.co/300x300/2adcf9/ffffff?text=Crystalline+Axe', desc: "Forged in the heart of the Crystalline Caverns.", set: 'Crystalized', release: '2025-07-22' },
+            { name: 'Sunken Cipher', rarity: 'uncommon', price: 500, img: 'https://placehold.co/300x300/50c878/ffffff?text=Sunken+Cipher', desc: 'A wrap that shifts with ancient, watery symbols.', set: 'Deep Secrets', release: '2025-07-23' },
         ];
 
         shopItems.forEach(item => {
@@ -344,88 +392,6 @@
         modalCloseBtn.addEventListener('click', () => itemModal.classList.remove('active'));
         itemModal.addEventListener('click', (e) => {
             if (e.target === itemModal) itemModal.classList.remove('active');
-        });
-
-        // --- Stats Tracker ---
-        const searchStatsBtn = document.getElementById('search-stats-btn');
-        const searchSpinner = document.getElementById('search-spinner');
-        const searchText = document.getElementById('search-text');
-        const statsDisplay = document.getElementById('stats-display');
-        const statsContent = document.getElementById('stats-content');
-        const statsPlaceholder = document.getElementById('stats-placeholder');
-
-        searchStatsBtn.addEventListener('click', () => {
-            const username = document.getElementById('epic-username').value;
-            if (!username) {
-                statsPlaceholder.textContent = 'Please enter a username.';
-                statsPlaceholder.classList.add('text-red-400');
-                return;
-            }
-            statsPlaceholder.classList.remove('text-red-400');
-            searchText.classList.add('hidden');
-            searchSpinner.classList.remove('hidden');
-            searchStatsBtn.disabled = true;
-
-            // Fake API call
-            setTimeout(() => {
-                const fakeStats = {
-                    solo: { wins: 50, kd: 1.8, winRate: '3.5%', matches: 1428, kills: 2570 },
-                    duo: { wins: 210, kd: 2.5, winRate: '8.2%', matches: 2560, kills: 6400 },
-                    squad: { wins: 450, kd: 3.1, winRate: '15.1%', matches: 2980, kills: 9238 },
-                };
-                displayStats(username, fakeStats);
-                searchText.classList.remove('hidden');
-                searchSpinner.classList.add('hidden');
-                searchStatsBtn.disabled = false;
-            }, 1500);
-        });
-
-        function displayStats(username, stats) {
-            statsPlaceholder.classList.add('hidden');
-            statsContent.classList.remove('hidden');
-            statsDisplay.classList.add('active');
-            
-            statsContent.innerHTML = `
-                <h3 class="text-2xl font-bold text-center mb-4">${username}'s Lifetime Stats</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                    <div class="bg-gray-800 p-4 rounded-lg">
-                        <h4 class="font-bold text-lg text-pink-400">Solos</h4>
-                        <p>${stats.solo.wins} Wins</p>
-                        <p>${stats.solo.kd} K/D</p>
-                        <p>${stats.solo.winRate} Win Rate</p>
-                    </div>
-                    <div class="bg-gray-800 p-4 rounded-lg">
-                        <h4 class="font-bold text-lg text-blue-400">Duos</h4>
-                        <p>${stats.duo.wins} Wins</p>
-                        <p>${stats.duo.kd} K/D</p>
-                        <p>${stats.duo.winRate} Win Rate</p>
-                    </div>
-                    <div class="bg-gray-800 p-4 rounded-lg">
-                        <h4 class="font-bold text-lg text-green-400">Squads</h4>
-                        <p>${stats.squad.wins} Wins</p>
-                        <p>${stats.squad.kd} K/D</p>
-                        <p>${stats.squad.winRate} Win Rate</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- Map Evolution Slider ---
-        const mapSlider = document.getElementById('map-slider');
-        const mapImage = document.getElementById('map-image');
-        const mapInfo = document.getElementById('map-info');
-        const mapData = {
-            1: { title: "Chapter 1", desc: "The original island where it all began.", img: "https://placehold.co/1200x800/2a2a2a/ffffff?text=Chapter+1+Map" },
-            2: { title: "Chapter 2", desc: "A whole new world with swimming and fishing.", img: "https://placehold.co/1200x800/3a3a3a/ffffff?text=Chapter+2+Map" },
-            3: { title: "Chapter 3", desc: "The island flipped, revealing a new landscape.", img: "https://placehold.co/1200x800/4a4a4a/ffffff?text=Chapter+3+Map" },
-            4: { title: "Chapter 4", desc: "New realms collide, creating a fresh reality.", img: "https://placehold.co/1200x800/5a5a5a/ffffff?text=Chapter+4+Map" },
-            5: { title: "Chapter 5", desc: "The current island featuring new biomes.", img: "https://placehold.co/1200x800/1a1a1a/ffffff?text=Chapter+5+Map" },
-        }
-
-        mapSlider.addEventListener('input', (e) => {
-            const chapter = e.target.value;
-            mapImage.src = mapData[chapter].img;
-            mapInfo.innerHTML = `<h3 class="text-xl font-bold">${mapData[chapter].title}</h3><p>${mapData[chapter].desc}</p>`;
         });
     });
     </script>
