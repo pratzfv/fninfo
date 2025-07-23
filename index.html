@@ -3,30 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FNPRATZ</title>
+    <title>FNPRATZ - Award-Winning Fortnite Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --fn-purple: #7b2ff7;
+            --fn-pink: #f92a7f;
+            --fn-yellow: #ffc94d;
+            --bg-dark: #121212;
+            --bg-light: #1a1a1a;
+            --border-color: #2a2a2a;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #121212;
+            background-color: var(--bg-dark);
             color: #e0e0e0;
         }
         .fortnite-gradient-text {
-            background: linear-gradient(to right, #7b2ff7, #f92a7f, #ffc94d);
+            background: linear-gradient(to right, var(--fn-purple), var(--fn-pink), var(--fn-yellow));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .card {
-            background-color: #1a1a1a;
-            border: 1px solid #2a2a2a;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
             border-radius: 1rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
         }
         .btn {
             border-radius: 0.5rem;
@@ -35,18 +46,20 @@
             text-transform: uppercase;
         }
         .btn-primary {
-            background-color: #7b2ff7;
+            background-color: var(--fn-purple);
             color: white;
+            box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4);
         }
         .btn-primary:hover {
             background-color: #6a1fd1;
+            transform: scale(1.05);
         }
         .section-title {
             font-weight: 900;
             font-size: 2.5rem;
             text-transform: uppercase;
             letter-spacing: -1px;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
         .nav-link {
             position: relative;
@@ -59,17 +72,11 @@
             left: 0;
             width: 0;
             height: 2px;
-            background-color: #f92a7f;
+            background: linear-gradient(90deg, var(--fn-pink), var(--fn-yellow));
             transition: width 0.3s ease;
         }
         .nav-link:hover::after {
             width: 100%;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
         }
         .countdown-item {
             background: rgba(42, 42, 42, 0.8);
@@ -78,78 +85,69 @@
             padding: 1rem;
             text-align: center;
         }
+        /* Item Rarity Borders */
+        .rarity-legendary { border-left: 5px solid #ffc94d; }
+        .rarity-epic { border-left: 5px solid #7b2ff7; }
+        .rarity-rare { border-left: 5px solid #2adcf9; }
+        .rarity-uncommon { border-left: 5px solid #50c878; }
+
+        /* Modal Styles */
+        .modal { display: none; }
+        .modal.active { display: flex; }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Stats Display Animation */
+        #stats-display { max-height: 0; overflow: hidden; transition: max-height 0.7s ease-in-out; }
+        #stats-display.active { max-height: 1000px; /* Adjust as needed */ }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
-    <!-- Header -->
     <header class="bg-black/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-800">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-3xl font-black uppercase fortnite-gradient-text">
-                FN HUB
-            </div>
+            <a href="#" class="text-3xl font-black uppercase fortnite-gradient-text">FN HUB</a>
             <div class="hidden md:flex items-center space-x-8">
-                <a href="#map" class="nav-link text-white font-semibold"><i class="fas fa-map mr-2"></i>Map</a>
+                <a href="#map-evolution" class="nav-link text-white font-semibold"><i class="fas fa-map mr-2"></i>Map</a>
                 <a href="#shop" class="nav-link text-white font-semibold"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
                 <a href="#stats" class="nav-link text-white font-semibold"><i class="fas fa-chart-line mr-2"></i>Stats</a>
-                <a href="#creative" class="nav-link text-white font-semibold"><i class="fas fa-palette mr-2"></i>Creative</a>
+                <a href="#leaks" class="nav-link text-white font-semibold"><i class="fas fa-eye mr-2"></i>Leaks</a>
                 <a href="#events" class="nav-link text-white font-semibold"><i class="fas fa-calendar-alt mr-2"></i>Events</a>
             </div>
             <div class="flex items-center space-x-4">
-                 <div class="relative hidden md:block">
-                    <input type="text" placeholder="Search..." class="bg-gray-800 text-white rounded-full py-2 px-4 w-64 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                </div>
-                <button class="md:hidden text-white text-2xl">
+                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl z-50">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </nav>
     </header>
 
-    <!-- Main Content -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-40 flex flex-col items-center justify-center space-y-8 text-2xl md:hidden">
+        <a href="#map-evolution" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-map mr-2"></i>Map</a>
+        <a href="#shop" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
+        <a href="#stats" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-chart-line mr-2"></i>Stats</a>
+        <a href="#leaks" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-eye mr-2"></i>Leaks</a>
+        <a href="#events" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-calendar-alt mr-2"></i>Events</a>
+    </div>
+
     <main class="container mx-auto px-6 py-12">
 
-        <!-- Hero Section -->
-        <section class="relative h-[60vh] rounded-2xl overflow-hidden mb-24 flex items-center justify-center text-center text-white" style="background: url('https://placehold.co/1600x900/1a1a1a/ffffff?text=Fortnite+Season+Art') no-repeat center center/cover;">
-            <div class="absolute inset-0 bg-black/60"></div>
+        <section class="relative h-[70vh] rounded-2xl overflow-hidden mb-24 flex items-center justify-center text-center text-white" style="background: url('https://cdn2.unrealengine.com/fortnite-chapter-5-season-3-wrecked-1920x1080-2c8363719927.jpg') no-repeat center center/cover;">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
             <div class="relative z-10 p-8">
-                <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none">Wrecked</h1>
+                <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none fortnite-gradient-text">Wrecked</h1>
                 <p class="text-xl md:text-2xl font-light mt-4 mb-8 max-w-3xl mx-auto">Welcome to the Wasteland! A sandstorm has swept over the Island, creating a new biome and new threats.</p>
-                <button class="btn btn-primary px-10 py-4 text-lg">Drop In Now!</button>
+                <button class="btn btn-primary px-10 py-4 text-lg">Battle Pass Details</button>
             </div>
         </section>
-
-        <!-- Section Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-16">
-            <!-- Based on user image -->
-            <a href="#map" class="card p-4 flex items-center space-x-4"><i class="fas fa-map-marked-alt text-2xl text-blue-400"></i><div><h3 class="font-bold">Map</h3><p class="text-sm text-gray-400">Explore the Island</p></div></a>
-            <a href="#map-evolution" class="card p-4 flex items-center space-x-4"><i class="fas fa-layer-group text-2xl text-blue-400"></i><div><h3 class="font-bold">Map Evolution</h3><p class="text-sm text-gray-400">See past changes</p></div></a>
-            <a href="#shop" class="card p-4 flex items-center space-x-4"><i class="fas fa-store text-2xl text-pink-400"></i><div><h3 class="font-bold">Shop</h3><p class="text-sm text-gray-400">Daily Item Shop</p></div></a>
-            <a href="#cosmetics" class="card p-4 flex items-center space-x-4"><i class="fas fa-tshirt text-2xl text-pink-400"></i><div><h3 class="font-bold">Cosmetics</h3><p class="text-sm text-gray-400">Browse all items</p></div></a>
-            <a href="#wishlist" class="card p-4 flex items-center space-x-4"><i class="fas fa-star text-2xl text-yellow-400"></i><div><h3 class="font-bold">My Wishlist</h3><p class="text-sm text-gray-400">Track desired items</p></div></a>
-            <a href="#locker" class="card p-4 flex items-center space-x-4"><i class="fas fa-briefcase text-2xl text-pink-400"></i><div><h3 class="font-bold">My Locker</h3><p class="text-sm text-gray-400">Your collection</p></div></a>
-            <a href="#leaks" class="card p-4 flex items-center space-x-4"><i class="fas fa-eye text-2xl text-purple-400"></i><div><h3 class="font-bold">Leaks</h3><p class="text-sm text-gray-400">Upcoming content</p></div></a>
-            <a href="#most-used" class="card p-4 flex items-center space-x-4"><i class="fas fa-fire-alt text-2xl text-yellow-400"></i><div><h3 class="font-bold">Most Used</h3><p class="text-sm text-gray-400">Popular cosmetics</p></div></a>
-            <a href="#cosmetic-stats" class="card p-4 flex items-center space-x-4"><i class="fas fa-chart-pie text-2xl text-green-400"></i><div><h3 class="font-bold">Cosmetic Stats</h3><p class="text-sm text-gray-400">Rarity & usage data</p></div></a>
-            <a href="#free-cosmetics" class="card p-4 flex items-center space-x-4"><i class="fas fa-gift text-2xl text-green-400"></i><div><h3 class="font-bold">Free Cosmetics</h3><p class="text-sm text-gray-400">Get free gear</p></div></a>
-            <a href="#jam-tracks" class="card p-4 flex items-center space-x-4"><i class="fas fa-music text-2xl text-indigo-400"></i><div><h3 class="font-bold">Daily Jam Tracks</h3><p class="text-sm text-gray-400">Today's music</p></div></a>
-            <a href="#stats" class="card p-4 flex items-center space-x-4"><i class="fas fa-medal text-2xl text-red-400"></i><div><h3 class="font-bold">Stats</h3><p class="text-sm text-gray-400">Track your progress</p></div></a>
-            <a href="#creative" class="card p-4 flex items-center space-x-4"><i class="fas fa-drafting-compass text-2xl text-teal-400"></i><div><h3 class="font-bold">Creative</h3><p class="text-sm text-gray-400">Build your world</p></div></a>
-            <a href="#player-count" class="card p-4 flex items-center space-x-4"><i class="fas fa-users text-2xl text-teal-400"></i><div><h3 class="font-bold">Player Count</h3><p class="text-sm text-gray-400">Live game population</p></div></a>
-            <a href="#creators" class="card p-4 flex items-center space-x-4"><i class="fas fa-user-check text-2xl text-teal-400"></i><div><h3 class="font-bold">Creators</h3><p class="text-sm text-gray-400">Support a Creator</p></div></a>
-            <a href="#discover" class="card p-4 flex items-center space-x-4"><i class="fas fa-search-location text-2xl text-cyan-400"></i><div><h3 class="font-bold">Discover</h3><p class="text-sm text-gray-400">Find new islands</p></div></a>
-            <a href="#rankings" class="card p-4 flex items-center space-x-4"><i class="fas fa-trophy text-2xl text-orange-400"></i><div><h3 class="font-bold">Rankings</h3><p class="text-sm text-gray-400">Leaderboards</p></div></a>
-            <a href="#pro-settings" class="card p-4 flex items-center space-x-4"><i class="fas fa-cogs text-2xl text-gray-400"></i><div><h3 class="font-bold">Pro Settings</h3><p class="text-sm text-gray-400">Pro player setups</p></div></a>
-            <a href="#weapons" class="card p-4 flex items-center space-x-4"><i class="fas fa-crosshairs text-2xl text-gray-400"></i><div><h3 class="font-bold">Weapons</h3><p class="text-sm text-gray-400">Weapon database</p></div></a>
-            <a href="#xp-calculator" class="card p-4 flex items-center space-x-4"><i class="fas fa-calculator text-2xl text-red-400"></i><div><h3 class="font-bold">XP Calculator</h3><p class="text-sm text-gray-400">Plan your grind</p></div></a>
-            <a href="#lorebook" class="card p-4 flex items-center space-x-4"><i class="fas fa-book-open text-2xl text-green-400"></i><div><h3 class="font-bold">Lorebook</h3><p class="text-sm text-gray-400">Storyline details</p></div></a>
-            <a href="#season-countdown" class="card p-4 flex items-center space-x-4"><i class="fas fa-hourglass-half text-2xl text-purple-400"></i><div><h3 class="font-bold">Season Countdown</h3><p class="text-sm text-gray-400">Time until next season</p></div></a>
-            <a href="#events" class="card p-4 flex items-center space-x-4"><i class="fas fa-calendar-check text-2xl text-purple-400"></i><div><h3 class="font-bold">Events</h3><p class="text-sm text-gray-400">Upcoming events</p></div></a>
-            <a href="#community" class="card p-4 flex items-center space-x-4"><i class="fab fa-reddit-alien text-2xl text-orange-500"></i><div><h3 class="font-bold">Community</h3><p class="text-sm text-gray-400">Forums & more</p></div></a>
-        </div>
         
-        <!-- Season Countdown -->
         <section id="season-countdown" class="mb-24 text-center">
             <h2 class="section-title fortnite-gradient-text">Next Season Arrives In</h2>
             <div id="countdown-timer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto">
@@ -160,93 +158,68 @@
             </div>
         </section>
 
-        <!-- Item Shop Section -->
         <section id="shop" class="mb-24">
             <h2 class="section-title fortnite-gradient-text text-center">Today's Item Shop</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Sample Item -->
-                <div class="card overflow-hidden text-center">
-                    <img src="https://placehold.co/300x300/7b2ff7/ffffff?text=Cool+Skin" alt="Cosmetic Item" class="w-full h-auto">
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold">Cool Skin</h3>
-                        <p class="text-lg font-semibold text-yellow-400 flex items-center justify-center"><img src="https://placehold.co/24x24/ffffff/000000?text=V" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks">1,500</p>
-                        <button class="btn btn-primary w-full mt-4 py-2">View Details</button>
-                    </div>
+            <div id="item-shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 </div>
-                <!-- Repeat for other items -->
-                <div class="card overflow-hidden text-center">
-                    <img src="https://placehold.co/300x300/f92a7f/ffffff?text=Epic+Glider" alt="Cosmetic Item" class="w-full h-auto">
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold">Epic Glider</h3>
-                        <p class="text-lg font-semibold text-yellow-400 flex items-center justify-center"><img src="https://placehold.co/24x24/ffffff/000000?text=V" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks">1,200</p>
-                        <button class="btn btn-primary w-full mt-4 py-2">View Details</button>
-                    </div>
+        </section>
+
+        <section id="stats" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Track Your Stats</h2>
+            <div class="card p-6 max-w-4xl mx-auto">
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <input id="epic-username" type="text" placeholder="Enter Epic Username" class="flex-grow bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-pink-500">
+                    <button id="search-stats-btn" class="btn btn-primary px-6 py-3 flex items-center justify-center">
+                        <span id="search-text">Search</span>
+                        <i id="search-spinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
+                    </button>
                 </div>
-                <div class="card overflow-hidden text-center">
-                    <img src="https://placehold.co/300x300/ffc94d/000000?text=Rare+Pickaxe" alt="Cosmetic Item" class="w-full h-auto">
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold">Rare Pickaxe</h3>
-                        <p class="text-lg font-semibold text-yellow-400 flex items-center justify-center"><img src="https://placehold.co/24x24/ffffff/000000?text=V" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks">800</p>
-                        <button class="btn btn-primary w-full mt-4 py-2">View Details</button>
-                    </div>
-                </div>
-                <div class="card overflow-hidden text-center">
-                    <img src="https://placehold.co/300x300/2adcf9/ffffff?text=Funky+Emote" alt="Cosmetic Item" class="w-full h-auto">
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold">Funky Emote</h3>
-                        <p class="text-lg font-semibold text-yellow-400 flex items-center justify-center"><img src="https://placehold.co/24x24/ffffff/000000?text=V" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks">500</p>
-                        <button class="btn btn-primary w-full mt-4 py-2">View Details</button>
-                    </div>
+                <div id="stats-display" class="mt-6">
+                    <div class="text-center p-4" id="stats-placeholder">Enter a username to see detailed stats.</div>
+                    <div id="stats-content" class="hidden">
+                        </div>
                 </div>
             </div>
         </section>
         
-        <!-- Map Evolution -->
+        <section id="leaks" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Latest Leaks & Rumors</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-4">
+                    <img src="https://placehold.co/400x400/1a1a1a/ffc94d?text=Leaked+Skin+1" class="rounded-lg mb-4" alt="Leaked Skin">
+                    <h3 class="text-xl font-bold">"Cosmic Wanderer" Outfit</h3>
+                    <p class="text-gray-400">Files suggest a new celestial-themed skin.</p>
+                    <span class="inline-block bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded-full mt-2">RUMORED</span>
+                </div>
+                 <div class="card p-4">
+                    <img src="https://placehold.co/400x400/1a1a1a/7b2ff7?text=Leaked+Event" class="rounded-lg mb-4" alt="Leaked Event">
+                    <h3 class="text-xl font-bold">Live Event: "The Nexus Collapse"</h3>
+                    <p class="text-gray-400">Encrypted event files point to a map-changing event.</p>
+                    <span class="inline-block bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full mt-2">ENCRYPTED</span>
+                </div>
+                 <div class="card p-4">
+                    <img src="https://placehold.co/400x400/1a1a1a/2adcf9?text=Leaked+Weapon" class="rounded-lg mb-4" alt="Leaked Weapon">
+                    <h3 class="text-xl font-bold">"Rift Blade" Melee Weapon</h3>
+                    <p class="text-gray-400">Confirmed in v31.20 patch notes for next update.</p>
+                    <span class="inline-block bg-blue-400 text-white text-xs font-bold px-2 py-1 rounded-full mt-2">CONFIRMED</span>
+                </div>
+            </div>
+        </section>
+
         <section id="map-evolution" class="mb-24">
             <h2 class="section-title fortnite-gradient-text text-center">Map Evolution</h2>
             <div class="card p-6">
                 <div class="relative">
                     <img id="map-image" src="https://placehold.co/1200x800/1a1a1a/ffffff?text=Chapter+5+Map" alt="Fortnite Map" class="rounded-lg w-full">
-                    <div class="absolute bottom-4 left-4 right-4">
-                        <input id="map-slider" type="range" min="1" max="5" value="5" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
-                        <div class="flex justify-between text-xs text-white mt-2">
-                            <span>Ch. 1</span>
-                            <span>Ch. 2</span>
-                            <span>Ch. 3</span>
-                            <span>Ch. 4</span>
-                            <span>Ch. 5</span>
-                        </div>
+                    <div id="map-info" class="absolute top-4 left-4 bg-black/70 p-4 rounded-lg">
+                        <h3 class="text-xl font-bold">Chapter 5</h3>
+                        <p>The current island featuring new biomes like the Wasteland.</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Stats & XP Calculator -->
-        <section id="stats" class="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div>
-                <h2 class="section-title fortnite-gradient-text">Player Stats</h2>
-                <div class="card p-6">
-                    <div class="flex space-x-4">
-                        <input type="text" placeholder="Enter Epic Username" class="flex-grow bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-pink-500">
-                        <button class="btn btn-primary px-6 py-3">Search</button>
-                    </div>
-                    <div class="mt-6 text-center text-gray-400">Enter a username to see stats.</div>
-                </div>
-            </div>
-            <div id="xp-calculator">
-                <h2 class="section-title fortnite-gradient-text">XP Calculator</h2>
-                <div class="card p-6">
-                    <div class="space-y-4">
-                        <div>
-                            <label for="current-level" class="block mb-1 font-semibold">Current Level</label>
-                            <input id="current-level" type="number" value="1" class="w-full bg-gray-800 text-white rounded-lg p-3">
-                        </div>
-                        <div>
-                            <label for="target-level" class="block mb-1 font-semibold">Target Level</label>
-                            <input id="target-level" type="number" value="100" class="w-full bg-gray-800 text-white rounded-lg p-3">
-                        </div>
-                        <button id="calculate-xp" class="btn btn-primary w-full py-3">Calculate XP Needed</button>
-                        <div id="xp-result" class="text-center font-bold text-xl mt-4"></div>
+                <div class="mt-4">
+                    <input id="map-slider" type="range" min="1" max="5" value="5" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between text-xs text-white mt-2 px-1">
+                        <span>Ch. 1</span><span>Ch. 2</span><span>Ch. 3</span><span>Ch. 4</span><span>Ch. 5</span>
                     </div>
                 </div>
             </div>
@@ -254,75 +227,207 @@
 
     </main>
 
-    <!-- Footer -->
     <footer class="bg-black border-t border-gray-800 mt-16">
         <div class="container mx-auto px-6 py-8 text-center text-gray-400">
             <p>&copy; 2025 Fortnite Fan Hub. This is a fan-made website and is not affiliated with Epic Games.</p>
             <p class="text-sm mt-2">All trademarks and copyrights belong to their respective owners.</p>
             <div class="flex justify-center space-x-6 mt-4">
-                <a href="#" class="hover:text-white"><i class="fab fa-twitter text-2xl"></i></a>
-                <a href="#" class="hover:text-white"><i class="fab fa-youtube text-2xl"></i></a>
-                <a href="#" class="hover:text-white"><i class="fab fa-twitch text-2xl"></i></a>
-                <a href="#" class="hover:text-white"><i class="fab fa-discord text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-twitter text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-youtube text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-twitch text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-discord text-2xl"></i></a>
             </div>
         </div>
     </footer>
+    
+    <div id="item-modal" class="modal fixed inset-0 bg-black/80 z-50 items-center justify-center p-4">
+      <div class="card max-w-lg w-full relative">
+        <button id="modal-close-btn" class="absolute top-4 right-4 text-2xl text-gray-400 hover:text-white">&times;</button>
+        <div id="modal-content" class="p-6">
+          </div>
+      </div>
+    </div>
+
 
     <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- Mobile Menu ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        const menuIcon = mobileMenuBtn.querySelector('i');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            if (mobileMenu.classList.contains('active')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+            } else {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+        
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+
         // --- Countdown Timer ---
-        const countdownDate = new Date(new Date().getFullYear(), new Date().getMonth() + 3, 1).getTime();
+        const countdownDate = new Date("2025-10-24T06:00:00Z").getTime(); // Example: Oct 24, 2025, 6:00 AM UTC
 
         const countdownFunction = setInterval(() => {
             const now = new Date().getTime();
             const distance = countdownDate - now;
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = days.toString().padStart(2, '0');
-            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
-            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
-
             if (distance < 0) {
                 clearInterval(countdownFunction);
                 document.getElementById("countdown-timer").innerHTML = "<div class='col-span-4 text-3xl font-bold'>The New Season is Here!</div>";
+                return;
             }
+
+            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
         }, 1000);
+
+        // --- Interactive Item Shop & Modal ---
+        const itemShopGrid = document.getElementById('item-shop-grid');
+        const itemModal = document.getElementById('item-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+
+        const shopItems = [
+            { name: 'Magneto', rarity: 'legendary', price: 1800, img: 'https://placehold.co/300x300/ffc94d/000000?text=Magneto', desc: 'The master of magnetism arrives. Part of the Marvel series.', set: 'X-Men', release: '2025-07-20' },
+            { name: 'Wasteland Warrior', rarity: 'epic', price: 1500, img: 'https://placehold.co/300x300/7b2ff7/ffffff?text=Wasteland+Warrior', desc: 'Rule the ruined roads.', set: 'Wasteland Crew', release: '2025-07-15' },
+            { name: 'Nitro-Fueled', rarity: 'rare', price: 800, img: 'https://placehold.co/300x300/2adcf9/ffffff?text=Nitro-Fueled', desc: "Show 'em your style. Reactive: Glows after eliminations.", set: 'Wasteland Crew', release: '2025-07-15' },
+            { name: 'Sandstorm Surfer', rarity: 'epic', price: 1200, img: 'https://placehold.co/300x300/f92a7f/ffffff?text=Sandstorm+Surfer', desc: 'Ride the crimson storm.', set: 'Desert Drifters', release: '2025-07-22' },
+        ];
+
+        shopItems.forEach(item => {
+            const card = document.createElement('div');
+            card.className = `card overflow-hidden text-center rarity-${item.rarity}`;
+            card.innerHTML = `
+                <img src="${item.img}" alt="${item.name}" class="w-full h-auto">
+                <div class="p-4">
+                    <h3 class="text-xl font-bold">${item.name}</h3>
+                    <p class="text-lg font-semibold text-yellow-400 flex items-center justify-center">
+                        <img src="https://placehold.co/24x24/ffffff/000000?text=V" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks">
+                        ${item.price.toLocaleString()}
+                    </p>
+                    <button class="btn btn-primary w-full mt-4 py-2 view-details-btn">View Details</button>
+                </div>`;
+            card.querySelector('.view-details-btn').addEventListener('click', () => openModal(item));
+            itemShopGrid.appendChild(card);
+        });
+
+        const openModal = (item) => {
+            modalContent.innerHTML = `
+                <img src="${item.img.replace('300x300', '400x400')}" class="w-full rounded-lg mb-4" alt="${item.name}">
+                <h2 class="text-3xl font-black mb-2">${item.name}</h2>
+                <div class="flex items-center space-x-4 mb-4">
+                  <span class="text-xl font-bold text-yellow-400 flex items-center"><img src="https://placehold.co/24x24/ffffff/000000?text=V" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks">${item.price.toLocaleString()}</span>
+                  <span class="px-3 py-1 bg-gray-700 text-sm rounded-full capitalize">${item.rarity}</span>
+                </div>
+                <p class="text-gray-300 mb-2">${item.desc}</p>
+                <p class="text-gray-400 text-sm"><strong>Set:</strong> ${item.set}</p>
+                <p class="text-gray-400 text-sm"><strong>Release Date:</strong> ${item.release}</p>
+            `;
+            itemModal.classList.add('active');
+        };
+
+        modalCloseBtn.addEventListener('click', () => itemModal.classList.remove('active'));
+        itemModal.addEventListener('click', (e) => {
+            if (e.target === itemModal) itemModal.classList.remove('active');
+        });
+
+        // --- Stats Tracker ---
+        const searchStatsBtn = document.getElementById('search-stats-btn');
+        const searchSpinner = document.getElementById('search-spinner');
+        const searchText = document.getElementById('search-text');
+        const statsDisplay = document.getElementById('stats-display');
+        const statsContent = document.getElementById('stats-content');
+        const statsPlaceholder = document.getElementById('stats-placeholder');
+
+        searchStatsBtn.addEventListener('click', () => {
+            const username = document.getElementById('epic-username').value;
+            if (!username) {
+                statsPlaceholder.textContent = 'Please enter a username.';
+                statsPlaceholder.classList.add('text-red-400');
+                return;
+            }
+            statsPlaceholder.classList.remove('text-red-400');
+            searchText.classList.add('hidden');
+            searchSpinner.classList.remove('hidden');
+            searchStatsBtn.disabled = true;
+
+            // Fake API call
+            setTimeout(() => {
+                const fakeStats = {
+                    solo: { wins: 50, kd: 1.8, winRate: '3.5%', matches: 1428, kills: 2570 },
+                    duo: { wins: 210, kd: 2.5, winRate: '8.2%', matches: 2560, kills: 6400 },
+                    squad: { wins: 450, kd: 3.1, winRate: '15.1%', matches: 2980, kills: 9238 },
+                };
+                displayStats(username, fakeStats);
+                searchText.classList.remove('hidden');
+                searchSpinner.classList.add('hidden');
+                searchStatsBtn.disabled = false;
+            }, 1500);
+        });
+
+        function displayStats(username, stats) {
+            statsPlaceholder.classList.add('hidden');
+            statsContent.classList.remove('hidden');
+            statsDisplay.classList.add('active');
+            
+            statsContent.innerHTML = `
+                <h3 class="text-2xl font-bold text-center mb-4">${username}'s Lifetime Stats</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg text-pink-400">Solos</h4>
+                        <p>${stats.solo.wins} Wins</p>
+                        <p>${stats.solo.kd} K/D</p>
+                        <p>${stats.solo.winRate} Win Rate</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg text-blue-400">Duos</h4>
+                        <p>${stats.duo.wins} Wins</p>
+                        <p>${stats.duo.kd} K/D</p>
+                        <p>${stats.duo.winRate} Win Rate</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg text-green-400">Squads</h4>
+                        <p>${stats.squad.wins} Wins</p>
+                        <p>${stats.squad.kd} K/D</p>
+                        <p>${stats.squad.winRate} Win Rate</p>
+                    </div>
+                </div>
+            `;
+        }
 
         // --- Map Evolution Slider ---
         const mapSlider = document.getElementById('map-slider');
         const mapImage = document.getElementById('map-image');
+        const mapInfo = document.getElementById('map-info');
+        const mapData = {
+            1: { title: "Chapter 1", desc: "The original island where it all began.", img: "https://placehold.co/1200x800/2a2a2a/ffffff?text=Chapter+1+Map" },
+            2: { title: "Chapter 2", desc: "A whole new world with swimming and fishing.", img: "https://placehold.co/1200x800/3a3a3a/ffffff?text=Chapter+2+Map" },
+            3: { title: "Chapter 3", desc: "The island flipped, revealing a new landscape.", img: "https://placehold.co/1200x800/4a4a4a/ffffff?text=Chapter+3+Map" },
+            4: { title: "Chapter 4", desc: "New realms collide, creating a fresh reality.", img: "https://placehold.co/1200x800/5a5a5a/ffffff?text=Chapter+4+Map" },
+            5: { title: "Chapter 5", desc: "The current island featuring new biomes.", img: "https://placehold.co/1200x800/1a1a1a/ffffff?text=Chapter+5+Map" },
+        }
+
         mapSlider.addEventListener('input', (e) => {
             const chapter = e.target.value;
-            mapImage.src = `https://placehold.co/1200x800/1a1a1a/ffffff?text=Chapter+${chapter}+Map`;
-            mapImage.alt = `Fortnite Map Chapter ${chapter}`;
+            mapImage.src = mapData[chapter].img;
+            mapInfo.innerHTML = `<h3 class="text-xl font-bold">${mapData[chapter].title}</h3><p>${mapData[chapter].desc}</p>`;
         });
-
-        // --- XP Calculator ---
-        const calculateBtn = document.getElementById('calculate-xp');
-        calculateBtn.addEventListener('click', () => {
-            const currentLevel = parseInt(document.getElementById('current-level').value) || 0;
-            const targetLevel = parseInt(document.getElementById('target-level').value) || 0;
-            const resultDiv = document.getElementById('xp-result');
-
-            if (currentLevel >= targetLevel) {
-                resultDiv.textContent = "You're already past your target!";
-                resultDiv.classList.add('text-green-400');
-                resultDiv.classList.remove('text-yellow-400');
-                return;
-            }
-            
-            // Simplified XP calculation (80,000 XP per level)
-            const xpPerLevel = 80000;
-            const xpNeeded = (targetLevel - currentLevel) * xpPerLevel;
-
-            resultDiv.textContent = `You need ${xpNeeded.toLocaleString()} XP.`;
-            resultDiv.classList.add('text-yellow-400');
-            resultDiv.classList.remove('text-green-400');
-        });
+    });
     </script>
 
 </body>
