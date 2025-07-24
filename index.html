@@ -1,428 +1,302 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FNPRATZ - Award-Winning Fortnite Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --fn-purple: #7b2ff7;
-            --fn-pink: #f92a7f;
-            --fn-yellow: #ffc94d;
-            --bg-dark: #121212;
-            --bg-light: #1a1a1a;
-            --border-color: #2a2a2a;
-        }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: #e0e0e0;
-        }
-        .fortnite-gradient-text {
-            background: linear-gradient(to right, var(--fn-purple), var(--fn-pink), var(--fn-yellow));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .card {
-            background-color: var(--bg-light);
-            border: 1px solid var(--border-color);
-            border-radius: 1rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
-        }
-        .btn {
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-        }
-        .btn-primary {
-            background-color: var(--fn-purple);
-            color: white;
-            box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4);
-        }
-        .btn-primary:hover {
-            background-color: #6a1fd1;
-            transform: scale(1.05);
-        }
-        .section-title {
-            font-weight: 900;
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            margin-bottom: 2.5rem;
-        }
-        .nav-link { position: relative; padding-bottom: 4px; }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; width: 0; height: 2px;
-            background: linear-gradient(90deg, var(--fn-pink), var(--fn-yellow));
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after { width: 100%; }
-        /* Rarity Styles */
-        .rarity-legendary { border-left: 5px solid #ffc94d; }
-        .rarity-epic { border-left: 5px solid #7b2ff7; }
-        .rarity-rare { border-left: 5px solid #2adcf9; }
-        .rarity-uncommon { border-left: 5px solid #50c878; }
-        .rarity-common { border-left: 5px solid #9d9d9d; }
-        
-        .rarity-bg-legendary { background-color: rgba(255, 201, 77, 0.1); }
-        .rarity-bg-epic { background-color: rgba(123, 47, 247, 0.1); }
-        .rarity-bg-rare { background-color: rgba(42, 220, 249, 0.1); }
-        .rarity-bg-uncommon { background-color: rgba(80, 200, 120, 0.1); }
+// .env.local
+FORTNITE_TRACKER_KEY=YOUR_FORTNITE_TRACKER_API_KEY
+OPENAI_KEY=YOUR_OPENAI_API_KEY
 
-        /* Mobile Menu */
-        #mobile-menu { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
-        #mobile-menu.active { transform: translateX(0); }
-        
-        /* Interactive Map Styles */
-        .poi-marker {
-            position: absolute;
-            width: 24px; height: 24px;
-            background-color: rgba(249, 42, 127, 0.8);
-            border-radius: 50%; border: 2px solid white; cursor: pointer;
-            transition: all 0.2s ease; box-shadow: 0 0 15px rgba(249, 42, 127, 0.7);
-        }
-        .poi-marker:hover { transform: scale(1.2); background-color: var(--fn-pink); }
-        .poi-marker::after {
-            content: ''; position: absolute; top: 50%; left: 50%;
-            width: 100%; height: 100%; border-radius: 50%;
-            background-color: var(--fn-pink);
-            animation: pulse 2s infinite; z-index: -1;
-        }
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
-            70% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
-        }
-        #poi-tooltip { display: none; } /* Simplified for brevity */
+// package.json
+{
+  "name": "fortcompanion",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "fetch:shop": "node scripts/fetchShop.js",
+    "fetch:players": "node scripts/fetchPlayers.js",
+    "fetch:tournaments": "node scripts/fetchTournaments.js",
+    "fetch:leaks": "node scripts/fetchLeaks.js",
+    "update:weapons": "node scripts/updateWeapons.js"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "cheerio": "^1.0.0-rc.12",
+    "next": "13.4.7",
+    "openai": "^4.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "^3.3.2"
+  },
+  "devDependencies": {
+    "node-cron": "^3.0.2"
+  }
+}
 
-        /* Filter button styling */
-        .filter-btn { background-color: var(--bg-light); border: 1px solid var(--border-color); }
-        .filter-btn.active { background-color: var(--fn-pink); color: white; border-color: var(--fn-pink); }
+// next.config.js
+/** @type {import('next').NextConfig} */
+module.exports = { reactStrictMode: true };
 
-    </style>
-</head>
-<body class="overflow-x-hidden">
+// tailwind.config.js
+module.exports = {
+  content: ["./pages/**/*.{js,jsx}", "./components/**/*.{js,jsx}"],
+  theme: {
+    extend: {
+      backgroundImage: {
+        'br-map': "url('/assets/br-map.jpg')",
+        'squid':   "url('/assets/squid.jpg')",
+        'venture': "url('/assets/venture.jpg')",
+        'slurp':   "url('/assets/slurp.jpg')"
+      }
+    }
+  },
+  plugins: [require('@tailwindcss/typography')]
+};
 
-    <header class="bg-black/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-800">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-3xl font-black uppercase fortnite-gradient-text">FN HUB</a>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#map" class="nav-link text-white font-semibold"><i class="fas fa-map mr-2"></i>Map</a>
-                <a href="#shop" class="nav-link text-white font-semibold"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
-                <a href="#cosmetics" class="nav-link text-white font-semibold"><i class="fas fa-tshirt mr-2"></i>Cosmetics</a>
-                <a href="#weapons" class="nav-link text-white font-semibold"><i class="fas fa-crosshairs mr-2"></i>Weapons</a>
-                <a href="#creative" class="nav-link text-white font-semibold"><i class="fas fa-palette mr-2"></i>Creative</a>
-            </div>
-            <div class="flex items-center space-x-4">
-                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl z-50"><i class="fas fa-bars"></i></button>
-            </div>
-        </nav>
-    </header>
+// .github/workflows/auto_update.yml
+name: Auto Update Data
+on:
+  schedule:
+    - cron: '0 0 * * *'
+    - cron: '0 * * * *'
+    - cron: '0 2 * * 1'
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci
+      - run: npm run fetch:shop
+      - run: npm run fetch:players
+      - run: npm run fetch:tournaments
+      - run: npm run fetch:leaks
+      - run: npm run update:weapons
+      - run: |
+          git config user.name "GH Actions"
+          git config user.email "actions@github.com"
+          git add data/
+          git commit -m "Auto-update data" || echo "No changes"
 
-    <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-40 flex flex-col items-center justify-center space-y-8 text-2xl md:hidden">
-        <a href="#map" class="nav-link text-white font-semibold mobile-nav-link">Map</a>
-        <a href="#shop" class="nav-link text-white font-semibold mobile-nav-link">Shop</a>
-        <a href="#cosmetics" class="nav-link text-white font-semibold mobile-nav-link">Cosmetics</a>
-        <a href="#weapons" class="nav-link text-white font-semibold mobile-nav-link">Weapons</a>
-        <a href="#creative" class="nav-link text-white font-semibold mobile-nav-link">Creative</a>
-    </div>
+// scripts/fetchShop.js
+const fs = require('fs'), axios = require('axios');
+(async()=>{
+  const { data } = await axios.get('https://fortnite-api.com/v2/shop/br?language=en');
+  const shop = data.data.entries.map(e=>({
+    id:     e.items[0].images.icon,
+    name:   e.items[0].name,
+    price:  e.finalPrice,
+    rarity: e.items[0].rarity.value,
+    icon:   e.items[0].images.icon
+  }));
+  fs.writeFileSync('data/shop.json', JSON.stringify(shop,null,2));
+})();
 
-    <main class="container mx-auto px-6 py-12">
-        <section class="relative h-[70vh] rounded-2xl overflow-hidden mb-24 flex items-center justify-center text-center text-white" style="background: url('https://placehold.co/1920x1080/1a1a1a/ffffff?text=Chapter+6+Season+3+Art') no-repeat center center/cover;">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-            <div class="relative z-10 p-8">
-                <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none fortnite-gradient-text">Catalyst</h1>
-            </div>
-        </section>
-        
-        <section id="season-status" class="mb-24 text-center">
-            <h2 class="section-title fortnite-gradient-text">Season Ends In</h2>
-            <div class="max-w-3xl mx-auto mb-8">
-                <div class="flex justify-between text-sm font-semibold mb-1">
-                    <span>Season Progress</span>
-                    <span id="season-percentage">0%</span>
-                </div>
-                <div class="w-full bg-gray-700 rounded-full h-4">
-                    <div id="season-progress-bar" class="bg-gradient-to-r from-fn-pink to-fn-yellow h-4 rounded-full" style="width: 0%;"></div>
-                </div>
-            </div>
-            <div id="countdown-timer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto">
-                <div class="countdown-item"><div id="days" class="text-5xl font-bold">00</div><span class="text-sm uppercase">Days</span></div>
-                <div class="countdown-item"><div id="hours" class="text-5xl font-bold">00</div><span class="text-sm uppercase">Hours</span></div>
-                <div class="countdown-item"><div id="minutes" class="text-5xl font-bold">00</div><span class="text-sm uppercase">Minutes</span></div>
-                <div class="countdown-item"><div id="seconds" class="text-5xl font-bold">00</div><span class="text-sm uppercase">Seconds</span></div>
-            </div>
-        </section>
+// scripts/fetchPlayers.js
+const fs = require('fs'), axios = require('axios');
+(async()=>{
+  const { data } = await axios.get('https://api.fortnitetracker.com/v1/creative/playercount',{
+    headers:{'TRN-Api-Key':process.env.FORTNITE_TRACKER_KEY}
+  });
+  fs.writeFileSync('data/playerCount.json',JSON.stringify(data,null,2));
+})();
 
-        <section id="map" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Chapter 6: Season 3 Map</h2>
-            <div class="card p-4">
-                <div class="relative w-full">
-                    <img src="https://placehold.co/1200x1200/1a1a1a/ffffff?text=C6S3+Interactive+Map" alt="Interactive Map" class="w-full rounded-lg">
-                    <div class="poi-marker" style="top: 25%; left: 30%;"></div>
-                    <div class="poi-marker" style="top: 50%; left: 50%;"></div>
-                    <div class="poi-marker" style="top: 75%; left: 60%;"></div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="shop" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Today's Item Shop</h2>
-            <div id="item-shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                </div>
-        </section>
+// scripts/fetchTournaments.js
+const fs = require('fs'), axios = require('axios');
+(async()=>{
+  const { data } = await axios.get('https://api.fortnite.com/competitive/events');
+  fs.writeFileSync('data/tournaments.json',JSON.stringify(data,null,2));
+})();
 
-        <section id="cosmetics" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Cosmetics Database</h2>
-            <div class="card p-6">
-                <div class="flex flex-col md:flex-row gap-4 mb-6">
-                    <input type="text" id="cosmetic-search" placeholder="Search for any item..." class="flex-grow bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-pink-500">
-                    <div id="rarity-filter" class="flex items-center justify-center gap-2">
-                        <button class="filter-btn active px-3 py-2 rounded-lg" data-rarity="all">All</button>
-                        <button class="filter-btn px-3 py-2 rounded-lg" data-rarity="legendary">Legendary</button>
-                        <button class="filter-btn px-3 py-2 rounded-lg" data-rarity="epic">Epic</button>
-                        <button class="filter-btn px-3 py-2 rounded-lg" data-rarity="rare">Rare</button>
-                    </div>
-                </div>
-                <div id="cosmetics-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    </div>
-            </div>
-        </section>
-        
-        <section id="weapons" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Weapon Database</h2>
-            <div class="card p-6 overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="border-b border-gray-700">
-                            <th class="p-4">Weapon</th>
-                            <th class="p-4">Rarity</th>
-                            <th class="p-4">DPS</th>
-                            <th class="p-4">Damage</th>
-                            <th class="p-4">Fire Rate</th>
-                            <th class="p-4">Mag Size</th>
-                        </tr>
-                    </thead>
-                    <tbody id="weapon-table-body">
-                        </tbody>
-                </table>
-            </div>
-        </section>
-        
-        <section id="creative" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Trending Creative Islands</h2>
-            <div id="creative-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                 <div class="card overflow-hidden group">
-                    <div class="relative">
-                        <img src="https://placehold.co/600x400/7b2ff7/ffffff?text=Red+vs+Blue" class="w-full h-48 object-cover">
-                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button class="btn btn-primary copy-code-btn" data-code="8435-1541-4328">Copy Code</button>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold">Red vs Blue: Rumble</h3>
-                        <p class="text-gray-400 text-sm">Classic team deathmatch with mythic weapons.</p>
-                        <p class="text-sm font-mono mt-2 bg-gray-800 p-1 rounded inline-block">8435-1541-4328</p>
-                    </div>
-                </div>
-                <div class="card overflow-hidden group">
-                    <div class="relative">
-                        <img src="https://placehold.co/600x400/f92a7f/ffffff?text=The+Pit" class="w-full h-48 object-cover">
-                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button class="btn btn-primary copy-code-btn" data-code="4590-4493-7113">Copy Code</button>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold">The Pit - FFA</h3>
-                        <p class="text-gray-400 text-sm">The ultimate free-for-all practice map.</p>
-                        <p class="text-sm font-mono mt-2 bg-gray-800 p-1 rounded inline-block">4590-4493-7113</p>
-                    </div>
-                </div>
-                <div class="card overflow-hidden group">
-                    <div class="relative">
-                        <img src="https://placehold.co/600x400/ffc94d/000000?text=GoGoated" class="w-full h-48 object-cover">
-                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button class="btn btn-primary copy-code-btn" data-code="0348-4483-3263">Copy Code</button>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold">GoGoated Zone Wars</h3>
-                        <p class="text-gray-400 text-sm">Realistic, fast-paced endgame simulation.</p>
-                        <p class="text-sm font-mono mt-2 bg-gray-800 p-1 rounded inline-block">0348-4483-3263</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+// scripts/fetchLeaks.js
+const fs=require('fs'), axios=require('axios'), cheerio=require('cheerio');
+(async()=>{
+  const res = await axios.get('https://fortniteskins.net/Leaks');
+  const $ = cheerio.load(res.data), leaks=[];
+  $('.leak-item').each((i,el)=> leaks.push({
+    name:$(el).find('.leak-title').text(),
+    img: $(el).find('img').attr('src'),
+    date:$(el).find('.leak-date').text()
+  }));
+  fs.writeFileSync('data/leaks.json',JSON.stringify(leaks,null,2));
+})();
 
-        <section id="leaderboards" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Leaderboards</h2>
-            <div class="card p-6">
-                <h3 class="text-xl font-bold mb-4 text-center">Ranked Battle Royale - Unreal</h3>
-                <div class="space-y-2">
-                    <div class="flex items-center bg-gray-800 p-3 rounded-lg">
-                        <div class="w-8 text-lg font-bold text-yellow-400">1</div>
-                        <img src="https://placehold.co/40x40/ffffff/000000?text=P1" class="w-10 h-10 rounded-full mx-4">
-                        <div class="flex-grow font-semibold">ProPlayer123</div>
-                        <div class="text-pink-400">150,432 Points</div>
-                    </div>
-                    <div class="flex items-center bg-gray-800 p-3 rounded-lg">
-                        <div class="w-8 text-lg font-bold text-gray-300">2</div>
-                        <img src="https://placehold.co/40x40/ffffff/000000?text=P2" class="w-10 h-10 rounded-full mx-4">
-                        <div class="flex-grow font-semibold">NinjaFanatic</div>
-                        <div class="text-pink-400">148,987 Points</div>
-                    </div>
-                    <div class="flex items-center bg-gray-800 p-3 rounded-lg">
-                        <div class="w-8 text-lg font-bold text-yellow-600">3</div>
-                        <img src="https://placehold.co/40x40/ffffff/000000?text=P3" class="w-10 h-10 rounded-full mx-4">
-                        <div class="flex-grow font-semibold">QueenOfBuilds</div>
-                        <div class="text-pink-400">145,112 Points</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-black border-t border-gray-800 mt-16">
-        <div class="container mx-auto px-6 py-8 text-center text-gray-400">
-            <p>&copy; 2025 Fortnite Fan Hub. This is a fan-made website and is not affiliated with Epic Games.</p>
-        </div>
-    </footer>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- Mobile Menu ---
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('active'));
-        document.querySelectorAll('.mobile-nav-link').forEach(link => {
-            link.addEventListener('click', () => mobileMenu.classList.remove('active'));
-        });
-
-        // --- Countdown & Progress Bar ---
-        const seasonStartDate = new Date('2025-05-30T10:00:00+08:00').getTime();
-        const countdownDate = new Date('2025-08-08T15:00:00+08:00').getTime();
-        const totalSeasonDuration = countdownDate - seasonStartDate;
-        const countdownTimer = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = countdownDate - now;
-            const elapsed = now - seasonStartDate;
-            let progress = (elapsed / totalSeasonDuration) * 100;
-            progress = Math.max(0, Math.min(100, progress));
-
-            document.getElementById('season-progress-bar').style.width = `${progress}%`;
-            document.getElementById('season-percentage').textContent = `${progress.toFixed(2)}% Complete`;
-
-            if (distance < 0) {
-                clearInterval(countdownTimer);
-                document.getElementById("countdown-timer").innerHTML = "<div class='col-span-4 text-3xl font-bold'>The Season Has Ended!</div>";
-                return;
-            }
-            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
-        }, 1000);
-
-        // --- Mock Data ---
-        const shopItems = [
-            { name: 'Chrono Guardian', rarity: 'legendary', price: 2000, img: 'https://placehold.co/300x300/ffc94d/000000?text=Chrono+Guardian' },
-            { name: 'Reality Glitch', rarity: 'epic', price: 1500, img: 'https://placehold.co/300x300/7b2ff7/ffffff?text=Reality+Glitch' },
-            { name: 'Crystalline Axe', rarity: 'rare', price: 800, img: 'https://placehold.co/300x300/2adcf9/ffffff?text=Crystalline+Axe' },
-            { name: 'Sunken Cipher', rarity: 'uncommon', price: 500, img: 'https://placehold.co/300x300/50c878/ffffff?text=Sunken+Cipher' },
-        ];
-        const allCosmetics = [
-            { name: 'Omega Knight', rarity: 'legendary', img: 'https://placehold.co/300x300/ffc94d/000000?text=Omega+Knight' },
-            { name: 'Drift', rarity: 'legendary', img: 'https://placehold.co/300x300/ffc94d/000000?text=Drift' },
-            { name: 'Midas', rarity: 'legendary', img: 'https://placehold.co/300x300/ffc94d/000000?text=Midas' },
-            { name: 'Catalyst', rarity: 'epic', img: 'https://placehold.co/300x300/7b2ff7/ffffff?text=Catalyst' },
-            { name: 'Raven', rarity: 'epic', img: 'https://placehold.co/300x300/7b2ff7/ffffff?text=Raven' },
-            { name: 'Sun Strider', rarity: 'rare', img: 'https://placehold.co/300x300/2adcf9/ffffff?text=Sun+Strider' },
-            { name: 'Recon Expert', rarity: 'rare', img: 'https://placehold.co/300x300/2adcf9/ffffff?text=Recon+Expert' },
-        ];
-        const weaponData = [
-            { name: 'Thunder Burst SMG', rarity: 'legendary', dps: 228, damage: 24, fireRate: 9.5, magSize: 27 },
-            { name: 'Ranger Pistol', rarity: 'epic', dps: 156, damage: 26, fireRate: 6.0, magSize: 16 },
-            { name: 'Hammer Pump Shotgun', rarity: 'rare', dps: 120.9, damage: 138, fireRate: 0.85, magSize: 5 },
-            { name: 'Warforged Assault Rifle', rarity: 'uncommon', dps: 165, damage: 30, fireRate: 5.5, magSize: 30 },
-        ];
-        
-        // --- Item Shop ---
-        const itemShopGrid = document.getElementById('item-shop-grid');
-        shopItems.forEach(item => {
-            const card = document.createElement('div');
-            card.className = `card overflow-hidden text-center rarity-${item.rarity}`;
-            card.innerHTML = `<img src="${item.img}" alt="${item.name}" class="w-full h-auto bg-gray-700"><div class="p-4"><h3 class="text-xl font-bold">${item.name}</h3><p class="text-lg font-semibold text-yellow-400">${item.price} V-Bucks</p></div>`;
-            itemShopGrid.appendChild(card);
-        });
-        
-        // --- Cosmetics Database ---
-        const cosmeticsGrid = document.getElementById('cosmetics-grid');
-        const cosmeticSearch = document.getElementById('cosmetic-search');
-        const rarityFilter = document.getElementById('rarity-filter');
-        
-        const renderCosmetics = () => {
-            cosmeticsGrid.innerHTML = '';
-            const searchTerm = cosmeticSearch.value.toLowerCase();
-            const activeRarity = rarityFilter.querySelector('.active').dataset.rarity;
-            
-            allCosmetics
-                .filter(item => item.name.toLowerCase().includes(searchTerm))
-                .filter(item => activeRarity === 'all' || item.rarity === activeRarity)
-                .forEach(item => {
-                    const itemEl = document.createElement('div');
-                    itemEl.className = `card overflow-hidden text-center p-2 rarity-${item.rarity}`;
-                    itemEl.innerHTML = `<img src="${item.img}" alt="${item.name}" class="w-full rounded-lg bg-gray-700 aspect-square"><h4 class="mt-2 font-semibold text-sm truncate">${item.name}</h4>`;
-                    cosmeticsGrid.appendChild(itemEl);
-                });
-        };
-        
-        cosmeticSearch.addEventListener('input', renderCosmetics);
-        rarityFilter.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON') {
-                rarityFilter.querySelector('.active').classList.remove('active');
-                e.target.classList.add('active');
-                renderCosmetics();
-            }
-        });
-        renderCosmetics(); // Initial render
-
-        // --- Weapon Database ---
-        const weaponTableBody = document.getElementById('weapon-table-body');
-        weaponData.forEach(weapon => {
-            const row = document.createElement('tr');
-            row.className = `border-b border-gray-800 rarity-bg-${weapon.rarity}`;
-            row.innerHTML = `
-                <td class="p-4 font-bold">${weapon.name}</td>
-                <td class="p-4 capitalize rarity-${weapon.rarity}"><span class="font-bold text-white">${weapon.rarity}</span></td>
-                <td class="p-4">${weapon.dps}</td>
-                <td class="p-4">${weapon.damage}</td>
-                <td class="p-4">${weapon.fireRate}</td>
-                <td class="p-4">${weapon.magSize}</td>
-            `;
-            weaponTableBody.appendChild(row);
-        });
-
-        // --- Creative Map Code Copy ---
-        document.querySelectorAll('.copy-code-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                navigator.clipboard.writeText(btn.dataset.code);
-                btn.textContent = 'Copied!';
-                setTimeout(() => { btn.textContent = 'Copy Code'; }, 2000);
-            });
-        });
+// scripts/updateWeapons.js
+const fs=require('fs'), OpenAI=require('openai'), weaponsList=require('../data/weaponsStatic.json');
+const openai=new OpenAI({apiKey:process.env.OPENAI_KEY});
+(async()=>{
+  const stats={};
+  for(let w of weaponsList){
+    const prompt=`Provide JSON: {"reload":seconds,"dps":value,"structure":value,"rarity":"value"} for Fortnite weapon "${w.name}"`;
+    const res=await openai.chat.completions.create({
+      model:'gpt-4o',
+      messages:[{role:'user',content:prompt}]
     });
-    </script>
+    stats[w.id]={name:w.name,...JSON.parse(res.choices[0].message.content)};
+  }
+  fs.writeFileSync('data/weapons.json',JSON.stringify(stats,null,2));
+})();
 
-</body>
-</html>
+// data/pros.json
+[
+  {"id":"peterbot","name":"Peterbot","dpi":800,"sens":0.12},
+  {"id":"mero",     "name":"Mero",     "dpi":800,"sens":0.13},
+  {"id":"cooper",   "name":"Cooper",   "dpi":800,"sens":0.14},
+  {"id":"swizzy",   "name":"Swizzy",   "dpi":800,"sens":0.15},
+  {"id":"teeny",    "name":"Teeny",    "dpi":800,"sens":0.16},
+  {"id":"clix",     "name":"Clix",     "dpi":800,"sens":0.14},
+  {"id":"pollo",    "name":"Pollo",    "dpi":800,"sens":0.13},
+  {"id":"ritual",   "name":"Ritual",   "dpi":800,"sens":0.12},
+  {"id":"premfn",   "name":"PremFN",   "dpi":800,"sens":0.11},
+  {"id":"pwralex",  "name":"PWR Alex", "dpi":800,"sens":0.13},
+  {"id":"pwrvolx",  "name":"PWR Volx", "dpi":800,"sens":0.14},
+  {"id":"pwrworthy","name":"PWR Worthy","dpi":800,"sens":0.15}
+]
+
+// data/orgs.json
+[
+  {"org":"FaZe","earnings":1250000,"fncsWins":12},
+  {"org":"NRG","earnings": 980000,"fncsWins":8},
+  {"org":"Team Liquid","earnings":750000,"fncsWins":5}
+]
+
+// data/weaponsStatic.json
+[
+  {"id":"scar","name":"SCAR"},
+  {"id":"pump","name":"Pump Shotgun"},
+  {"id":"sniper","name":"Sniper Rifle"}
+]
+
+// data/mapBR.json
+{"spots":[
+  {"id":1,"name":"Tilted Towers","x":"30%","y":"40%","desc":"High loot, high risk.","img":"tilted.jpg"},
+  {"id":2,"name":"Sweaty Sands","x":"60%","y":"70%","desc":"Beachside battles.","img":"sweaty.jpg"}
+]}
+
+// data/reloadMaps.json
+[
+  {"id":"squid","name":"Squid Game","x":"20%","y":"30%","desc":"Last one standing wins.","imgKey":"squid"},
+  {"id":"venture","name":"Venture","x":"50%","y":"50%","desc":"Race to the finish.","imgKey":"venture"},
+  {"id":"slurp","name":"Slurp Rush","x":"80%","y":"20%","desc":"Collect slurp spheres.","imgKey":"slurp"}
+]
+
+// components/Hero.jsx
+export default function Hero(){
+  return(
+    <section className="text-center py-12 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+      <h1 className="text-5xl font-bold mb-4">FortCompanion</h1>
+      <p className="text-xl max-w-2xl mx-auto">
+        Your live, AI-powered Fortnite HQ. Daily shop with images, hourly player counts, interactive maps, tournament tracker, pro settings, org leaderboard, weapon stats, season countdown, leaks & XP calculator—all automated.
+      </p>
+    </section>
+  );
+}
+
+// components/ShopGrid.jsx
+import shop from '../data/shop.json';
+export default function ShopGrid(){
+  return(
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+      {shop.map(i=>(
+        <div key={i.id} className="bg-gray-800 p-4 rounded text-center text-white">
+          <img src={i.icon} alt={i.name} className="mx-auto h-20 mb-2"/>
+          <h3>{i.name}</h3><p>{i.price} V-Bucks</p><p className="text-sm">{i.rarity}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// components/PlayerCount.jsx
+import data from '../data/playerCount.json';
+export default function PlayerCount(){
+  return(
+    <div className="p-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+      {Object.entries(data).map(([mode,count])=>(
+        <div key={mode} className="bg-green-700 p-4 rounded text-white text-center">
+          <h3 className="font-medium">{mode.toUpperCase()}</h3><p className="text-2xl">{count.toLocaleString()}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// components/Tournaments.jsx
+import tours from '../data/tournaments.json';
+export default function Tournaments(){
+  return(
+    <div className="p-4 space-y-6">
+      {tours.map(t=>(
+        <div key={t.id} className="bg-gray-900 p-4 rounded text-white">
+          <h3 className="text-xl font-bold">{t.name} – {t.region}</h3>
+          <p>Starts: {new Date(t.start).toLocaleString()}</p>
+          <p>Prize Pool: ${t.prizePool.toLocaleString()}</p>
+          <button className="mt-2 bg-blue-600 px-4 py-2 rounded">View Details</button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// components/MapViewer.jsx
+import {useState}from'react';
+import brMap from '../data/mapBR.json';
+import reloadMaps from '../data/reloadMaps.json';
+export default function MapViewer(){
+  const [sel,setSel]=useState(null);
+  return(
+    <div className="relative w-full h-screen bg-br-map bg-cover">
+      {brMap.spots.map(s=>(
+        <button key={s.id} style={{top:s.y,left:s.x}}
+          className="absolute text-red-500" onClick={()=>setSel(s)}>📍</button>
+      ))}
+      <div className="absolute top-4 right-4 space-x-2">
+        {reloadMaps.map(r=>(
+          <button key={r.id} onClick={()=>setSel(r)}
+            className="bg-gray-800 text-white px-3 py-1 rounded">{r.name}</button>
+        ))}
+      </div>
+      {sel&&(
+        <div className="absolute bottom-0 left-0 bg-black bg-opacity-75 p-4 text-white w-full">
+          <h2 className="text-xl font-bold">{sel.name}</h2><p>{sel.desc}</p>
+          {sel.imgKey&&<img src={`/assets/${sel.imgKey}.jpg`} alt={sel.name} className="w-48 my-2 rounded"/>}
+          <button className="bg-blue-600 px-4 py-2 rounded">Drop In</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// components/ProSettings.jsx
+import pros from '../data/pros.json';
+export default function ProSettings(){
+  return(
+    <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+      {pros.map(p=>(
+        <div key={p.id} className="bg-gray-800 p-4 rounded text-white">
+          <h3 className="font-bold">{p.name}</h3><p>DPI: {p.dpi}</p><p>Sens: {p.sens}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// components/OrgLeaderboard.jsx
+import orgs from '../data/orgs.json';
+export default function OrgLeaderboard(){
+  return(
+    <table className="table-auto w-full text-white">
+      <thead><tr className="bg-gray-700"><th>Org</th><th>Earnings</th><th>FNCS Wins</th></tr></thead>
+      <tbody>{orgs.map(o=>(
+        <tr key={o.org} className="bg-gray-800"><td>{o.org}</td><td>${o.earnings.toLocaleString()}</td><td>{o.fncsWins}</td></tr>
+      ))}</tbody>
+    </table>
+  );
+}
+
+// components/WeaponStats.jsx
+import stats from '../data/weapons.json';
+export default function WeaponStats(){
+  return(
+    <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
+      {Object.values(stats).map(w=>(
+        <div key={w.id} className="bg-gray-800 p-4 rounded">
+          <h3 className="font-bold">{w.name} ({w.rarity})</h3>
+          <p>DPS: {w.dps}</p
