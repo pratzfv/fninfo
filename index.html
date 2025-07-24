@@ -1,302 +1,890 @@
-// .env.local
-FORTNITE_TRACKER_KEY=YOUR_FORTNITE_TRACKER_API_KEY
-OPENAI_KEY=YOUR_OPENAI_API_KEY
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FN HUB - The Ultimate Fortnite Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for easier theming */
+        :root {
+            --fn-purple: #7b2ff7;
+            --fn-pink: #f92a7f;
+            --fn-yellow: #ffc94d;
+            --bg-dark: #121212;
+            --bg-light: #1a1a1a;
+            --border-color: #2a2a2a;
+        }
 
-// package.json
-{
-  "name": "fortcompanion",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "fetch:shop": "node scripts/fetchShop.js",
-    "fetch:players": "node scripts/fetchPlayers.js",
-    "fetch:tournaments": "node scripts/fetchTournaments.js",
-    "fetch:leaks": "node scripts/fetchLeaks.js",
-    "update:weapons": "node scripts/updateWeapons.js"
-  },
-  "dependencies": {
-    "axios": "^1.4.0",
-    "cheerio": "^1.0.0-rc.12",
-    "next": "13.4.7",
-    "openai": "^4.2.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "tailwindcss": "^3.3.2"
-  },
-  "devDependencies": {
-    "node-cron": "^3.0.2"
-  }
-}
+        /* Smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
 
-// next.config.js
-/** @type {import('next').NextConfig} */
-module.exports = { reactStrictMode: true };
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
 
-// tailwind.config.js
-module.exports = {
-  content: ["./pages/**/*.{js,jsx}", "./components/**/*.{js,jsx}"],
-  theme: {
-    extend: {
-      backgroundImage: {
-        'br-map': "url('/assets/br-map.jpg')",
-        'squid':   "url('/assets/squid.jpg')",
-        'venture': "url('/assets/venture.jpg')",
-        'slurp':   "url('/assets/slurp.jpg')"
-      }
-    }
-  },
-  plugins: [require('@tailwindcss/typography')]
-};
+        /* Fortnite Gradient Text */
+        .fortnite-gradient-text {
+            background: linear-gradient(to right, var(--fn-purple), var(--fn-pink), var(--fn-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-// .github/workflows/auto_update.yml
-name: Auto Update Data
-on:
-  schedule:
-    - cron: '0 0 * * *'
-    - cron: '0 * * * *'
-    - cron: '0 2 * * 1'
-jobs:
-  update:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: npm ci
-      - run: npm run fetch:shop
-      - run: npm run fetch:players
-      - run: npm run fetch:tournaments
-      - run: npm run fetch:leaks
-      - run: npm run update:weapons
-      - run: |
-          git config user.name "GH Actions"
-          git config user.email "actions@github.com"
-          git add data/
-          git commit -m "Auto-update data" || echo "No changes"
+        /* Card Styling with Hover Effects */
+        .card {
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden; /* Ensure content stays within rounded corners */
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+        }
 
-// scripts/fetchShop.js
-const fs = require('fs'), axios = require('axios');
-(async()=>{
-  const { data } = await axios.get('https://fortnite-api.com/v2/shop/br?language=en');
-  const shop = data.data.entries.map(e=>({
-    id:     e.items[0].images.icon,
-    name:   e.items[0].name,
-    price:  e.finalPrice,
-    rarity: e.items[0].rarity.value,
-    icon:   e.items[0].images.icon
-  }));
-  fs.writeFileSync('data/shop.json', JSON.stringify(shop,null,2));
-})();
+        /* Button Styling */
+        .btn {
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .btn-primary {
+            background-color: var(--fn-purple);
+            color: white;
+            box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4);
+        }
+        .btn-primary:hover {
+            background-color: #6a1fd1; /* Slightly darker purple */
+            transform: scale(1.02); /* Subtle scale on hover */
+        }
+        .btn-secondary {
+            background-color: #3a3a3a;
+            color: #e0e0e0;
+        }
+        .btn-secondary:hover {
+            background-color: #4a4a4a;
+            transform: scale(1.02);
+        }
 
-// scripts/fetchPlayers.js
-const fs = require('fs'), axios = require('axios');
-(async()=>{
-  const { data } = await axios.get('https://api.fortnitetracker.com/v1/creative/playercount',{
-    headers:{'TRN-Api-Key':process.env.FORTNITE_TRACKER_KEY}
-  });
-  fs.writeFileSync('data/playerCount.json',JSON.stringify(data,null,2));
-})();
+        /* Section Title Styling */
+        .section-title {
+            font-weight: 900;
+            font-size: 2.8rem; /* Slightly larger */
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
 
-// scripts/fetchTournaments.js
-const fs = require('fs'), axios = require('axios');
-(async()=>{
-  const { data } = await axios.get('https://api.fortnite.com/competitive/events');
-  fs.writeFileSync('data/tournaments.json',JSON.stringify(data,null,2));
-})();
+        /* Navigation Link Underline Effect */
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--fn-pink), var(--fn-yellow)); /* Gradient underline */
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
 
-// scripts/fetchLeaks.js
-const fs=require('fs'), axios=require('axios'), cheerio=require('cheerio');
-(async()=>{
-  const res = await axios.get('https://fortniteskins.net/Leaks');
-  const $ = cheerio.load(res.data), leaks=[];
-  $('.leak-item').each((i,el)=> leaks.push({
-    name:$(el).find('.leak-title').text(),
-    img: $(el).find('img').attr('src'),
-    date:$(el).find('.leak-date').text()
-  }));
-  fs.writeFileSync('data/leaks.json',JSON.stringify(leaks,null,2));
-})();
+        /* Countdown Item Styling */
+        .countdown-item {
+            background: rgba(42, 42, 42, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 0.75rem;
+            padding: 1.5rem 1rem; /* More padding */
+            text-align: center;
+            border: 1px solid #333;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
 
-// scripts/updateWeapons.js
-const fs=require('fs'), OpenAI=require('openai'), weaponsList=require('../data/weaponsStatic.json');
-const openai=new OpenAI({apiKey:process.env.OPENAI_KEY});
-(async()=>{
-  const stats={};
-  for(let w of weaponsList){
-    const prompt=`Provide JSON: {"reload":seconds,"dps":value,"structure":value,"rarity":"value"} for Fortnite weapon "${w.name}"`;
-    const res=await openai.chat.completions.create({
-      model:'gpt-4o',
-      messages:[{role:'user',content:prompt}]
-    });
-    stats[w.id]={name:w.name,...JSON.parse(res.choices[0].message.content)};
-  }
-  fs.writeFileSync('data/weapons.json',JSON.stringify(stats,null,2));
-})();
+        /* Item Rarity Borders - Vertical Line */
+        .rarity-legendary { border-left: 5px solid #ffc94d; } /* Gold */
+        .rarity-epic { border-left: 5px solid #7b2ff7; } /* Purple */
+        .rarity-rare { border-left: 5px solid #2adcf9; } /* Blue */
+        .rarity-uncommon { border-left: 5px solid #50c878; } /* Green */
+        .rarity-common { border-left: 5px solid #9e9e9e; } /* Grey */
 
-// data/pros.json
-[
-  {"id":"peterbot","name":"Peterbot","dpi":800,"sens":0.12},
-  {"id":"mero",     "name":"Mero",     "dpi":800,"sens":0.13},
-  {"id":"cooper",   "name":"Cooper",   "dpi":800,"sens":0.14},
-  {"id":"swizzy",   "name":"Swizzy",   "dpi":800,"sens":0.15},
-  {"id":"teeny",    "name":"Teeny",    "dpi":800,"sens":0.16},
-  {"id":"clix",     "name":"Clix",     "dpi":800,"sens":0.14},
-  {"id":"pollo",    "name":"Pollo",    "dpi":800,"sens":0.13},
-  {"id":"ritual",   "name":"Ritual",   "dpi":800,"sens":0.12},
-  {"id":"premfn",   "name":"PremFN",   "dpi":800,"sens":0.11},
-  {"id":"pwralex",  "name":"PWR Alex", "dpi":800,"sens":0.13},
-  {"id":"pwrvolx",  "name":"PWR Volx", "dpi":800,"sens":0.14},
-  {"id":"pwrworthy","name":"PWR Worthy","dpi":800,"sens":0.15}
-]
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000; /* High z-index to be on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7); /* Dim background */
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background-color: var(--bg-light);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            animation: slideIn 0.3s ease-out;
+            border: 1px solid var(--border-color);
+        }
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            color: #aaa;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #e0e0e0;
+        }
 
-// data/orgs.json
-[
-  {"org":"FaZe","earnings":1250000,"fncsWins":12},
-  {"org":"NRG","earnings": 980000,"fncsWins":8},
-  {"org":"Team Liquid","earnings":750000,"fncsWins":5}
-]
+        /* Mobile Menu Overlay */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #mobile-menu.active {
+            transform: translateX(0);
+        }
 
-// data/weaponsStatic.json
-[
-  {"id":"scar","name":"SCAR"},
-  {"id":"pump","name":"Pump Shotgun"},
-  {"id":"sniper","name":"Sniper Rifle"}
-]
+        /* Stats Display Animation */
+        #stats-display {
+            max-height: 0; /* Initially hidden */
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out; /* Smooth transition */
+        }
+        #stats-display.active {
+            max-height: 1000px; /* Large enough value to reveal content */
+        }
 
-// data/mapBR.json
-{"spots":[
-  {"id":1,"name":"Tilted Towers","x":"30%","y":"40%","desc":"High loot, high risk.","img":"tilted.jpg"},
-  {"id":2,"name":"Sweaty Sands","x":"60%","y":"70%","desc":"Beachside battles.","img":"sweaty.jpg"}
-]}
+        /* Item Shop Category Tabs */
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background-color: #333;
+            color: #ccc;
+        }
+        .tab-button.active {
+            background: linear-gradient(to right, var(--fn-purple), var(--fn-pink));
+            color: white;
+            box-shadow: 0 3px 10px rgba(123, 47, 247, 0.3);
+        }
+        .tab-button:not(.active):hover {
+            background-color: #444;
+            color: #eee;
+        }
 
-// data/reloadMaps.json
-[
-  {"id":"squid","name":"Squid Game","x":"20%","y":"30%","desc":"Last one standing wins.","imgKey":"squid"},
-  {"id":"venture","name":"Venture","x":"50%","y":"50%","desc":"Race to the finish.","imgKey":"venture"},
-  {"id":"slurp","name":"Slurp Rush","x":"80%","y":"20%","desc":"Collect slurp spheres.","imgKey":"slurp"}
-]
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
 
-// components/Hero.jsx
-export default function Hero(){
-  return(
-    <section className="text-center py-12 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
-      <h1 className="text-5xl font-bold mb-4">FortCompanion</h1>
-      <p className="text-xl max-w-2xl mx-auto">
-        Your live, AI-powered Fortnite HQ. Daily shop with images, hourly player counts, interactive maps, tournament tracker, pro settings, org leaderboard, weapon stats, season countdown, leaks & XP calculator—all automated.
-      </p>
-    </section>
-  );
-}
+    </style>
+</head>
+<body class="overflow-x-hidden">
 
-// components/ShopGrid.jsx
-import shop from '../data/shop.json';
-export default function ShopGrid(){
-  return(
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
-      {shop.map(i=>(
-        <div key={i.id} className="bg-gray-800 p-4 rounded text-center text-white">
-          <img src={i.icon} alt={i.name} className="mx-auto h-20 mb-2"/>
-          <h3>{i.name}</h3><p>{i.price} V-Bucks</p><p className="text-sm">{i.rarity}</p>
-        </div>
-      ))}
+    <header class="bg-black/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-800">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-3xl font-black uppercase fortnite-gradient-text">FN HUB</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#map-evolution" class="nav-link text-white font-semibold"><i class="fas fa-map mr-2"></i>Map</a>
+                <a href="#shop" class="nav-link text-white font-semibold"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
+                <a href="#stats" class="nav-link text-white font-semibold"><i class="fas fa-chart-line mr-2"></i>Stats</a>
+                <a href="#leaks" class="nav-link text-white font-semibold"><i class="fas fa-eye mr-2"></i>Leaks</a>
+                <a href="#events" class="nav-link text-white font-semibold"><i class="fas fa-calendar-alt mr-2"></i>Events</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl z-50">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-40 flex flex-col items-center justify-center space-y-8 text-2xl md:hidden">
+        <button id="close-mobile-menu" class="absolute top-6 right-6 text-white text-4xl">&times;</button>
+        <a href="#map-evolution" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-map mr-2"></i>Map</a>
+        <a href="#shop" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
+        <a href="#stats" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-chart-line mr-2"></i>Stats</a>
+        <a href="#leaks" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-eye mr-2"></i>Leaks</a>
+        <a href="#events" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-calendar-alt mr-2"></i>Events</a>
     </div>
-  );
-}
 
-// components/PlayerCount.jsx
-import data from '../data/playerCount.json';
-export default function PlayerCount(){
-  return(
-    <div className="p-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-      {Object.entries(data).map(([mode,count])=>(
-        <div key={mode} className="bg-green-700 p-4 rounded text-white text-center">
-          <h3 className="font-medium">{mode.toUpperCase()}</h3><p className="text-2xl">{count.toLocaleString()}</p>
+    <main class="container mx-auto px-6 py-12">
+
+        <section class="relative h-[70vh] rounded-2xl overflow-hidden mb-24 flex items-center justify-center text-center text-white" style="background: url('https://cdn2.unrealengine.com/fortnite-chapter-5-season-3-wrecked-1920x1080-2c8363719927.jpg') no-repeat center center/cover;">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <div class="relative z-10 p-8">
+                <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none fortnite-gradient-text">Wrecked</h1>
+                <p class="text-xl md:text-2xl font-light mt-4 mb-8 max-w-3xl mx-auto">Welcome to the Wasteland! A sandstorm has swept over the Island, creating a new biome and new threats.</p>
+                <button class="btn btn-primary px-10 py-4 text-lg">Battle Pass Details</button>
+            </div>
+        </section>
+        
+        <section id="season-countdown" class="mb-24 text-center">
+            <h2 class="section-title fortnite-gradient-text">Next Season Arrives In</h2>
+            <div id="countdown-timer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto">
+                <div class="countdown-item"><div id="days" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Days</div></div>
+                <div class="countdown-item"><div id="hours" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Hours</div></div>
+                <div class="countdown-item"><div id="minutes" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Minutes</div></div>
+                <div class="countdown-item"><div id="seconds" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Seconds</div></div>
+            </div>
+        </section>
+
+        <section id="shop" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Today's Item Shop</h2>
+            <div class="flex justify-center space-x-4 mb-8">
+                <button class="tab-button active" data-category="featured">Featured</button>
+                <button class="tab-button" data-category="daily">Daily</button>
+                <button class="tab-button" data-category="bundles">Bundles</button>
+            </div>
+            <div id="item-shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                </div>
+        </section>
+
+        <div id="item-details-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="close-modal">&times;</span>
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                    <img id="modal-item-image" src="" alt="Item Image" class="w-48 h-48 rounded-lg object-cover border-2 border-gray-700">
+                    <div class="flex-1 text-center md:text-left">
+                        <h3 id="modal-item-name" class="text-3xl font-bold mb-2 fortnite-gradient-text"></h3>
+                        <p id="modal-item-rarity" class="text-lg font-semibold text-gray-400 mb-2"></p>
+                        <p id="modal-item-type" class="text-md text-gray-500 mb-4"></p>
+                        <p id="modal-item-description" class="text-gray-300 text-sm mb-6"></p>
+                        <div class="flex items-center justify-center md:justify-start mb-6">
+                            <img src="https://placehold.co/24x24/ffffff/000000?text=V" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks Icon">
+                            <span id="modal-item-price" class="text-2xl font-bold text-yellow-400"></span>
+                        </div>
+                        <button class="btn btn-primary w-full py-3 text-lg">Purchase</button>
+                    </div>
+                </div>
+            </div>
         </div>
-      ))}
-    </div>
-  );
-}
 
-// components/Tournaments.jsx
-import tours from '../data/tournaments.json';
-export default function Tournaments(){
-  return(
-    <div className="p-4 space-y-6">
-      {tours.map(t=>(
-        <div key={t.id} className="bg-gray-900 p-4 rounded text-white">
-          <h3 className="text-xl font-bold">{t.name} – {t.region}</h3>
-          <p>Starts: {new Date(t.start).toLocaleString()}</p>
-          <p>Prize Pool: ${t.prizePool.toLocaleString()}</p>
-          <button className="mt-2 bg-blue-600 px-4 py-2 rounded">View Details</button>
+        <section id="stats" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Track Your Stats</h2>
+            <div class="card p-6 max-w-4xl mx-auto">
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <input id="epic-username" type="text" placeholder="Enter Epic Username" class="flex-grow bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-pink-500" value="Ninja">
+                    <button id="search-stats-btn" class="btn btn-primary px-6 py-3 flex items-center justify-center">
+                        <span id="search-text">Search</span>
+                        <i id="search-spinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
+                    </button>
+                </div>
+                <div id="stats-display" class="mt-6">
+                    <div class="text-center p-4 text-gray-400" id="stats-placeholder">Enter a username to see detailed stats. Try "Ninja", "SypherPK", "Lachlan", or "GenericPlayer".</div>
+                    <div id="stats-content" class="hidden">
+                        </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="xp-calculator" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">XP Calculator</h2>
+            <div class="card p-6 max-w-xl mx-auto">
+                <p class="text-gray-400 text-center mb-6">Estimate how much XP you need to reach your Battle Pass goals!</p>
+                <div class="space-y-6">
+                    <div>
+                        <label for="current-level" class="block mb-2 font-semibold text-lg">Current Level</label>
+                        <input id="current-level" type="number" value="1" min="1" max="500" class="w-full bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label for="target-level" class="block mb-2 font-semibold text-lg">Target Level</label>
+                        <input id="target-level" type="number" value="100" min="1" max="500" class="w-full bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <button id="calculate-xp" class="btn btn-primary w-full py-3 text-lg">Calculate XP Needed</button>
+                    <div id="xp-result" class="text-center font-bold text-2xl mt-4 py-3 rounded-lg bg-gray-900 border border-gray-700">Enter levels to calculate</div>
+                    <p class="text-xs text-gray-500 text-center mt-4">Calculation based on a simplified model of 80,000 XP per level.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="map-evolution" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Map Evolution</h2>
+            <div class="card p-6 max-w-5xl mx-auto">
+                <div class="relative">
+                    <img id="map-image" src="https://placehold.co/1200x800/1a1a1a/ffffff?text=Chapter+5+Map" alt="Fortnite Map" class="rounded-lg w-full mb-4">
+                    <p id="map-caption" class="text-center text-lg font-semibold text-gray-300 mb-6">Chapter 5: The current battleground, shaped by recent events.</p>
+                    <input id="map-slider" type="range" min="1" max="5" value="5" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                    <div class="flex justify-between text-xs text-white mt-2 px-2">
+                        <span>Ch. 1</span>
+                        <span>Ch. 2</span>
+                        <span>Ch. 3</span>
+                        <span>Ch. 4</span>
+                        <span>Ch. 5</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="leaks" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Latest Leaks & Rumors</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-4">
+                    <img src="https://placehold.co/400x250/1a1a1a/ffc94d?text=Leaked+Skin+Concept" class="rounded-lg mb-4 object-cover w-full h-48" alt="Leaked Skin">
+                    <h3 class="text-xl font-bold mb-2">"Cosmic Wanderer" Outfit Spotted!</h3>
+                    <p class="text-gray-400 text-sm mb-3">Reliable leakers suggest a new space-themed skin set is coming in v30.20. Featuring glow-in-the-dark elements!</p>
+                    <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-semibold">Read More <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
+                </div>
+                <div class="card p-4">
+                    <img src="https://placehold.co/400x250/1a1a1a/7b2ff7?text=New+Weapon+Leak" class="rounded-lg mb-4 object-cover w-full h-48" alt="New Weapon">
+                    <h3 class="text-xl font-bold mb-2">New Mythic SMG "Stormcaller" Details</h3>
+                    <p class="text-gray-400 text-sm mb-3">Early game files reveal a powerful new SMG with unique electrical damage. Could be a boss drop next season.</p>
+                    <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-semibold">Read More <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
+                </div>
+                <div class="card p-4">
+                    <img src="https://placehold.co/400x250/1a1a1a/f92a7f?text=Event+Tease" class="rounded-lg mb-4 object-cover w-full h-48" alt="Live Event Tease">
+                    <h3 class="text-xl font-bold mb-2">Live Event Teasers Found on Map!</h3>
+                    <p class="text-gray-400 text-sm mb-3">Players are discovering strange anomalies hinting at an end-of-season live event. What will happen to the Zero Point?</p>
+                    <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-semibold">Read More <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
+                </div>
+                <div class="card p-4">
+                    <img src="https://placehold.co/400x250/1a1a1a/2adcf9?text=Future+Collab" class="rounded-lg mb-4 object-cover w-full h-48" alt="Collaboration Leak">
+                    <h3 class="text-xl font-bold mb-2">Next Crossover: Anime Series Revealed?</h3>
+                    <p class="text-gray-400 text-sm mb-3">Dataminers found references to a popular anime franchise. New skins, emotes, and pickaxes are likely on the way.</p>
+                    <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-semibold">Read More <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <button class="btn btn-secondary px-8 py-3">Load More Leaks</button>
+            </div>
+        </section>
+
+        <section id="events" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Upcoming & Past Events</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-2">Fortnite World Cup 2025 Qualifiers</h3>
+                    <p class="text-gray-300 mb-3">Join the battle to qualify for the biggest competitive event of the year! Open qualifiers begin next month.</p>
+                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>August 15 - September 30, 2025</p>
+                    <button class="btn btn-primary w-full py-2">View Tournament Details</button>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-2">Travis Scott Astronomical Concert (Re-Run)</h3>
+                    <p class="text-gray-300 mb-3">Experience the iconic Astronomical concert once more! Limited time event with exclusive cosmetics.</p>
+                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>July 28 - July 30, 2025</p>
+                    <button class="btn btn-primary w-full py-2">Join Event</button>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-2">Creator Spotlight: Build Royale Competition</h3>
+                    <p class="text-gray-300 mb-3">Show off your building skills in this community-run creative competition. Huge V-Bucks prize pool!</p>
+                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>August 5, 2025</p>
+                    <button class="btn btn-primary w-full py-2">Learn More</button>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-2">Past Event: The End (Chapter 2)</h3>
+                    <p class="text-gray-300 mb-3">Relive the epic conclusion of Chapter 2 as the Island flipped and introduced a new era.</p>
+                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>December 4, 2021 (Archived)</p>
+                    <button class="btn btn-secondary w-full py-2">Watch Recap</button>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <button class="btn btn-secondary px-8 py-3">View All Events</button>
+            </div>
+        </section>
+
+
+    </main>
+
+    <footer class="bg-black border-t border-gray-800 mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-400">
+            <p class="text-lg font-semibold mb-4 fortnite-gradient-text">FN HUB</p>
+            <p>&copy; 2025 Fortnite Fan Hub. This is a fan-made website and is not affiliated with Epic Games.</p>
+            <p class="text-sm mt-2">All trademarks and copyrights belong to their respective owners.</p>
+            <div class="flex justify-center space-x-6 mt-6">
+                <a href="#" class="hover:text-white transition-colors duration-200"><i class="fab fa-twitter text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition-colors duration-200"><i class="fab fa-youtube text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition-colors duration-200"><i class="fab fa-twitch text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition-colors duration-200"><i class="fab fa-discord text-2xl"></i></a>
+                <a href="#" class="hover:text-white transition-colors duration-200"><i class="fab fa-instagram text-2xl"></i></a>
+            </div>
         </div>
-      ))}
-    </div>
-  );
-}
+    </footer>
 
-// components/MapViewer.jsx
-import {useState}from'react';
-import brMap from '../data/mapBR.json';
-import reloadMaps from '../data/reloadMaps.json';
-export default function MapViewer(){
-  const [sel,setSel]=useState(null);
-  return(
-    <div className="relative w-full h-screen bg-br-map bg-cover">
-      {brMap.spots.map(s=>(
-        <button key={s.id} style={{top:s.y,left:s.x}}
-          className="absolute text-red-500" onClick={()=>setSel(s)}>📍</button>
-      ))}
-      <div className="absolute top-4 right-4 space-x-2">
-        {reloadMaps.map(r=>(
-          <button key={r.id} onClick={()=>setSel(r)}
-            className="bg-gray-800 text-white px-3 py-1 rounded">{r.name}</button>
-        ))}
-      </div>
-      {sel&&(
-        <div className="absolute bottom-0 left-0 bg-black bg-opacity-75 p-4 text-white w-full">
-          <h2 className="text-xl font-bold">{sel.name}</h2><p>{sel.desc}</p>
-          {sel.imgKey&&<img src={`/assets/${sel.imgKey}.jpg`} alt={sel.name} className="w-48 my-2 rounded"/>}
-          <button className="bg-blue-600 px-4 py-2 rounded">Drop In</button>
-        </div>
-      )}
-    </div>
-  );
-}
+    <script>
+        // --- Mobile Menu Functionality ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMobileMenuBtn = document.getElementById('close-mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
-// components/ProSettings.jsx
-import pros from '../data/pros.json';
-export default function ProSettings(){
-  return(
-    <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
-      {pros.map(p=>(
-        <div key={p.id} className="bg-gray-800 p-4 rounded text-white">
-          <h3 className="font-bold">{p.name}</h3><p>DPI: {p.dpi}</p><p>Sens: {p.sens}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
 
-// components/OrgLeaderboard.jsx
-import orgs from '../data/orgs.json';
-export default function OrgLeaderboard(){
-  return(
-    <table className="table-auto w-full text-white">
-      <thead><tr className="bg-gray-700"><th>Org</th><th>Earnings</th><th>FNCS Wins</th></tr></thead>
-      <tbody>{orgs.map(o=>(
-        <tr key={o.org} className="bg-gray-800"><td>{o.org}</td><td>${o.earnings.toLocaleString()}</td><td>{o.fncsWins}</td></tr>
-      ))}</tbody>
-    </table>
-  );
-}
+        closeMobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
 
-// components/WeaponStats.jsx
-import stats from '../data/weapons.json';
-export default function WeaponStats(){
-  return(
-    <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
-      {Object.values(stats).map(w=>(
-        <div key={w.id} className="bg-gray-800 p-4 rounded">
-          <h3 className="font-bold">{w.name} ({w.rarity})</h3>
-          <p>DPS: {w.dps}</p
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active'); // Close menu when a link is clicked
+            });
+        });
+
+        // Close menu if clicking outside (optional, but good for UX)
+        mobileMenu.addEventListener('click', (event) => {
+            if (event.target === mobileMenu) {
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+
+        // --- Countdown Timer ---
+        // Sets countdown to the 1st day of the month, 3 months from now.
+        // For a fixed season end, you'd use a specific date, e.g., new Date("2025-10-26T00:00:00Z").getTime();
+        const futureDate = new Date();
+        futureDate.setMonth(futureDate.getMonth() + 3);
+        futureDate.setDate(1); // Set to the 1st of the month
+        futureDate.setHours(0, 0, 0, 0); // Set to midnight
+
+        const countdownDate = futureDate.getTime();
+
+        const countdownFunction = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Update the display, ensuring two digits
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById("countdown-timer").innerHTML = "<div class='col-span-full text-3xl font-bold text-center text-green-400'>The New Season is Here! Drop in!</div>";
+            }
+        }, 1000);
+
+
+        // --- Item Shop & Modal Functionality ---
+        const itemShopGrid = document.getElementById('item-shop-grid');
+        const itemDetailsModal = document.getElementById('item-details-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalItemImage = document.getElementById('modal-item-image');
+        const modalItemName = document.getElementById('modal-item-name');
+        const modalItemRarity = document.getElementById('modal-item-rarity');
+        const modalItemType = document.getElementById('modal-item-type');
+        const modalItemDescription = document.getElementById('modal-item-description');
+        const modalItemPrice = document.getElementById('modal-item-price');
+        const tabButtons = document.querySelectorAll('.tab-button');
+
+        // Mock Item Shop Data
+        const itemShopData = {
+            featured: [
+                {
+                    name: "Crimson Conqueror",
+                    price: 2000,
+                    image: "https://placehold.co/300x300/f92a7f/ffffff?text=Crimson+Conqueror",
+                    rarity: "Legendary",
+                    type: "Outfit",
+                    description: "Rule the battlefield with fiery passion. Includes matching Back Bling and Pickaxe."
+                },
+                {
+                    name: "Galactic Glider",
+                    price: 1200,
+                    image: "https://placehold.co/300x300/7b2ff7/ffffff?text=Galactic+Glider",
+                    rarity: "Epic",
+                    type: "Glider",
+                    description: "Soar through the cosmos on wings of starlight."
+                },
+                {
+                    name: "Mystic Aura Emote",
+                    price: 800,
+                    image: "https://placehold.co/300x300/ffc94d/000000?text=Mystic+Aura+Emote",
+                    rarity: "Rare",
+                    type: "Emote",
+                    description: "Unleash a magical display of light and sound."
+                },
+                {
+                    name: "Shadow Strike Pickaxe",
+                    price: 500,
+                    image: "https://placehold.co/300x300/1a1a1a/e0e0e0?text=Shadow+Pickaxe",
+                    rarity: "Uncommon",
+                    type: "Harvesting Tool",
+                    description: "Strike from the shadows with silent precision."
+                },
+                {
+                    name: "Vanguard Trooper",
+                    price: 1500,
+                    image: "https://placehold.co/300x300/50c878/ffffff?text=Vanguard+Trooper",
+                    rarity: "Epic",
+                    type: "Outfit",
+                    description: "First in, last out. A true frontline soldier."
+                },
+                {
+                    name: "Neo Scythe",
+                    price: 800,
+                    image: "https://placehold.co/300x300/2adcf9/000000?text=Neo+Scythe",
+                    rarity: "Rare",
+                    type: "Harvesting Tool",
+                    description: "A cutting-edge tool for a futuristic fight."
+                }
+            ],
+            daily: [
+                {
+                    name: "Basic Battle Buddy",
+                    price: 300,
+                    image: "https://placehold.co/300x300/9e9e9e/000000?text=Default+Skin",
+                    rarity: "Common",
+                    type: "Outfit",
+                    description: "Your trusty standard issue Battle Royale attire."
+                },
+                {
+                    name: "Wave Goodbye Emote",
+                    price: 200,
+                    image: "https://placehold.co/300x300/1a1a1a/e0e0e0?text=Wave+Emote",
+                    rarity: "Common",
+                    type: "Emote",
+                    description: "A simple, classic farewell."
+                },
+                {
+                    name: "Shiny Pick",
+                    price: 500,
+                    image: "https://placehold.co/300x300/ffc94d/000000?text=Shiny+Pick",
+                    rarity: "Uncommon",
+                    type: "Harvesting Tool",
+                    description: "It shines, it picks. What more could you want?"
+                }
+            ],
+            bundles: [
+                {
+                    name: "Zero Point Bundle",
+                    price: 2800,
+                    image: "https://placehold.co/300x300/7b2ff7/ffffff?text=Zero+Point+Bundle",
+                    rarity: "Legendary",
+                    type: "Bundle",
+                    description: "Unravel the mysteries of the Zero Point with this complete set. Includes outfit, pickaxe, and glider."
+                },
+                {
+                    name: "Shadow Realm Pack",
+                    price: 2200,
+                    image: "https://placehold.co/300x300/1a1a1a/e0e0e0?text=Shadow+Realm+Pack",
+                    rarity: "Epic",
+                    type: "Bundle",
+                    description: "Embrace the darkness. Contains an outfit, back bling, and emote."
+                }
+            ]
+        };
+
+        function getRarityClass(rarity) {
+            switch (rarity.toLowerCase()) {
+                case 'legendary': return 'rarity-legendary';
+                case 'epic': return 'rarity-epic';
+                case 'rare': return 'rarity-rare';
+                case 'uncommon': return 'rarity-uncommon';
+                case 'common': return 'rarity-common';
+                default: return '';
+            }
+        }
+
+        function renderShopItems(category) {
+            itemShopGrid.innerHTML = ''; // Clear current items
+            const items = itemShopData[category] || [];
+
+            if (items.length === 0) {
+                itemShopGrid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-8">No items found in this category. Check back later!</div>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const itemCard = document.createElement('div');
+                itemCard.classList.add('card', 'overflow-hidden', 'text-center', getRarityClass(item.rarity));
+                itemCard.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="w-full h-auto object-cover max-h-64">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold">${item.name}</h3>
+                        <p class="text-lg font-semibold text-yellow-400 flex items-center justify-center mt-2 mb-4">
+                            <img src="https://placehold.co/24x24/ffffff/000000?text=V" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks Icon">${item.price.toLocaleString()}
+                        </p>
+                        <button class="btn btn-primary w-full mt-2 py-2 view-details-btn" data-item='${JSON.stringify(item)}'>View Details</button>
+                    </div>
+                `;
+                itemShopGrid.appendChild(itemCard);
+            });
+
+            // Add event listeners to new "View Details" buttons
+            document.querySelectorAll('.view-details-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const item = JSON.parse(event.target.dataset.item);
+                    modalItemImage.src = item.image;
+                    modalItemName.textContent = item.name;
+                    modalItemRarity.textContent = item.rarity;
+                    modalItemType.textContent = item.type;
+                    modalItemDescription.textContent = item.description;
+                    modalItemPrice.textContent = item.price.toLocaleString();
+                    itemDetailsModal.classList.add('active');
+                });
+            });
+        }
+
+        // Initial render of featured items
+        renderShopItems('featured');
+
+        // Tab button event listeners
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                renderShopItems(button.dataset.category);
+            });
+        });
+
+        // Close modal
+        closeModalBtn.addEventListener('click', () => {
+            itemDetailsModal.classList.remove('active');
+        });
+        window.addEventListener('click', (event) => {
+            if (event.target == itemDetailsModal) {
+                itemDetailsModal.classList.remove('active');
+            }
+        });
+
+
+        // --- Player Stats Functionality ---
+        const epicUsernameInput = document.getElementById('epic-username');
+        const searchStatsBtn = document.getElementById('search-stats-btn');
+        const searchText = document.getElementById('search-text');
+        const searchSpinner = document.getElementById('search-spinner');
+        const statsDisplay = document.getElementById('stats-display');
+        const statsPlaceholder = document.getElementById('stats-placeholder');
+        const statsContent = document.getElementById('stats-content');
+
+        // Mock Player Stats Data
+        const mockPlayerStats = {
+            "ninja": {
+                username: "Ninja",
+                totalWins: 12500,
+                kdRatio: 8.5,
+                matchesPlayed: 75000,
+                kills: 180000,
+                top10s: 30000
+            },
+            "sypherpk": {
+                username: "SypherPK",
+                totalWins: 9800,
+                kdRatio: 7.2,
+                matchesPlayed: 68000,
+                kills: 135000,
+                top10s: 25000
+            },
+            "lachlan": {
+                username: "Lachlan",
+                totalWins: 7000,
+                kdRatio: 6.0,
+                matchesPlayed: 55000,
+                kills: 95000,
+                top10s: 18000
+            },
+            "genericplayer": {
+                username: "GenericPlayer",
+                totalWins: 550,
+                kdRatio: 1.8,
+                matchesPlayed: 3500,
+                kills: 6300,
+                top10s: 1200
+            }
+        };
+
+        searchStatsBtn.addEventListener('click', () => {
+            const username = epicUsernameInput.value.toLowerCase().trim();
+            if (!username) {
+                statsPlaceholder.textContent = "Please enter an Epic Username.";
+                statsPlaceholder.classList.remove('hidden');
+                statsContent.classList.add('hidden');
+                statsDisplay.classList.remove('active');
+                return;
+            }
+
+            // Show loading state
+            searchText.textContent = "Searching...";
+            searchSpinner.classList.remove('hidden');
+            searchStatsBtn.disabled = true;
+            statsDisplay.classList.remove('active'); // Collapse before new search
+
+            // Simulate API call
+            setTimeout(() => {
+                const player = mockPlayerStats[username];
+
+                // Hide loading state
+                searchText.textContent = "Search";
+                searchSpinner.classList.add('hidden');
+                searchStatsBtn.disabled = false;
+
+                if (player) {
+                    statsPlaceholder.classList.add('hidden');
+                    statsContent.classList.remove('hidden');
+                    statsContent.innerHTML = `
+                        <h3 class="text-3xl font-bold text-center mb-6 fortnite-gradient-text">${player.username}'s Lifetime Stats</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                            <div class="card p-4">
+                                <p class="text-4xl font-bold text-green-400">${player.totalWins.toLocaleString()}</p>
+                                <p class="text-sm text-gray-400">Total Wins</p>
+                            </div>
+                            <div class="card p-4">
+                                <p class="text-4xl font-bold text-yellow-400">${player.kdRatio.toFixed(2)}</p>
+                                <p class="text-sm text-gray-400">K/D Ratio</p>
+                            </div>
+                            <div class="card p-4">
+                                <p class="text-4xl font-bold text-blue-400">${player.matchesPlayed.toLocaleString()}</p>
+                                <p class="text-sm text-gray-400">Matches Played</p>
+                            </div>
+                            <div class="card p-4">
+                                <p class="text-4xl font-bold text-red-400">${player.kills.toLocaleString()}</p>
+                                <p class="text-sm text-gray-400">Total Kills</p>
+                            </div>
+                            <div class="card p-4">
+                                <p class="text-4xl font-bold text-purple-400">${player.top10s.toLocaleString()}</p>
+                                <p class="text-sm text-gray-400">Top 10s</p>
+                            </div>
+                            <div class="card p-4">
+                                <p class="text-4xl font-bold text-orange-400">--</p>
+                                <p class="text-sm text-gray-400">Win Rate</p>
+                                <p class="text-xs text-gray-500">(Not calculated in mock data)</p>
+                            </div>
+                        </div>
+                    `;
+                    statsDisplay.classList.add('active'); // Expand stats display
+                } else {
+                    statsPlaceholder.textContent = `Player "${username}" not found. Please check the spelling.`;
+                    statsPlaceholder.classList.remove('hidden');
+                    statsContent.classList.add('hidden');
+                    statsDisplay.classList.remove('active');
+                }
+            }, 1500); // Simulate network delay
+        });
+
+
+        // --- Map Evolution Slider ---
+        const mapSlider = document.getElementById('map-slider');
+        const mapImage = document.getElementById('map-image');
+        const mapCaption = document.getElementById('map-caption');
+
+        const mapData = {
+            1: {
+                src: "https://cdn2.unrealengine.com/fortnite-chapter1-map-promo.jpg",
+                caption: "Chapter 1: The original island, constantly evolving with new POIs and biomes."
+            },
+            2: {
+                src: "https://cdn2.unrealengine.com/fortnite-chapter2-map-promo.jpg",
+                caption: "Chapter 2: A fresh start with a new island, introducing swimming and fishing."
+            },
+            3: {
+                src: "https://cdn2.unrealengine.com/fortnite-chapter3-map-promo.jpg",
+                caption: "Chapter 3: The island flipped! New mechanics like sliding and a vibrant new landscape."
+            },
+            4: {
+                src: "https://cdn2.unrealengine.com/fortnite-chapter4-map-promo.jpg",
+                caption: "Chapter 4: Futuristic themes and the introduction of Reality Augments."
+            },
+            5: {
+                src: "https://cdn2.unrealengine.com/fortnite-chapter5-map-promo.jpg",
+                caption: "Chapter 5: The current battleground, shaped by recent events."
+            }
+        };
+
+        mapSlider.addEventListener('input', (e) => {
+            const chapter = e.target.value;
+            mapImage.src = mapData[chapter].src;
+            mapImage.alt = `Fortnite Map Chapter ${chapter}`;
+            mapCaption.textContent = mapData[chapter].caption;
+        });
+        // Set initial map image and caption based on default slider value
+        const initialChapter = mapSlider.value;
+        mapImage.src = mapData[initialChapter].src;
+        mapImage.alt = `Fortnite Map Chapter ${initialChapter}`;
+        mapCaption.textContent = mapData[initialChapter].caption;
+
+
+        // --- XP Calculator ---
+        const currentLevelInput = document.getElementById('current-level');
+        const targetLevelInput = document.getElementById('target-level');
+        const calculateXpBtn = document.getElementById('calculate-xp');
+        const xpResultDiv = document.getElementById('xp-result');
+
+        calculateXpBtn.addEventListener('click', () => {
+            const currentLevel = parseInt(currentLevelInput.value) || 0;
+            const targetLevel = parseInt(targetLevelInput.value) || 0;
+
+            if (isNaN(currentLevel) || isNaN(targetLevel) || currentLevel < 1 || targetLevel < 1) {
+                xpResultDiv.textContent = "Please enter valid positive levels.";
+                xpResultDiv.classList.remove('text-green-400', 'text-yellow-400');
+                xpResultDiv.classList.add('text-red-400');
+                return;
+            }
+
+            if (currentLevel >= targetLevel) {
+                xpResultDiv.textContent = "You're already at or past your target level!";
+                xpResultDiv.classList.add('text-green-400');
+                xpResultDiv.classList.remove('text-yellow-400', 'text-red-400');
+                return;
+            }
+            
+            // Fortnite XP requirements typically increase per level, but for simplicity:
+            // Standard XP per level in many seasons: ~80,000 XP
+            // Let's make it a bit dynamic, lower levels require less, higher levels more.
+            function getXpForLevel(level) {
+                if (level <= 100) return 80000;
+                if (level <= 200) return 90000;
+                return 100000; // Higher levels
+            }
+
+            let totalXpNeeded = 0;
+            for (let i = currentLevel; i < targetLevel; i++) {
+                totalXpNeeded += getXpForLevel(i);
+            }
+
+            xpResultDiv.textContent = `You need ${totalXpNeeded.toLocaleString()} XP.`;
+            xpResultDiv.classList.add('text-yellow-400');
+            xpResultDiv.classList.remove('text-green-400', 'text-red-400');
+        });
+
+        // Set initial text for XP result
+        xpResultDiv.textContent = "Enter levels to calculate";
+
+    </script>
+
+</body>
+</html>
