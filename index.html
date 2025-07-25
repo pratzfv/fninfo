@@ -3,364 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FN HUB - The Ultimate Fortnite Companion [Chapter 6 Season 3]</title>
+    <title>FN HUB - The Ultimate Fortnite Companion</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS Variables for easier theming */
         :root {
-            --fn-purple: #7b2ff7;
-            --fn-pink: #f92a7f;
-            --fn-yellow: #ffc94d;
-            --bg-dark: #121212;
-            --bg-light: #1a1a1a;
-            --border-color: #2a2a2a;
-            --text-color: #e0e0e0;
-            --vbucks-color: #ffcc00;
+            --fn-purple: #7b2ff7; --fn-pink: #f92a7f; --fn-yellow: #ffc94d;
+            --bg-dark: #121212; --bg-light: #1a1a1a; --border-color: #2a2a2a;
+            --text-color: #e0e0e0; --vbucks-color: #ffcc00;
         }
-
-        /* Global styles */
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-color);
-            line-height: 1.6;
-            overflow-x: hidden; /* Prevent horizontal scroll from animations */
-        }
-        ::selection {
-            background-color: var(--fn-pink);
-            color: white;
-        }
-
-        /* Fortnite Gradient Text */
-        .fortnite-gradient-text {
-            background: linear-gradient(to right, var(--fn-purple), var(--fn-pink), var(--fn-yellow));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Card Styling with Hover Effects */
-        .card {
-            background-color: var(--bg-light);
-            border: 1px solid var(--border-color);
-            border-radius: 1rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden;
-            position: relative; /* For badges, overlays */
-        }
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Button Styling */
-        .btn {
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn-primary {
-            background-color: var(--fn-purple);
-            color: white;
-            box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4);
-        }
-        .btn-primary:hover {
-            background-color: #6a1fd1;
-            transform: scale(1.02);
-        }
-        .btn-secondary {
-            background-color: #3a3a3a;
-            color: var(--text-color);
-        }
-        .btn-secondary:hover {
-            background-color: #4a4a4a;
-            transform: scale(1.02);
-        }
-
-        /* Section Title Styling */
-        .section-title {
-            font-weight: 900;
-            font-size: 2.8rem;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            margin-bottom: 2.5rem;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 2rem;
-            }
-        }
-
-        /* Navigation Link Underline Effect */
-        .nav-link {
-            position: relative;
-            padding-bottom: 4px;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--fn-pink), var(--fn-yellow));
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* Countdown Item Styling */
-        .countdown-item {
-            background: rgba(42, 42, 42, 0.8);
-            backdrop-filter: blur(5px);
-            border-radius: 0.75rem;
-            padding: 1.5rem 1rem;
-            text-align: center;
-            border: 1px solid #333;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Item Rarity Borders */
-        .rarity-legendary { border-left: 5px solid #ffc94d; } /* Gold */
-        .rarity-epic { border-left: 5px solid #7b2ff7; } /* Purple */
-        .rarity-rare { border-left: 5px solid #2adcf9; } /* Blue */
-        .rarity-uncommon { border-left: 5px solid #50c878; } /* Green */
-        .rarity-common { border-left: 5px solid #9e9e9e; } /* Grey */
-        .rarity-mythic { border-left: 5px solid #d400d4; } /* Pink/Magenta */
-        .rarity-exotic { border-left: 5px solid #1abc9c; } /* Teal */
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-            animation: fadeIn 0.3s ease-out;
-        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: var(--text-color); line-height: 1.6; overflow-x: hidden; }
+        ::selection { background-color: var(--fn-pink); color: white; }
+        .fortnite-gradient-text { background: linear-gradient(to right, var(--fn-purple), var(--fn-pink), var(--fn-yellow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .card { background-color: var(--bg-light); border: 1px solid var(--border-color); border-radius: 1rem; transition: transform 0.3s ease, box-shadow 0.3s ease; overflow: hidden; position: relative; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5); }
+        .btn { border-radius: 0.5rem; font-weight: 600; transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+        .btn:disabled { cursor: not-allowed; background: #555; box-shadow: none; }
+        .btn-primary { background-color: var(--fn-purple); color: white; box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4); }
+        .btn-primary:hover:not(:disabled) { background-color: #6a1fd1; transform: scale(1.02); }
+        .btn-secondary { background-color: #3a3a3a; color: var(--text-color); }
+        .btn-secondary:hover:not(:disabled) { background-color: #4a4a4a; transform: scale(1.02); }
+        .section-title { font-weight: 900; font-size: 2.8rem; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 2.5rem; text-shadow: 0 0 10px rgba(0, 0, 0, 0.3); }
+        @media (max-width: 768px) { .section-title { font-size: 2rem; } }
+        .nav-link { position: relative; padding-bottom: 4px; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--fn-pink), var(--fn-yellow)); transition: width 0.3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .countdown-item { background: rgba(42, 42, 42, 0.8); backdrop-filter: blur(5px); border-radius: 0.75rem; padding: 1.5rem 1rem; text-align: center; border: 1px solid #333; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .rarity-legendary { border-left: 5px solid #ffc94d; } .rarity-epic { border-left: 5px solid #7b2ff7; } .rarity-rare { border-left: 5px solid #2adcf9; } .rarity-uncommon { border-left: 5px solid #50c878; } .rarity-common { border-left: 5px solid #9e9e9e; } .rarity-mythic { border-left: 5px solid #d400d4; }
+        .text-rarity-legendary { color: #ffc94d; } .text-rarity-epic { color: #7b2ff7; } .text-rarity-rare { color: #2adcf9; } .text-rarity-uncommon { color: #50c878; } .text-rarity-common { color: #9e9e9e; } .text-rarity-mythic { color: #d400d4; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); justify-content: center; align-items: center; padding: 1rem; animation: fadeIn 0.3s ease-out; }
         .modal.active { display: flex; }
-        .modal-content {
-            background-color: var(--bg-light);
-            padding: 2.5rem;
-            border-radius: 1rem;
-            max-width: 700px;
-            width: 100%;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            animation: slideIn 0.3s ease-out;
-            border: 1px solid var(--border-color);
-        }
-        .close-button {
-            position: absolute;
-            top: 1rem;
-            right: 1.5rem;
-            color: #aaa;
-            font-size: 2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-        .close-button:hover,
-        .close-button:focus {
-            color: var(--text-color);
-        }
-
-        /* Mobile Menu */
-        #mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-        }
-        #mobile-menu.active {
-            transform: translateX(0);
-        }
-
-        /* Stats & Dynamic Content Display Animations */
-        .content-transition {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.7s ease-in-out, opacity 0.5s ease-in-out;
-            opacity: 0;
-        }
-        .content-transition.active {
-            max-height: 1500px; /* Arbitrarily large value to ensure content fits */
-            opacity: 1;
-        }
-
-        /* Item Shop Category Tabs */
-        .tab-button {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            background-color: #333;
-            color: #ccc;
-        }
-        .tab-button.active {
-            background: linear-gradient(to right, var(--fn-purple), var(--fn-pink));
-            color: white;
-            box-shadow: 0 3px 10px rgba(123, 47, 247, 0.3);
-        }
-        .tab-button:not(.active):hover {
-            background-color: #444;
-            color: #eee;
-        }
-
-        /* Map Interaction Styles */
-        .map-container {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            overflow: hidden;
-            border-radius: 1rem;
-        }
-        .map-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .drop-spot-marker {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-color: rgba(255, 0, 0, 0.7);
-            border: 2px solid white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            transform: translate(-50%, -50%); /* Center the marker */
-        }
-        .drop-spot-marker:hover {
-            background-color: rgba(255, 0, 0, 1);
-            transform: translate(-50%, -50%) scale(1.2);
-        }
-        .drop-spot-tooltip {
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            min-width: 200px;
-            pointer-events: none; /* Allows clicks to pass through */
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            transform: translate(-50%, -10px);
-            z-index: 10;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            top: -100px; /* Position above marker */
-            left: 50%;
-        }
-        .drop-spot-marker:hover .drop-spot-tooltip {
-            opacity: 1;
-            transform: translate(-50%, -120px); /* Move up slightly on hover */
-        }
-
-        /* Pro Settings Filter */
-        .pro-filter-button {
-            padding: 0.6rem 1.2rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            background-color: #333;
-            color: #ccc;
-        }
-        .pro-filter-button.active {
-            background: linear-gradient(to right, #f92a7f, #ffc94d); /* Pink to Yellow */
-            color: white;
-            box-shadow: 0 3px 10px rgba(249, 42, 127, 0.3);
-        }
-        .pro-filter-button:not(.active):hover {
-            background-color: #444;
-            color: #eee;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-pulse-slow {
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        /* Tooltip for general use */
-        .info-tooltip {
-            position: relative;
-            cursor: help;
-        }
-        .info-tooltip .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%; /* Position above the text */
-            left: 50%;
-            margin-left: -100px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .info-tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
-        }
-        .info-tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
+        .modal-content { background-color: var(--bg-light); padding: 2.5rem; border-radius: 1rem; max-width: 700px; width: 100%; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.6); animation: slideIn 0.3s ease-out; border: 1px solid var(--border-color); }
+        .close-button { position: absolute; top: 1rem; right: 1.5rem; color: #aaa; background: none; border: none; font-size: 2rem; font-weight: bold; cursor: pointer; transition: color 0.2s ease; }
+        .close-button:hover, .close-button:focus { color: var(--text-color); }
+        #mobile-menu { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
+        #mobile-menu.active { transform: translateX(0); }
+        .content-transition { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s ease-in-out; }
+        .content-transition > div { overflow: hidden; }
+        .content-transition.active { grid-template-rows: 1fr; }
+        .tab-button { padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s ease; cursor: pointer; background-color: #333; color: #ccc; }
+        .tab-button.active { background: linear-gradient(to right, var(--fn-purple), var(--fn-pink)); color: white; box-shadow: 0 3px 10px rgba(123, 47, 247, 0.3); }
+        .tab-button:not(.active):hover { background-color: #444; color: #eee; }
+        .map-container { position: relative; border-radius: 1rem; overflow: hidden; }
+        .map-image { display: block; width: 100%; height: auto; }
+        .drop-spot-marker { position: absolute; width: 30px; height: 30px; background-color: rgba(249, 42, 127, 0.8); border: 2px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s ease, background-color 0.2s ease; transform: translate(-50%, -50%); }
+        .drop-spot-marker:hover { background-color: rgba(249, 42, 127, 1); transform: translate(-50%, -50%) scale(1.2); }
+        .drop-spot-tooltip { position: absolute; bottom: 150%; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.9); color: white; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem; width: 220px; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, transform 0.3s ease, bottom 0.3s ease; z-index: 10; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .drop-spot-marker:hover .drop-spot-tooltip { opacity: 1; visibility: visible; bottom: 160%; }
+        .pro-filter-button { padding: 0.6rem 1.2rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s ease; cursor: pointer; background-color: #333; color: #ccc; }
+        .pro-filter-button.active { background: linear-gradient(to right, #f92a7f, #ffc94d); color: white; box-shadow: 0 3px 10px rgba(249, 42, 127, 0.3); }
+        .pro-filter-button:not(.active):hover { background-color: #444; color: #eee; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4); } 50% { transform: scale(1.05); box-shadow: 0 6px 25px rgba(123, 47, 247, 0.6); } 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4); } }
+        .animate-pulse-slow { animation: pulse 2.5s infinite ease-in-out; }
+        #toast-notification { transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; }
+        #toast-notification.show { transform: translateX(0); opacity: 1; }
+        #toast-notification.hide { transform: translateX(120%); opacity: 0; }
     </style>
 </head>
-<body class="overflow-x-hidden">
-
+<body>
     <header class="bg-black/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-800">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-3xl font-black uppercase fortnite-gradient-text">FN HUB</a>
@@ -371,46 +75,38 @@
                 <a href="#stats" class="nav-link text-white font-semibold"><i class="fas fa-chart-line mr-2"></i>Stats</a>
                 <a href="#tournaments" class="nav-link text-white font-semibold"><i class="fas fa-trophy mr-2"></i>Tournaments</a>
                 <a href="#pro-settings" class="nav-link text-white font-semibold"><i class="fas fa-cogs mr-2"></i>Pros</a>
-                <a href="#weapons" class="nav-link text-white font-semibold"><i class="fas fa-crosshairs mr-2"></i>Weapons</a>
-                <a href="#leaks" class="nav-link text-white font-semibold"><i class="fas fa-eye mr-2"></i>Leaks</a>
             </div>
             <div class="flex items-center space-x-4">
                 <div class="hidden md:flex items-center bg-gray-800 rounded-full px-3 py-1 text-sm">
                     <i class="fas fa-users text-purple-400 mr-2"></i>
                     <span id="player-count" class="font-semibold text-green-400">Loading...</span>
                 </div>
-                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl z-50">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl z-50" aria-label="Open menu"><i class="fas fa-bars"></i></button>
             </div>
         </nav>
     </header>
-
     <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-40 flex flex-col items-center justify-center space-y-8 text-2xl md:hidden">
-        <button id="close-mobile-menu" class="absolute top-6 right-6 text-white text-4xl">&times;</button>
+        <button id="close-mobile-menu" class="absolute top-6 right-6 text-white text-4xl" aria-label="Close menu">&times;</button>
         <a href="#welcome" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-home mr-2"></i>Home</a>
         <a href="#shop" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
         <a href="#maps" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-map-marked-alt mr-2"></i>Maps</a>
         <a href="#stats" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-chart-line mr-2"></i>Stats</a>
         <a href="#tournaments" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-trophy mr-2"></i>Tournaments</a>
         <a href="#pro-settings" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-cogs mr-2"></i>Pros</a>
-        <a href="#weapons" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-crosshairs mr-2"></i>Weapons</a>
-        <a href="#leaks" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-eye mr-2"></i>Leaks</a>
     </div>
 
     <main class="container mx-auto px-6 py-12">
-
-        <section id="welcome" class="relative h-[70vh] rounded-2xl overflow-hidden mb-24 flex items-center justify-center text-center text-white" style="background: url('https://image.api.playstation.com/vulcan/ap/rnd/202404/2311/f7edb8a9757f5c786a3d6d58ee76a77d73012920807b0eb8.jpg') no-repeat center center/cover;">
+        <section id="welcome" class="relative h-[70vh] rounded-2xl overflow-hidden mb-24 flex items-center justify-center text-center text-white" style="background: url('https://cdn2.unrealengine.com/fortnite-chapter-4-season-3-1920x1080-ad2267f7312c.jpg') no-repeat center center/cover;">
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
             <div class="relative z-10 p-8">
                 <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none fortnite-gradient-text">Welcome to FN HUB</h1>
-                <p class="text-xl md:text-2xl font-light mt-4 mb-8 max-w-3xl mx-auto">Your ultimate companion for everything Fortnite Battle Royale Chapter 6 Season 3! Dive into the latest updates, shop items, pro stats, and more!</p>
-                <button class="btn btn-primary px-10 py-4 text-lg animate-pulse-slow">Drop In Now!</button>
+                <p class="text-xl md:text-2xl font-light mt-4 mb-8 max-w-3xl mx-auto">Your ultimate companion for everything Fortnite! Dive into the latest updates, shop items, pro stats, and more!</p>
+                <a href="#maps" class="btn btn-primary px-10 py-4 text-lg animate-pulse-slow">Drop In Now!</a>
             </div>
         </section>
 
         <section id="season-countdown" class="mb-24 text-center">
-            <h2 class="section-title fortnite-gradient-text">Chapter 6 Season 3 Ends In</h2>
+            <h2 class="section-title fortnite-gradient-text">Season Ends In</h2>
             <div id="countdown-timer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto">
                 <div class="countdown-item"><div id="days" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Days</div></div>
                 <div class="countdown-item"><div id="hours" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Hours</div></div>
@@ -418,95 +114,60 @@
                 <div class="countdown-item"><div id="seconds" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Seconds</div></div>
             </div>
             <p id="season-progress" class="text-xl font-semibold mt-8 text-yellow-400">Season Progress: <span id="progress-percent">0%</span> Complete</p>
-            <div class="w-full bg-gray-700 rounded-full h-4 mt-4 max-w-3xl mx-auto">
-                <div id="progress-bar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%;"></div>
-            </div>
+            <div class="w-full bg-gray-700 rounded-full h-4 mt-4 max-w-3xl mx-auto"><div id="progress-bar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%;"></div></div>
         </section>
 
         <section id="shop" class="mb-24">
             <h2 class="section-title fortnite-gradient-text text-center">Today's Item Shop</h2>
-            <div class="flex justify-center flex-wrap gap-4 mb-8">
-                <button class="tab-button active" data-category="featured">Featured</button>
-                <button class="tab-button" data-category="daily">Daily</button>
-                <button class="tab-button" data-category="bundles">Bundles</button>
-                <button class="tab-button" data-category="emotes">Emotes</button>
+            <div id="item-shop-tabs" class="flex justify-center flex-wrap gap-4 mb-8">
+                <button class="tab-button active" data-category="featured">Featured</button> <button class="tab-button" data-category="daily">Daily</button> <button class="tab-button" data-category="bundles">Bundles</button> <button class="tab-button" data-category="emotes">Emotes</button>
             </div>
-            <div id="item-shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                </div>
+            <div id="item-shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[400px]"></div>
         </section>
 
         <div id="item-details-modal" class="modal">
             <div class="modal-content">
-                <span class="close-button" id="close-modal">&times;</span>
+                <button class="close-button" id="close-modal">&times;</button>
                 <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
                     <img id="modal-item-image" src="" alt="Item Image" class="w-48 h-48 rounded-lg object-cover border-2 border-gray-700 flex-shrink-0">
                     <div class="flex-1 text-center md:text-left">
                         <h3 id="modal-item-name" class="text-3xl font-bold mb-2 fortnite-gradient-text"></h3>
-                        <p id="modal-item-rarity" class="text-lg font-semibold text-gray-400 mb-2"></p>
+                        <p id="modal-item-rarity" class="text-lg font-semibold mb-2"></p>
                         <p id="modal-item-type" class="text-md text-gray-500 mb-4"></p>
                         <p id="modal-item-description" class="text-gray-300 text-sm mb-6"></p>
                         <div class="flex items-center justify-center md:justify-start mb-6">
                             <img src="https://image.fnbr.co/price/vbucks.png" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks Icon">
                             <span id="modal-item-price" class="text-2xl font-bold" style="color: var(--vbucks-color);"></span>
                         </div>
-                        <button class="btn btn-primary w-full py-3 text-lg"><i class="fas fa-shopping-bag mr-2"></i>Purchase</button>
+                        <button id="purchase-btn" class="btn btn-primary w-full py-3 text-lg"><i class="fas fa-shopping-bag mr-2"></i>Purchase</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <section id="maps" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Explore The Maps</h2>
-            <div class="flex justify-center flex-wrap gap-4 mb-8">
-                <button class="tab-button active" data-map-type="br">Battle Royale (Ch6 S3)</button>
-                <button class="tab-button" data-map-type="reload">Reload Maps</button>
+            <h2 class="section-title fortnite-gradient-text text-center">Explore The Island</h2>
+            <div id="map-tabs" class="flex justify-center flex-wrap gap-4 mb-8">
+                <button class="tab-button active" data-map="br">Battle Royale Map</button> <button class="tab-button" data-map="reload">Reload Maps</button>
             </div>
-
             <div id="br-map-content" class="map-content content-transition active">
-                <div class="card p-6 max-w-6xl mx-auto">
-                    <div class="relative map-container">
-                        <img id="current-br-map-image" src="https://fortnite.gamepedia.com/media/thumb/f/fa/Chapter_5_Season_3_Map.jpg/1200px-Chapter_5_Season_3_Map.jpg" alt="Fortnite Battle Royale Chapter 6 Season 3 Map" class="map-image">
-                        <div class="drop-spot-marker" style="top: 30%; left: 40%;" data-spot-name="Pleasant Park (Contested)" data-tourney-info="High contest, good loot, central for rotates. Common pro drop.">A</div>
-                        <div class="drop-spot-marker" style="top: 60%; left: 25%;" data-spot-name="Salty Springs (Mid-Contest)" data-tourney-info="Decent mats, good for early fights. Watch for third parties.">B</div>
-                        <div class="drop-spot-marker" style="top: 75%; left: 70%;" data-spot-name="Retail Row (Low-Contest)" data-tourney-info="Reliable loot, safe zone. Good for consistent placement.">C</div>
-
-                        <div class="absolute bottom-4 left-4 right-4">
-                            <h3 class="text-2xl font-bold text-white text-center mb-4">Fortnite Battle Royale Map</h3>
-                            <button class="btn btn-primary w-full py-3 text-lg"><i class="fas fa-plane-departure mr-2"></i>Drop In Now!</button>
+                <div>
+                    <div class="card p-4 sm:p-6 max-w-6xl mx-auto">
+                        <div class="map-container"><img id="current-br-map-image" src="https://media.fortniteapi.io/images/maps/v32.00.png" alt="Fortnite Battle Royale Map" class="map-image">
+                            <div class="drop-spot-marker" style="top: 30%; left: 40%;"> A <div class="drop-spot-tooltip"><h4 class="font-bold text-lg mb-1 text-rarity-epic">Reckless Railways</h4><p class="text-sm">High contest, excellent loot, central for rotates.</p></div></div>
+                            <div class="drop-spot-marker" style="top: 60%; left: 25%;"> B <div class="drop-spot-tooltip"><h4 class="font-bold text-lg mb-1 text-rarity-rare">Hazy Hillside</h4><p class="text-sm">Decent mats, good for early fights.</p></div></div>
+                            <div class="drop-spot-marker" style="top: 75%; left: 70%;"> C <div class="drop-spot-tooltip"><h4 class="font-bold text-lg mb-1 text-rarity-uncommon">Sandy Steppes</h4><p class="text-sm">Reliable loot, good for consistent placement.</p></div></div>
                         </div>
-                    </div>
-                    <div class="mt-8">
-                        <h3 class="text-2xl font-bold fortnite-gradient-text mb-4">Tournament Drop Recommendations</h3>
-                        <p class="text-gray-400 mb-4">Based on current Chapter 6 Season 3 meta and pro strategies:</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><span class="font-bold text-white">"A" (Pleasant Park):</span> High-tier loot, central rotations. Expect early fights. Ideal for aggressive teams seeking eliminations and good positioning.</li>
-                            <li><span class="font-bold text-white">"B" (Salty Springs):</span> Balanced loot and good for mid-game rotations. Often contested but can be an easier initial fight than Pleasant.</li>
-                            <li><span class="font-bold text-white">"C" (Retail Row):</span> Consistent loot, edge of map. Good for teams who prioritize farming and late-game rotations. Lower contest.</li>
-                            <li class="text-sm text-gray-500">Note: These are general recommendations. Always scout bus path and adjust!</li>
-                        </ul>
+                        <div class="mt-8"><h3 class="text-2xl font-bold fortnite-gradient-text mb-4">Tournament Drop Recommendations</h3><ul class="list-disc list-inside space-y-2"><li><span class="font-bold text-white">"A" (Reckless Railways):</span> High-tier loot, central rotations. Expect early fights.</li><li><span class="font-bold text-white">"B" (Hazy Hillside):</span> Balanced loot and good for mid-game rotations.</li><li><span class="font-bold text-white">"C" (Sandy Steppes):</span> Consistent loot, good for teams who prioritize late-game.</li></ul></div>
                     </div>
                 </div>
             </div>
-
             <div id="reload-map-content" class="map-content content-transition">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    <div class="card p-4 text-center">
-                        <img src="https://i.ytimg.com/vi/b6S9T0d8gC4/maxresdefault.jpg" alt="Squid Game Reload Map" class="rounded-lg mb-4 object-cover w-full h-48">
-                        <h3 class="text-xl font-bold fortnite-gradient-text mb-2">Squid Game Reload</h3>
-                        <p class="text-gray-400 text-sm mb-4">Survival of the fittest in a series of deadly games. Intense, fast-paced action!</p>
-                        <button class="btn btn-primary w-full py-2"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <img src="https://i.ytimg.com/vi/k5L2sFw4g70/hq720.jpg" alt="Venture Reload Map" class="rounded-lg mb-4 object-cover w-full h-48">
-                        <h3 class="text-xl font-bold fortnite-gradient-text mb-2">Venture Reload</h3>
-                        <p class="text-gray-400 text-sm mb-4">Embark on an epic adventure, complete quests, and face unique challenges!</p>
-                        <button class="btn btn-primary w-full py-2"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <img src="https://i.ytimg.com/vi/a_Y_V-fQYjQ/maxresdefault.jpg" alt="Slurp Rush Reload Map" class="rounded-lg mb-4 object-cover w-full h-48">
-                        <h3 class="text-xl font-bold fortnite-gradient-text mb-2">Slurp Rush Reload</h3>
-                        <p class="text-gray-400 text-sm mb-4">Health and shields are plentiful, but so are the enemies. Non-stop healing and fighting!</p>
-                        <button class="btn btn-primary w-full py-2"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button>
+                <div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                        <div class="card p-4 text-center"><img src="https://static.wikia.nocookie.net/fortnite/images/b/b8/Fortnite_Reload_-_Art.jpg" alt="OG Reload Map" class="rounded-lg mb-4 object-cover w-full h-48"><h3 class="text-xl font-bold fortnite-gradient-text mb-2">OG Reload</h3><p class="text-gray-400 text-sm mb-4">The classic map, remixed. Fast-paced action with iconic POIs.</p><button class="btn btn-primary w-full py-2" data-map-name="OG Reload"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button></div>
+                        <div class="card p-4 text-center"><img src="https://static.wikia.nocookie.net/fortnite/images/2/22/The_Pit_-_Gamemode_-_Fortnite.png" alt="The Pit Reload Map" class="rounded-lg mb-4 object-cover w-full h-48"><h3 class="text-xl font-bold fortnite-gradient-text mb-2">The Pit Reload</h3><p class="text-gray-400 text-sm mb-4">A free-for-all frenzy. Practice your mechanics and get high elims.</p><button class="btn btn-primary w-full py-2" data-map-name="The Pit Reload"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button></div>
+                        <div class="card p-4 text-center"><img src="https://static.wikia.nocookie.net/fortnite/images/7/77/Rocket_Racing_-_Key_Art_-_Fortnite.jpg" alt="Rocket Racing Reload Map" class="rounded-lg mb-4 object-cover w-full h-48"><h3 class="text-xl font-bold fortnite-gradient-text mb-2">Rocket Racing</h3><p class="text-gray-400 text-sm mb-4">Drift, fly, and boost your way to the finish line in this arcade racer.</p><button class="btn btn-primary w-full py-2" data-map-name="Rocket Racing"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button></div>
                     </div>
                 </div>
             </div>
@@ -517,1227 +178,80 @@
             <div class="card p-6 max-w-4xl mx-auto">
                 <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                     <input id="epic-username" type="text" placeholder="Enter Epic Username" class="flex-grow bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-pink-500" value="Ninja">
-                    <button id="search-stats-btn" class="btn btn-primary px-6 py-3 flex items-center justify-center">
-                        <span id="search-text">Search</span>
-                        <i id="search-spinner" class="fas fa-spinner fa-spin hidden ml-2"></i>
-                    </button>
+                    <button id="search-stats-btn" class="btn btn-primary px-6 py-3"><span id="search-text">Search</span><i id="search-spinner" class="fas fa-spinner fa-spin hidden ml-2"></i></button>
                 </div>
-                <div id="stats-display" class="mt-6 content-transition">
-                    <div class="text-center p-4 text-gray-400" id="stats-placeholder">Enter a username to see detailed stats. Try "Ninja", "SypherPK", "Clix", or "GenericPlayer".</div>
-                    <div id="stats-content" class="hidden">
-                        </div>
-                </div>
+                <div id="stats-display" class="mt-6 content-transition"><div><div class="text-center p-4 text-gray-400" id="stats-placeholder">Enter a username and press search.</div><div id="stats-content" class="hidden"></div></div></div>
             </div>
         </section>
         
         <section id="tournaments" class="mb-24">
             <h2 class="section-title fortnite-gradient-text text-center">Live Tournaments & Events</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="card p-6 border-l-4 border-green-500">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-2xl font-bold fortnite-gradient-text">FNCS Major 3 - EU</h3>
-                        <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full animate-pulse-slow">LIVE</span>
-                    </div>
-                    <p class="text-gray-300 mb-2">Grand Finals Day 2: Europe's best battle for the axe!</p>
-                    <p class="text-sm text-gray-500 mb-2"><i class="fas fa-globe mr-2"></i>Region: EU</p>
-                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Jul 24, 2025 - 12:00 PM CEST</p>
-                    <div class="bg-gray-800 p-3 rounded-lg mb-4">
-                        <p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><i class="fas fa-dollar-sign mr-2"></i>Prize Pool: $5,000,000 USD</p>
-                        <p class="text-md text-gray-300">1st Place: $300,000 | Qualify for Global Championship</p>
-                        <p class="text-md text-gray-300">Top 50: Minimum $5,000</p>
-                    </div>
-                    <button class="btn btn-primary w-full py-2 text-md"><i class="fas fa-tv mr-2"></i>Watch Live</button>
-                </div>
-                <div class="card p-6 border-l-4 border-blue-500">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-2xl font-bold fortnite-gradient-text">Cash Cup - NA East</h3>
-                        <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPCOMING</span>
-                    </div>
-                    <p class="text-gray-300 mb-2">Weekly Solo Cash Cup for NA East competitors.</p>
-                    <p class="text-sm text-gray-500 mb-2"><i class="fas fa-globe mr-2"></i>Region: NA East</p>
-                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Jul 26, 2025 - 6:00 PM EST</p>
-                    <div class="bg-gray-800 p-3 rounded-lg mb-4">
-                        <p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><i class="fas fa-dollar-sign mr-2"></i>Prize Pool: $10,000 USD</p>
-                        <p class="text-md text-gray-300">1st Place: $1,000 | Top 10: $100</p>
-                        <p class="text-md text-gray-300">Top 100: Place to get prize</p>
-                    </div>
-                    <button class="btn btn-secondary w-full py-2 text-md"><i class="fas fa-info-circle mr-2"></i>Details</button>
-                </div>
-                <div class="card p-6 border-l-4 border-orange-500">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-2xl font-bold fortnite-gradient-text">OCE FNCSTycoons Cup</h3>
-                        <span class="bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPCOMING</span>
-                    </div>
-                    <p class="text-gray-300 mb-2">Fast-paced format for OCE region. Dominate for V-Bucks!</p>
-                    <p class="text-sm text-gray-500 mb-2"><i class="fas fa-globe mr-2"></i>Region: OCE</p>
-                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Aug 1, 2025 - 4:00 PM AEST</p>
-                    <div class="bg-gray-800 p-3 rounded-lg mb-4">
-                        <p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><img src="https://image.fnbr.co/price/vbucks.png" class="w-5 h-5 mr-2" alt="V-Bucks Icon">Prize Pool: 100,000 V-Bucks</p>
-                        <p class="text-md text-gray-300">1st Place: 10,000 V-Bucks</p>
-                        <p class="text-md text-gray-300">Top 50: Minimum 500 V-Bucks</p>
-                    </div>
-                    <button class="btn btn-secondary w-full py-2 text-md"><i class="fas fa-user-plus mr-2"></i>Register</button>
-                </div>
+                <div class="card p-6 border-l-4 border-green-500"><div class="flex items-center justify-between mb-3"><h3 class="text-2xl font-bold fortnite-gradient-text">FNCS Major 3</h3><span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full animate-pulse">LIVE</span></div><p class="text-gray-300 mb-2">Europe's best battle for the axe!</p><p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Now until 8:00 PM</p><div class="bg-gray-800 p-3 rounded-lg mb-4"><p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><i class="fas fa-dollar-sign mr-2"></i>Prize Pool: $5,000,000</p></div><button class="btn btn-primary w-full py-2 text-md" data-action="watch-live"><i class="fas fa-tv mr-2"></i>Watch Live</button></div>
+                <div class="card p-6 border-l-4 border-blue-500"><div class="flex items-center justify-between mb-3"><h3 class="text-2xl font-bold fortnite-gradient-text">Solo Victory Cup</h3><span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPCOMING</span></div><p class="text-gray-300 mb-2">Weekly cash-prize cup for solo players.</p><p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Tomorrow - 6:00 PM</p><div class="bg-gray-800 p-3 rounded-lg mb-4"><p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><i class="fas fa-dollar-sign mr-2"></i>Prize Pool: $10,000</p></div><button class="btn btn-secondary w-full py-2 text-md" data-action="details"><i class="fas fa-info-circle mr-2"></i>Details</button></div>
+                <div class="card p-6 border-l-4 border-orange-500"><div class="flex items-center justify-between mb-3"><h3 class="text-2xl font-bold fortnite-gradient-text">OCE Tycoons Cup</h3><span class="bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPCOMING</span></div><p class="text-gray-300 mb-2">Fast-paced format for the OCE region.</p><p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>In 3 Days - 4:00 PM</p><div class="bg-gray-800 p-3 rounded-lg mb-4"><p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><img src="https://image.fnbr.co/price/vbucks.png" class="w-5 h-5 mr-2" alt="V-Bucks Icon">Prize: 100,000 V-Bucks</p></div><button class="btn btn-secondary w-full py-2 text-md" data-action="register"><i class="fas fa-user-plus mr-2"></i>Register</button></div>
             </div>
-            <div class="text-center mt-12">
-                <button class="btn btn-secondary px-8 py-3"><i class="fas fa-chevron-circle-right mr-2"></i>View All Tournaments</button>
-            </div>
+            <div class="text-center mt-12"><button id="view-all-tournaments-btn" class="btn btn-secondary px-8 py-3"><i class="fas fa-chevron-circle-right mr-2"></i>View All Tournaments</button></div>
         </section>
 
         <section id="pro-settings" class="mb-24">
             <h2 class="section-title fortnite-gradient-text text-center">Pro Player Settings</h2>
             <div class="card p-6 max-w-6xl mx-auto">
-                <div class="flex justify-center flex-wrap gap-3 mb-6">
-                    <button class="pro-filter-button active" data-pro="peterbot">Peterbot</button>
-                    <button class="pro-filter-button" data-pro="mero">Mero</button>
-                    <button class="pro-filter-button" data-pro="cooper">Cooper</button>
-                    <button class="pro-filter-button" data-pro="swizzy">Swizzy</button>
-                    <button class="pro-filter-button" data-pro="teeny">Teeny</button>
-                    <button class="pro-filter-button" data-pro="clix">Clix</button>
-                    <button class="pro-filter-button" data-pro="pollo">Pollo</button>
-                    <button class="pro-filter-button" data-pro="ritual">Ritual</button>
-                    <button class="pro-filter-button" data-pro="premfn">PremFN</button>
-                    <button class="pro-filter-button" data-pro="pwr_alex">PWR Alex</button>
-                    <button class="pro-filter-button" data-pro="pwr_volx">PWR Volx</button>
-                    <button class="pro-filter-button" data-pro="pwr_worthy">PWR Worthy</button>
+                <div id="pro-settings-tabs" class="flex justify-center flex-wrap gap-3 mb-6">
+                    <button class="pro-filter-button active" data-pro="peterbot">Peterbot</button> <button class="pro-filter-button" data-pro="mero">Mero</button> <button class="pro-filter-button" data-pro="clix">Clix</button> <button class="pro-filter-button" data-pro="sypherpk">SypherPK</button>
                 </div>
-                <div id="pro-settings-display" class="content-transition active">
-                    </div>
+                <div id="pro-settings-display" class="content-transition active"><div></div></div>
             </div>
         </section>
-
-        <section id="org-leaderboard" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Top Organizations</h2>
-            <div class="card p-6 max-w-4xl mx-auto">
-                <p class="text-gray-400 text-center mb-6">Organizations with the most competitive earnings and FNCS wins.</p>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left table-auto">
-                        <thead>
-                            <tr class="bg-gray-800">
-                                <th class="p-3 rounded-tl-lg">Rank</th>
-                                <th class="p-3">Organization</th>
-                                <th class="p-3 text-right">Total Earnings</th>
-                                <th class="p-3 rounded-tr-lg text-right">FNCS Wins</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
-                                <td class="p-3 font-bold">1</td>
-                                <td class="p-3 flex items-center"><img src="https://liquipedia.net/commons/images/c/c9/G2_Esports_Allmode.png" class="w-6 h-6 mr-2 rounded-full" alt="G2 Logo">G2 Esports</td>
-                                <td class="p-3 text-right text-green-400">$8.5M</td>
-                                <td class="p-3 text-right">7</td>
-                            </tr>
-                            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
-                                <td class="p-3 font-bold">2</td>
-                                <td class="p-3 flex items-center"><img src="https://liquipedia.net/commons/images/d/d7/FaZe_Clan_Allmode.png" class="w-6 h-6 mr-2 rounded-full" alt="FaZe Logo">FaZe Clan</td>
-                                <td class="p-3 text-right text-green-400">$7.2M</td>
-                                <td class="p-3 text-right">6</td>
-                            </tr>
-                            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
-                                <td class="p-3 font-bold">3</td>
-                                <td class="p-3 flex items-center"><img src="https://liquipedia.net/commons/images/7/77/NRG_Esports_Allmode.png" class="w-6 h-6 mr-2 rounded-full" alt="NRG Logo">NRG Esports</td>
-                                <td class="p-3 text-right text-green-400">$6.8M</td>
-                                <td class="p-3 text-right">5</td>
-                            </tr>
-                            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
-                                <td class="p-3 font-bold">4</td>
-                                <td class="p-3 flex items-center"><img src="https://liquipedia.net/commons/images/0/07/Team_Liquid_Allmode.png" class="w-6 h-6 mr-2 rounded-full" alt="TL Logo">Team Liquid</td>
-                                <td class="p-3 text-right text-green-400">$5.9M</td>
-                                <td class="p-3 text-right">4</td>
-                            </tr>
-                            <tr class="hover:bg-gray-700 transition-colors">
-                                <td class="p-3 font-bold">5</td>
-                                <td class="p-3 flex items-center"><img src="https://liquipedia.net/commons/images/1/1d/PWR_Logo.png" class="w-6 h-6 mr-2 rounded-full" alt="PWR Logo">PWR</td>
-                                <td class="p-3 text-right text-green-400">$4.5M</td>
-                                <td class="p-3 text-right">3</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section id="weapons" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Chapter 6 Season 3 Arsenal</h2>
-            <div class="card p-6 max-w-6xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                    <div>
-                        <label for="weapon-search" class="block text-lg font-semibold mb-2">Search Weapon:</label>
-                        <input type="text" id="weapon-search" placeholder="e.g., Assault Rifle, Shotgun" class="w-full bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
-                    <div>
-                        <label for="weapon-type-filter" class="block text-lg font-semibold mb-2">Filter by Type:</label>
-                        <select id="weapon-type-filter" class="w-full bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="all">All Types</option>
-                            <option value="Assault Rifle">Assault Rifle</option>
-                            <option value="Shotgun">Shotgun</option>
-                            <option value="SMG">SMG</option>
-                            <option value="Sniper Rifle">Sniper Rifle</option>
-                            <option value="Pistol">Pistol</option>
-                            <option value="Explosive">Explosive</option>
-                            <option value="Utility">Utility</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="weapon-list-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    </div>
-                <div id="no-weapons-found" class="text-center text-gray-500 mt-8 hidden">No weapons match your criteria.</div>
-            </div>
-        </section>
-
-        <div id="weapon-details-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" id="close-weapon-modal">&times;</span>
-                <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-                    <img id="modal-weapon-image" src="" alt="Weapon Image" class="w-48 h-auto rounded-lg object-contain flex-shrink-0">
-                    <div class="flex-1 text-center md:text-left">
-                        <h3 id="modal-weapon-name" class="text-3xl font-bold mb-2 fortnite-gradient-text"></h3>
-                        <p id="modal-weapon-type" class="text-lg font-semibold text-gray-400 mb-2"></p>
-                        <p id="modal-weapon-rarity" class="text-md text-gray-500 mb-4"></p>
-                        <ul class="text-gray-300 space-y-2 text-sm md:text-base">
-                            <li><span class="font-bold">Damage:</span> <span id="modal-weapon-damage"></span></li>
-                            <li><span class="font-bold">Headshot:</span> <span id="modal-weapon-headshot"></span></li>
-                            <li><span class="font-bold">DPS:</span> <span id="modal-weapon-dps"></span></li>
-                            <li><span class="font-bold">Fire Rate:</span> <span id="modal-weapon-fire-rate"></span></li>
-                            <li><span class="font-bold">Magazine Size:</span> <span id="modal-weapon-mag-size"></span></li>
-                            <li><span class="font-bold">Reload Time:</span> <span id="modal-weapon-reload"></span></li>
-                            <li><span class="font-bold">Structure Damage:</span> <span id="modal-weapon-structure-damage"></span></li>
-                        </ul>
-                        <p id="modal-weapon-description" class="text-gray-400 text-sm mt-6"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <section id="leaks" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Latest Leaks & Rumors</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="card p-4">
-                    <img src="https://pbs.twimg.com/media/GHqW5PqWcAAD2Q4?format=jpg&name=large" class="rounded-lg mb-4 object-cover w-full h-48" alt="Leaked Skin">
-                    <h3 class="text-xl font-bold mb-2">"Cosmic Wanderer" Outfit Spotted!</h3>
-                    <p class="text-gray-400 text-sm mb-3">Reliable leakers suggest a new space-themed skin set is coming in v30.20. Featuring glow-in-the-dark elements!</p>
-                    <p class="text-xs text-gray-500 mb-2"><i class="fas fa-calendar-alt mr-1"></i> July 22, 2025</p>
-                    <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-semibold">Read More <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
-                </div>
-                <div class="card p-4">
-                    <img src="https://pbs.twimg.com/media/GOvD7jDXoAAc6kI?format=jpg&name=large" class="rounded-lg mb-4 object-cover w-full h-48" alt="New Weapon">
-                    <h3 class="text-xl font-bold mb-2">New Mythic SMG "Stormcaller" Details</h3>
-                    <p class="text-gray-400 text-sm mb-3">Early game files reveal a powerful new SMG with unique electrical damage. Could be a boss drop next season.</p>
-                    <p class="text-xs text-gray-500 mb-2"><i class="fas fa-calendar-alt mr-1"></i> July 20, 2025</p>
-                    <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-semibold">Read More <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
-                </div>
-                <div class="card p-4">
-                    <img src="https://pbs.twimg.com/media/GR2lQ49XAAAFgK8?format=jpg&name=large" class="rounded-lg mb-4 object-cover w-full h-48" alt="Live Event Tease">
-                    <h3 class="text-xl font-bold mb-2">Live Event Teasers Found on Map!</h3>
-                    <p class="text-gray-400 text-sm mb-3">Players are discovering strange anomalies hinting at an end-of-season live event. What will happen to the Zero Point?</p>
-                    <p class="text-xs text-gray-500 mb-2"><i class="fas fa-calendar-alt mr-1"></i> July 18, 2025</p>
-                    <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-semibold">Read More <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
-                </div>
-                <div class="card p-4">
-                    <img src="https://pbs.twimg.com/media/GQ0r7gQX0AAK_wT?format=jpg&name=large" class="rounded-lg mb-4 object-cover w-full h-48" alt="Collaboration Leak">
-                    <h3 class="text-xl font-bold mb-2">Next Crossover: Anime Series Revealed?</h3>
-                    <p class="text-gray-400 text-sm mb-3">Dataminers found references to a popular anime franchise. New skins, emotes, and pickaxes are likely on the way.</p>
-                    <p class="text-xs text-gray-500 mb-2"><i class="fas fa-calendar-alt mr-1"></i> July 15, 2025</p>
-                    <a href="#" class="text-purple-400 hover:text-purple-300 text-sm font-semibold">Read More <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
-                </div>
-            </div>
-            <div class="text-center mt-12">
-                <button class="btn btn-secondary px-8 py-3"><i class="fas fa-arrow-alt-circle-down mr-2"></i>Load More Leaks</button>
-            </div>
-        </section>
-
-        <section id="xp-calculator" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">XP Calculator</h2>
-            <div class="card p-6 max-w-xl mx-auto">
-                <p class="text-gray-400 text-center mb-6">Estimate how much XP you need to reach your Battle Pass goals!</p>
-                <div class="space-y-6">
-                    <div>
-                        <label for="current-level" class="block mb-2 font-semibold text-lg">Current Level</label>
-                        <input id="current-level" type="number" value="1" min="1" max="500" class="w-full bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
-                    <div>
-                        <label for="target-level" class="block mb-2 font-semibold text-lg">Target Level</label>
-                        <input id="target-level" type="number" value="100" min="1" max="500" class="w-full bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
-                    <button id="calculate-xp" class="btn btn-primary w-full py-3 text-lg"><i class="fas fa-calculator mr-2"></i>Calculate XP Needed</button>
-                    <div id="xp-result" class="text-center font-bold text-2xl mt-4 py-3 px-4 rounded-lg bg-gray-900 border border-gray-700 transition-colors duration-300">Enter levels to calculate</div>
-                    <p class="text-xs text-gray-500 text-center mt-4">Calculation based on a dynamic XP model per level for illustrative purposes.</p>
-                </div>
-            </div>
-        </section>
-
     </main>
-
-    <footer class="bg-black border-t border-gray-800 mt-16">
-        <div class="container mx-auto px-6 py-8 text-center text-gray-400">
-            <p class="text-lg font-semibold mb-4 fortnite-gradient-text">FN HUB</p>
-            <p>&copy; 2025 Fortnite Fan Hub. This is a fan-made website and is not affiliated with Epic Games or any of the mentioned brands/individuals.</p>
-            <p class="text-sm mt-2">All trademarks and copyrights belong to their respective owners. Content is simulated/mock for demonstration purposes.</p>
-            <div class="flex justify-center space-x-6 mt-6">
-                <a href="#" class="hover:text-white transition-colors duration-200"><i class="fab fa-twitter text-2xl"></i></a>
-                <a href="#" class="hover:text-white transition-colors duration-200"><i class="fab fa-youtube text-2xl"></i></a>
-                <a href="#" class="hover:text-white transition-colors duration-200"><i class="fab fa-twitch text-2xl"></i></a>
-                <a href="#" class="hover:text-white transition-colors duration-200"><i class="fab fa-discord text-2xl"></i></a>
-                <a href="#" class="hover:text-white transition-colors duration-200"><i class="fab fa-instagram text-2xl"></i></a>
+    
+    <footer class="bg-black/50 border-t border-gray-800 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <div class="flex justify-center items-center space-x-6 mb-4">
+                <a href="https://www.youtube.com/fortnite" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="text-3xl hover:text-red-600 transition-colors"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.twitch.tv/pratzplays23" target="_blank" rel="noopener noreferrer" aria-label="Twitch" class="text-3xl hover:text-purple-500 transition-colors"><i class="fab fa-twitch"></i></a>
             </div>
+            <p>&copy; 2025 FN HUB. All rights reserved.</p>
+            <p class="text-sm mt-2">This is a fan-made website and is not affiliated with Epic Games.</p>
         </div>
     </footer>
 
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" id="close-info-modal">&times;</button>
+            <h3 id="info-modal-title" class="text-3xl font-bold mb-4 fortnite-gradient-text"></h3>
+            <div id="info-modal-body" class="text-gray-300"></div>
+        </div>
+    </div>
+    <div id="toast-notification" class="fixed top-20 right-6 bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg opacity-0 transform translate-x-full z-[2000]"></div>
+
     <script>
-        // --- Utility Functions ---
-        function getRarityClass(rarity) {
-            switch (rarity.toLowerCase()) {
-                case 'legendary': return 'rarity-legendary';
-                case 'epic': return 'rarity-epic';
-                case 'rare': return 'rarity-rare';
-                case 'uncommon': return 'rarity-uncommon';
-                case 'common': return 'rarity-common';
-                case 'mythic': return 'rarity-mythic';
-                case 'exotic': return 'rarity-exotic';
-                default: return '';
-            }
-        }
-
-        // --- Mobile Menu Functionality ---
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const closeMobileMenuBtn = document.getElementById('close-mobile-menu');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-        });
-
-        closeMobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
-        });
-
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active'); // Close menu when a link is clicked
-                document.body.style.overflow = ''; // Restore scrolling
-            });
-        });
-
-        mobileMenu.addEventListener('click', (event) => {
-            if (event.target === mobileMenu) {
-                mobileMenu.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-
-        // --- Live Player Count (Simulated) ---
-        const playerCountElement = document.getElementById('player-count');
-        function updatePlayerCount() {
-            // Simulate player count between 1,500,000 and 3,000,000
-            const count = Math.floor(Math.random() * (3000000 - 1500000 + 1)) + 1500000;
-            playerCountElement.textContent = count.toLocaleString();
-        }
-        updatePlayerCount(); // Initial update
-        setInterval(updatePlayerCount, 3600000); // Update every hour (3600000 ms = 1 hour)
-
-        // --- Season Countdown & Progress (Simulated for C6S3) ---
-        const countdownTimer = document.getElementById("countdown-timer");
-        const daysElement = document.getElementById("days");
-        const hoursElement = document.getElementById("hours");
-        const minutesElement = document.getElementById("minutes");
-        const secondsElement = document.getElementById("seconds");
-        const progressPercentElement = document.getElementById("progress-percent");
-        const progressBar = document.getElementById("progress-bar");
-
-        // Fortnite Chapter 6 Season 3 Dates (Mock Dates for demonstration)
-        // Set your current time to Thursday, July 24, 2025 at 10:12:45 AM AWST.
-        const seasonStartDate = new Date('2025-05-20T10:00:00Z').getTime(); // May 20, 2025 10:00 AM UTC (adjust to your fictional start)
-        const seasonEndDate = new Date('2025-08-27T08:00:00Z').getTime(); // August 27, 2025 08:00 AM UTC (adjust to your fictional end)
-
-        // If the season has already passed, adjust for demonstration purposes
-        const nowForCountdown = new Date().getTime();
-        if (nowForCountdown > seasonEndDate) {
-            // If the season is over, simulate the next season
-            const nextSeasonStartDate = new Date(seasonEndDate);
-            nextSeasonStartDate.setDate(nextSeasonStartDate.getDate() + 1); // Next day after current season ends
-            const nextSeasonEndDate = new Date(nextSeasonStartDate);
-            nextSeasonEndDate.setMonth(nextSeasonEndDate.getMonth() + 3); // Assume next season is 3 months long
-
-            seasonStartDate = nextSeasonStartDate.getTime();
-            seasonEndDate = nextSeasonEndDate.getTime();
-            document.getElementById('season-countdown').querySelector('.section-title').textContent = "Next Season Arrives In";
-        }
-
-        const countdownFunction = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = seasonEndDate - now;
-
-            if (distance < 0) {
-                clearInterval(countdownFunction);
-                countdownTimer.innerHTML = "<div class='col-span-full text-3xl font-bold text-center text-green-400'>NEW SEASON IS LIVE! Drop in!</div>";
-                progressPercentElement.textContent = "100%";
-                progressBar.style.width = '100%';
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            daysElement.innerText = days.toString().padStart(2, '0');
-            hoursElement.innerText = hours.toString().padStart(2, '0');
-            minutesElement.innerText = minutes.toString().padStart(2, '0');
-            secondsElement.innerText = seconds.toString().padStart(2, '0');
-
-            // Calculate season progress
-            const totalSeasonDuration = seasonEndDate - seasonStartDate;
-            const elapsedDuration = now - seasonStartDate;
-            let progress = (elapsedDuration / totalSeasonDuration) * 100;
-            progress = Math.max(0, Math.min(100, progress)); // Cap between 0 and 100
-
-            progressPercentElement.textContent = `${progress.toFixed(1)}%`;
-            progressBar.style.width = `${progress}%`;
-
-        }, 1000);
-
-        // --- Item Shop & Modal Functionality ---
-        const itemShopGrid = document.getElementById('item-shop-grid');
-        const itemDetailsModal = document.getElementById('item-details-modal');
-        const closeModalBtn = document.getElementById('close-modal');
-        const modalItemImage = document.getElementById('modal-item-image');
-        const modalItemName = document.getElementById('modal-item-name');
-        const modalItemRarity = document.getElementById('modal-item-rarity');
-        const modalItemType = document.getElementById('modal-item-type');
-        const modalItemDescription = document.getElementById('modal-item-description');
-        const modalItemPrice = document.getElementById('modal-item-price');
-        const shopTabButtons = document.querySelectorAll('#shop .tab-button');
-
-        // Mock Item Shop Data (Daily Update Simulated)
-        // In a real scenario, this data would come from an API and be updated server-side daily.
-        const itemShopData = {
-            featured: [
-                {
-                    name: "Crimson Conqueror",
-                    price: 2000,
-                    image: "https://image.fnbr.co/outfit/628045f94b8e90899f5ef740/icon.png",
-                    rarity: "Legendary",
-                    type: "Outfit",
-                    description: "Rule the battlefield with fiery passion. Includes matching Back Bling and Pickaxe."
-                },
-                {
-                    name: "Galactic Glider",
-                    price: 1200,
-                    image: "https://image.fnbr.co/glider/5f384a56c4d4f80093638b97/icon.png",
-                    rarity: "Epic",
-                    type: "Glider",
-                    description: "Soar through the cosmos on wings of starlight."
-                },
-                {
-                    name: "Mystic Aura Emote",
-                    price: 800,
-                    image: "https://image.fnbr.co/emote/60e7e008d3ff2f260388d750/icon.png",
-                    rarity: "Rare",
-                    type: "Emote",
-                    description: "Unleash a magical display of light and sound."
-                },
-                {
-                    name: "Shadow Strike Pickaxe",
-                    price: 500,
-                    image: "https://image.fnbr.co/pickaxe/619227c4d576a91723c03567/icon.png",
-                    rarity: "Uncommon",
-                    type: "Harvesting Tool",
-                    description: "Strike from the shadows with silent precision."
-                },
-                {
-                    name: "Vanguard Trooper",
-                    price: 1500,
-                    image: "https://image.fnbr.co/outfit/5d2d0b57e748924b172a6962/icon.png",
-                    rarity: "Epic",
-                    type: "Outfit",
-                    description: "First in, last out. A true frontline soldier."
-                },
-                {
-                    name: "Neo Scythe",
-                    price: 800,
-                    image: "https://image.fnbr.co/pickaxe/603e54b6c31a7b8e5c4a5c95/icon.png",
-                    rarity: "Rare",
-                    type: "Harvesting Tool",
-                    description: "A cutting-edge tool for a futuristic fight."
-                }
-            ],
-            daily: [
-                {
-                    name: "Recon Expert",
-                    price: 1200,
-                    image: "https://image.fnbr.co/outfit/5ab1b74d47d1b30310246a48/icon.png",
-                    rarity: "Rare",
-                    type: "Outfit",
-                    description: "Rarely seen, highly sought after. Get yours today!"
-                },
-                {
-                    name: "Fresh",
-                    price: 800,
-                    image: "https://image.fnbr.co/emote/5c1a17951a8d506d29949856/icon.png",
-                    rarity: "Epic",
-                    type: "Emote",
-                    description: "Bust a move with this classic dance."
-                },
-                {
-                    name: "Studded Axe",
-                    price: 500,
-                    image: "https://image.fnbr.co/pickaxe/5ae9761f7d6a503a4c142c3c/icon.png",
-                    rarity: "Uncommon",
-                    type: "Harvesting Tool",
-                    description: "A simple, yet effective harvesting tool."
-                }
-            ],
-            bundles: [
-                {
-                    name: "Zero Point Bundle",
-                    price: 2800,
-                    image: "https://image.fnbr.co/bundle/600746b85848f8a846175782/icon.png",
-                    rarity: "Legendary",
-                    type: "Bundle",
-                    description: "Unravel the mysteries of the Zero Point with this complete set. Includes outfit, pickaxe, and glider."
-                },
-                {
-                    name: "Shadow Realm Pack",
-                    price: 2200,
-                    image: "https://image.fnbr.co/bundle/605d3b6f932822187fddc30e/icon.png",
-                    rarity: "Epic",
-                    type: "Bundle",
-                    description: "Embrace the darkness. Contains an outfit, back bling, and emote."
-                }
-            ],
-            emotes: [
-                {
-                    name: "Take the L",
-                    price: 500,
-                    image: "https://image.fnbr.co/emote/5ab1b7a747d1b30310246b14/icon.png",
-                    rarity: "Rare",
-                    type: "Emote",
-                    description: "Show 'em who's boss with this iconic dance."
-                },
-                {
-                    name: "Floss",
-                    price: 800,
-                    image: "https://image.fnbr.co/emote/5ab1b7a647d1b30310246b13/icon.png",
-                    rarity: "Epic",
-                    type: "Emote",
-                    description: "The classic dance sensation."
-                },
-                {
-                    name: "Orange Justice",
-                    price: 500,
-                    image: "https://image.fnbr.co/emote/5b0163359d992f58190772ea/icon.png",
-                    rarity: "Rare",
-                    type: "Emote",
-                    description: "A fan-favorite dance for the victory celebration."
-                }
-            ]
-        };
-
-        function renderShopItems(category) {
-            itemShopGrid.innerHTML = ''; // Clear current items
-            const items = itemShopData[category] || [];
-
-            if (items.length === 0) {
-                itemShopGrid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-8">No items found in this category. Check back later!</div>`;
-                return;
-            }
-
-            items.forEach(item => {
-                const itemCard = document.createElement('div');
-                itemCard.classList.add('card', 'overflow-hidden', 'text-center', getRarityClass(item.rarity));
-                itemCard.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}" class="w-full h-auto object-cover max-h-64 aspect-square">
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold mb-2">${item.name}</h3>
-                        <p class="text-lg font-semibold flex items-center justify-center" style="color: var(--vbucks-color);">
-                            <img src="https://image.fnbr.co/price/vbucks.png" class="w-6 h-6 mr-2" alt="V-Bucks Icon">${item.price.toLocaleString()}
-                        </p>
-                        <button class="btn btn-primary w-full mt-4 py-2 view-details-btn" data-item='${JSON.stringify(item)}'><i class="fas fa-eye mr-2"></i>View Details</button>
-                    </div>
-                `;
-                itemShopGrid.appendChild(itemCard);
-            });
-
-            // Add event listeners to new "View Details" buttons
-            document.querySelectorAll('.view-details-btn').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const item = JSON.parse(event.target.dataset.item);
-                    modalItemImage.src = item.image;
-                    modalItemName.textContent = item.name;
-                    modalItemRarity.textContent = `Rarity: ${item.rarity}`;
-                    modalItemType.textContent = `Type: ${item.type}`;
-                    modalItemDescription.textContent = item.description;
-                    modalItemPrice.textContent = item.price.toLocaleString();
-                    itemDetailsModal.classList.add('active');
-                });
-            });
-        }
-
-        // Initial render of featured items
-        renderShopItems('featured');
-
-        // Tab button event listeners for Item Shop
-        shopTabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                shopTabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                renderShopItems(button.dataset.category);
-            });
-        });
-
-        // Close item details modal
-        closeModalBtn.addEventListener('click', () => {
-            itemDetailsModal.classList.remove('active');
-        });
-        window.addEventListener('click', (event) => {
-            if (event.target == itemDetailsModal) {
-                itemDetailsModal.classList.remove('active');
-            }
-        });
-
-
-        // --- Maps Section Functionality ---
-        const mapTabButtons = document.querySelectorAll('#maps .tab-button');
-        const brMapContent = document.getElementById('br-map-content');
-        const reloadMapContent = document.getElementById('reload-map-content');
-        const dropSpotMarkers = document.querySelectorAll('.drop-spot-marker');
-
-        mapTabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                mapTabButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                const mapType = button.dataset.mapType;
-
-                brMapContent.classList.remove('active');
-                reloadMapContent.classList.remove('active');
-
-                // Using a timeout to allow max-height transition
-                setTimeout(() => {
-                    if (mapType === 'br') {
-                        brMapContent.classList.add('active');
-                    } else if (mapType === 'reload') {
-                        reloadMapContent.classList.add('active');
-                    }
-                }, 100); // Small delay to reset max-height before setting new one
-            });
-        });
-
-        // Add tooltips to drop spot markers
-        dropSpotMarkers.forEach(marker => {
-            const spotName = marker.dataset.spotName;
-            const tourneyInfo = marker.dataset.tourneyInfo;
-            const tooltip = document.createElement('div');
-            tooltip.classList.add('drop-spot-tooltip');
-            tooltip.innerHTML = `<p class="font-bold mb-1">${spotName}</p><p>${tourneyInfo}</p>`;
-            marker.appendChild(tooltip);
-        });
-
-
-        // --- Player Stats Functionality ---
-        const epicUsernameInput = document.getElementById('epic-username');
-        const searchStatsBtn = document.getElementById('search-stats-btn');
-        const searchText = document.getElementById('search-text');
-        const searchSpinner = document.getElementById('search-spinner');
-        const statsDisplay = document.getElementById('stats-display');
-        const statsPlaceholder = document.getElementById('stats-placeholder');
-        const statsContent = document.getElementById('stats-content');
-
-        // Mock Player Stats Data
-        const mockPlayerStats = {
-            "ninja": {
-                username: "Ninja",
-                avatar: "https://fortnitetracker.com/profile/all/Ninja/avatar.png",
-                totalWins: 12500,
-                kdRatio: 8.5,
-                matchesPlayed: 75000,
-                kills: 180000,
-                top10s: 30000,
-                winRate: "16.7%",
-                platform: "PC"
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- MOCK DATA ---
+        const mockApi = {
+            getShopItems: (category) => {
+                const allItems = [ { id: 1, name: 'Crystal', description: 'Clarity, precision, and grace.', price: 800, rarity: 'uncommon', type: 'Outfit', image: 'https://fn-api.com/images/cosmetics/1a4f8f497a7833a1e7d80b2a59a7f34c/icon.png', category: 'daily' }, { id: 2, name: 'Leviathan Axe', description: 'From the God of War.', price: 1000, rarity: 'epic', type: 'Pickaxe', image: 'https://fn-api.com/images/cosmetics/c1df3b925b3491f2a3637494b595b112/icon.png', category: 'featured' }, { id: 3, name: 'The Reaper', description: 'Vengeance for hire.', price: 1500, rarity: 'legendary', type: 'Outfit', image: 'https://fn-api.com/images/cosmetics/f5756c6a46985f269324703186105313/icon.png', category: 'featured' }, { id: 4, name: 'Phone It In', description: 'The sweet sounds of success.', price: 800, rarity: 'epic', type: 'Emote', image: 'https://fn-api.com/images/cosmetics/c3c73919e86338b254b503460677a16f/icon.png', category: 'emotes' }, { id: 5, name: 'Kratos Bundle', description: 'Become the God of War.', price: 2200, rarity: 'mythic', type: 'Bundle', image: 'https://fn-api.com/images/cosmetics/988224754381e48545932822295696f0/icon.png', category: 'bundles' }, { id: 6, name: 'Aura', description: 'Get the bag.', price: 800, rarity: 'uncommon', type: 'Outfit', image: 'https://fn-api.com/images/cosmetics/7725c5a84a6256f6439564858514d1b0/icon.png', category: 'featured' }, { id: 7, name: 'Star Wand', description: 'The brightest star in the sky.', price: 800, rarity: 'rare', type: 'Pickaxe', image: 'https://fn-api.com/images/cosmetics/a72c721e0728c62a87425f3b73062323/icon.png', category: 'daily' }, { id: 8, name: 'Griddy', description: 'Right foot creep.', price: 500, rarity: 'rare', type: 'Emote', image: 'https://fn-api.com/images/cosmetics/07481f9a26569145d2f60296495b211a/icon.png', category: 'emotes' }, { id: 9, name: 'Lachlan Bundle', description: 'Join the PWR.', price: 2200, rarity: 'mythic', type: 'Bundle', image: 'https://fn-api.com/images/cosmetics/a8b273752e821945f3299738c855819f/icon.png', category: 'bundles' }, ];
+                return allItems.filter(item => item.category === category);
             },
-            "sypherpk": {
-                username: "SypherPK",
-                avatar: "https://fortnitetracker.com/profile/all/SypherPK/avatar.png",
-                totalWins: 9800,
-                kdRatio: 7.2,
-                matchesPlayed: 68000,
-                kills: 135000,
-                top10s: 25000,
-                winRate: "14.4%",
-                platform: "PC"
+            getPlayerStats: (username) => {
+                const players = { 'ninja': { name: 'Ninja', level: 3450, wins: 5890, kd: 7.82, winRate: '22.5%', matches: 26177, kills: 120450 }, 'clix': { name: 'Clix', level: 2890, wins: 4320, kd: 8.15, winRate: '25.1%', matches: 17211, kills: 98700 }, 'sypherpk': { name: 'SypherPK', level: 3105, wins: 6010, kd: 6.90, winRate: '20.3%', matches: 29605, kills: 145230 }, };
+                return players[username.toLowerCase()] || null;
             },
-            "clix": {
-                username: "Clix",
-                avatar: "https://fortnitetracker.com/profile/all/Clix/avatar.png",
-                totalWins: 6500,
-                kdRatio: 9.1,
-                matchesPlayed: 45000,
-                kills: 150000,
-                top10s: 20000,
-                winRate: "14.4%",
-                platform: "PC"
-            },
-            "genericplayer": {
-                username: "GenericPlayer",
-                avatar: "https://fortnitetracker.com/profile/all/TypicalGamer/avatar.png", // Using another pro for generic visual
-                totalWins: 550,
-                kdRatio: 1.8,
-                matchesPlayed: 3500,
-                kills: 6300,
-                top10s: 1200,
-                winRate: "15.7%",
-                platform: "Console"
+            getProSettings: (proName) => {
+                const settings = { 'peterbot': { name: 'Peterbot', sensX: '8.0%', sensY: '8.0%', dpi: 800, targeting: '60%', scope: '60%', build: '100%', edit: '100%' }, 'mero': { name: 'Mero', sensX: '6.5%', sensY: '6.5%', dpi: 1600, targeting: '40%', scope: '40%', build: '100%', edit: '100%' }, 'clix': { name: 'Clix', sensX: '9.8%', sensY: '9.8%', dpi: 800, targeting: '30.1%', scope: '30.1%', build: '100%', edit: '100%' }, 'sypherpk': { name: 'SypherPK', sensX: '12.0%', sensY: '12.0%', dpi: 400, targeting: '45.0%', scope: '45.0%', build: '100%', edit: '100%' }, };
+                return settings[proName];
             }
         };
-
-        searchStatsBtn.addEventListener('click', () => {
-            const username = epicUsernameInput.value.toLowerCase().trim();
-            if (!username) {
-                statsPlaceholder.textContent = "Please enter an Epic Username.";
-                statsPlaceholder.classList.remove('hidden');
-                statsContent.classList.add('hidden');
-                statsDisplay.classList.remove('active');
-                return;
-            }
-
-            // Show loading state
-            searchText.textContent = "Searching...";
-            searchSpinner.classList.remove('hidden');
-            searchStatsBtn.disabled = true;
-            statsDisplay.classList.remove('active'); // Collapse before new search
-            statsContent.classList.add('hidden'); // Ensure content is hidden
-
-            // Simulate API call
+    
+        // --- Helpers ---
+        const showToast = (message, duration = 3000) => {
+            const toast = document.getElementById('toast-notification');
+            toast.textContent = message;
+            toast.classList.remove('hide');
+            toast.classList.add('show');
             setTimeout(() => {
-                const player = mockPlayerStats[username];
-
-                // Hide loading state
-                searchText.textContent = "Search";
-                searchSpinner.classList.add('hidden');
-                searchStatsBtn.disabled = false;
-
-                if (player) {
-                    statsPlaceholder.classList.add('hidden');
-                    statsContent.classList.remove('hidden');
-                    statsContent.innerHTML = `
-                        <div class="flex items-center space-x-4 mb-6">
-                            <img src="${player.avatar}" alt="${player.username} Avatar" class="w-24 h-24 rounded-full border-4 border-purple-500">
-                            <div>
-                                <h3 class="text-4xl font-black fortnite-gradient-text">${player.username}</h3>
-                                <p class="text-lg text-gray-400">Platform: ${player.platform}</p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
-                            <div class="card p-4">
-                                <p class="text-4xl font-bold text-green-400">${player.totalWins.toLocaleString()}</p>
-                                <p class="text-sm text-gray-400">Total Wins</p>
-                            </div>
-                            <div class="card p-4">
-                                <p class="text-4xl font-bold text-yellow-400">${player.kdRatio.toFixed(2)}</p>
-                                <p class="text-sm text-gray-400">K/D Ratio</p>
-                            </div>
-                            <div class="card p-4">
-                                <p class="text-4xl font-bold text-blue-400">${player.matchesPlayed.toLocaleString()}</p>
-                                <p class="text-sm text-gray-400">Matches Played</p>
-                            </div>
-                            <div class="card p-4">
-                                <p class="text-4xl font-bold text-red-400">${player.kills.toLocaleString()}</p>
-                                <p class="text-sm text-gray-400">Total Kills</p>
-                            </div>
-                            <div class="card p-4">
-                                <p class="text-4xl font-bold text-purple-400">${player.top10s.toLocaleString()}</p>
-                                <p class="text-sm text-gray-400">Top 10s</p>
-                            </div>
-                            <div class="card p-4">
-                                <p class="text-4xl font-bold text-orange-400">${player.winRate}</p>
-                                <p class="text-sm text-gray-400">Win Rate</p>
-                            </div>
-                        </div>
-                    `;
-                    statsDisplay.classList.add('active'); // Expand stats display
-                } else {
-                    statsPlaceholder.textContent = `Player "${username}" not found. Please check the spelling.`;
-                    statsPlaceholder.classList.remove('hidden');
-                    statsContent.classList.add('hidden');
-                    statsDisplay.classList.remove('active');
-                }
-            }, 1500); // Simulate network delay
-        });
-
-        // --- Pro Settings Functionality ---
-        const proFilterButtons = document.querySelectorAll('#pro-settings .pro-filter-button');
-        const proSettingsDisplay = document.getElementById('pro-settings-display');
-
-        const proSettingsData = {
-            peterbot: {
-                name: "Peterbot",
-                image: "https://liquipedia.net/commons/images/thumb/1/1d/Peterbot.jpg/250px-Peterbot.jpg",
-                team: "M80",
-                keybinds: {
-                    edit: "E",
-                    crouch: "L-Ctrl",
-                    wall: "Q",
-                    floor: "C",
-                    stairs: "F",
-                    roof: "V"
-                },
-                sensitivity: {
-                    dpi: 800,
-                    x_sens: "8.0%",
-                    y_sens: "8.0%",
-                    ads_sens: "50%",
-                    scope_sens: "50%"
-                },
-                video: {
-                    resolution: "1920x1080",
-                    view_distance: "Epic",
-                    shadows: "Off",
-                    anti_aliasing: "Off",
-                    textures: "High",
-                    effects: "Low",
-                    post_processing: "Low"
-                }
-            },
-            mero: {
-                name: "Mero",
-                image: "https://liquipedia.net/commons/images/thumb/7/77/Mero.jpg/250px-Mero.jpg",
-                team: "G2 Esports",
-                keybinds: {
-                    edit: "F",
-                    crouch: "L-Ctrl",
-                    wall: "Mouse Button 5",
-                    floor: "Mouse Button 4",
-                    stairs: "Q",
-                    roof: "E"
-                },
-                sensitivity: {
-                    dpi: 400,
-                    x_sens: "12.0%",
-                    y_sens: "12.0%",
-                    ads_sens: "60%",
-                    scope_sens: "60%"
-                },
-                video: {
-                    resolution: "1920x1080",
-                    view_distance: "Near",
-                    shadows: "Off",
-                    anti_aliasing: "Off",
-                    textures: "Medium",
-                    effects: "Low",
-                    post_processing: "Low"
-                }
-            },
-            cooper: {
-                name: "Cooper",
-                image: "https://liquipedia.net/commons/images/thumb/7/7b/CooperFN.png/250px-CooperFN.png",
-                team: "FaZe Clan",
-                keybinds: {
-                    edit: "F",
-                    crouch: "C",
-                    wall: "Q",
-                    floor: "V",
-                    stairs: "L-Shift",
-                    roof: "5"
-                },
-                sensitivity: {
-                    dpi: 800,
-                    x_sens: "6.5%",
-                    y_sens: "6.5%",
-                    ads_sens: "45%",
-                    scope_sens: "45%"
-                },
-                video: {
-                    resolution: "1920x1080",
-                    view_distance: "Medium",
-                    shadows: "Off",
-                    anti_aliasing: "Off",
-                    textures: "High",
-                    effects: "Low",
-                    post_processing: "Low"
-                }
-            },
-            swizzy: {
-                name: "Swizzy",
-                image: "https://liquipedia.net/commons/images/thumb/9/90/Swizzy.jpg/250px-Swizzy.jpg",
-                team: "Dignitas",
-                keybinds: { edit: "F", crouch: "L-Ctrl", wall: "Mouse Button 5", floor: "Mouse Button 4", stairs: "Q", roof: "E" },
-                sensitivity: { dpi: 800, x_sens: "7.0%", y_sens: "7.0%", ads_sens: "55%", scope_sens: "55%" },
-                video: { resolution: "1920x1080", view_distance: "Epic", shadows: "Off", anti_aliasing: "Off", textures: "High", effects: "Low", post_processing: "Low" }
-            },
-            teeny: {
-                name: "Teeny",
-                image: "https://liquipedia.net/commons/images/thumb/c/cf/Teeny.jpg/250px-Teeny.jpg",
-                team: "TBD",
-                keybinds: { edit: "F", crouch: "L-Ctrl", wall: "Q", floor: "C", stairs: "X", roof: "V" },
-                sensitivity: { dpi: 400, x_sens: "10.0%", y_sens: "10.0%", ads_sens: "60%", scope_sens: "60%" },
-                video: { resolution: "1920x1080", view_distance: "Near", shadows: "Off", anti_aliasing: "Off", textures: "Medium", effects: "Low", post_processing: "Low" }
-            },
-            clix: {
-                name: "Clix",
-                image: "https://liquipedia.net/commons/images/thumb/3/30/Clix.png/250px-Clix.png",
-                team: "XSET",
-                keybinds: { edit: "E", crouch: "C", wall: "Q", floor: "X", stairs: "V", roof: "F" },
-                sensitivity: { dpi: 800, x_sens: "8.5%", y_sens: "8.5%", ads_sens: "65%", scope_sens: "65%" },
-                video: { resolution: "1920x1080", view_distance: "Epic", shadows: "Off", anti_aliasing: "Off", textures: "High", effects: "Low", post_processing: "Low" }
-            },
-            pollo: {
-                name: "Pollo",
-                image: "https://liquipedia.net/commons/images/thumb/a/a2/Pollo.jpg/250px-Pollo.jpg",
-                team: "Misfits Gaming",
-                keybinds: { edit: "F", crouch: "L-Ctrl", wall: "Mouse Button 5", floor: "Mouse Button 4", stairs: "Q", roof: "E" },
-                sensitivity: { dpi: 800, x_sens: "7.5%", y_sens: "7.5%", ads_sens: "50%", scope_sens: "50%" },
-                video: { resolution: "1920x1080", view_distance: "Medium", shadows: "Off", anti_aliasing: "Off", textures: "Medium", effects: "Low", post_processing: "Low" }
-            },
-            ritual: {
-                name: "Ritual",
-                image: "https://liquipedia.net/commons/images/thumb/8/8c/Ritual_Fortnite.jpg/250px-Ritual_Fortnite.jpg",
-                team: "Team SoloMid",
-                keybinds: { edit: "E", crouch: "C", wall: "Mouse Button 5", floor: "Mouse Button 4", stairs: "Q", roof: "V" },
-                sensitivity: { dpi: 400, x_sens: "11.0%", y_sens: "11.0%", ads_sens: "70%", scope_sens: "70%" },
-                video: { resolution: "1920x1080", view_distance: "Near", shadows: "Off", anti_aliasing: "Off", textures: "High", effects: "Low", post_processing: "Low" }
-            },
-            premfn: {
-                name: "PremFN",
-                image: "https://liquipedia.net/commons/images/thumb/3/3a/PremFN.png/250px-PremFN.png",
-                team: "TBD",
-                keybinds: { edit: "F", crouch: "L-Ctrl", wall: "Q", floor: "X", stairs: "C", roof: "V" },
-                sensitivity: { dpi: 800, x_sens: "9.0%", y_sens: "9.0%", ads_sens: "55%", scope_sens: "55%" },
-                video: { resolution: "1920x1080", view_distance: "Epic", shadows: "Off", anti_aliasing: "Off", textures: "Medium", effects: "Low", post_processing: "Low" }
-            },
-            pwr_alex: {
-                name: "PWR Alex",
-                image: "https://liquipedia.net/commons/images/thumb/e/e0/PWR_Alex.jpg/250px-PWR_Alex.jpg",
-                team: "PWR",
-                keybinds: { edit: "E", crouch: "L-Ctrl", wall: "Q", floor: "C", stairs: "F", roof: "V" },
-                sensitivity: { dpi: 800, x_sens: "7.0%", y_sens: "7.0%", ads_sens: "50%", scope_sens: "50%" },
-                video: { resolution: "1920x1080", view_distance: "Epic", shadows: "Off", anti_aliasing: "Off", textures: "High", effects: "Low", post_processing: "Low" }
-            },
-            pwr_volx: {
-                name: "PWR Volx",
-                image: "https://liquipedia.net/commons/images/thumb/7/77/Volx.jpg/250px-Volx.jpg",
-                team: "PWR",
-                keybinds: { edit: "F", crouch: "C", wall: "Mouse Button 5", floor: "Mouse Button 4", stairs: "Q", roof: "E" },
-                sensitivity: { dpi: 400, x_sens: "12.0%", y_sens: "12.0%", ads_sens: "60%", scope_sens: "60%" },
-                video: { resolution: "1920x1080", view_distance: "Near", shadows: "Off", anti_aliasing: "Off", textures: "Medium", effects: "Low", post_processing: "Low" }
-            },
-            pwr_worthy: {
-                name: "PWR Worthy",
-                image: "https://liquipedia.net/commons/images/thumb/c/cd/Worthy.jpg/250px-Worthy.jpg",
-                team: "PWR",
-                keybinds: { edit: "F", crouch: "L-Ctrl", wall: "Q", floor: "V", stairs: "L-Shift", roof: "5" },
-                sensitivity: { dpi: 800, x_sens: "6.5%", y_sens: "6.5%", ads_sens: "45%", scope_sens: "45%" },
-                video: { resolution: "1920x1080", view_distance: "Medium", shadows: "Off", anti_aliasing: "Off", textures: "High", effects: "Low", post_processing: "Low" }
-            }
+                toast.classList.remove('show');
+                toast.classList.add('hide');
+            }, duration);
         };
-
-        function renderProSettings(proId) {
-            const pro = proSettingsData[proId];
-            if (!pro) {
-                proSettingsDisplay.innerHTML = `<div class="text-center text-gray-500 py-8">Pro settings not found.</div>`;
-                proSettingsDisplay.classList.remove('active');
-                return;
-            }
-
-            proSettingsDisplay.innerHTML = `
-                <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
-                    <div class="flex-shrink-0 text-center">
-                        <img src="${pro.image}" alt="${pro.name}" class="w-40 h-40 rounded-full object-cover border-4 border-pink-500 mb-4 mx-auto">
-                        <h3 class="text-3xl font-black fortnite-gradient-text">${pro.name}</h3>
-                        <p class="text-lg text-gray-400">${pro.team ? `Team: ${pro.team}` : 'Independent'}</p>
-                    </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-grow">
-                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
-                            <h4 class="text-2xl font-bold text-blue-400 mb-4">Keybinds</h4>
-                            <ul class="space-y-2">
-                                ${Object.entries(pro.keybinds).map(([key, value]) => `<li><span class="font-bold uppercase">${key.replace('_', ' ')}:</span> ${value}</li>`).join('')}
-                            </ul>
-                        </div>
-                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
-                            <h4 class="text-2xl font-bold text-green-400 mb-4">Sensitivity</h4>
-                            <ul class="space-y-2">
-                                ${Object.entries(pro.sensitivity).map(([key, value]) => `<li><span class="font-bold uppercase">${key.replace('_', ' ')}:</span> ${value}</li>`).join('')}
-                            </ul>
-                        </div>
-                        <div class="lg:col-span-2 bg-gray-800 p-6 rounded-lg border border-gray-700">
-                            <h4 class="text-2xl font-bold text-yellow-400 mb-4">Video Settings</h4>
-                            <ul class="space-y-2 grid grid-cols-1 sm:grid-cols-2 gap-y-2">
-                                ${Object.entries(pro.video).map(([key, value]) => `<li><span class="font-bold uppercase">${key.replace('_', ' ')}:</span> ${value}</li>`).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            `;
-            proSettingsDisplay.classList.add('active'); // Ensure it expands
-        }
-
-        // Initial render for Peterbot
-        renderProSettings('peterbot');
-
-        proFilterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                proFilterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                proSettingsDisplay.classList.remove('active'); // Collapse before rendering new
-                setTimeout(() => {
-                    renderProSettings(button.dataset.pro);
-                }, 300); // Small delay for collapse animation
-            });
-        });
-
-
-        // --- Weapons Section Functionality ---
-        const weaponSearchInput = document.getElementById('weapon-search');
-        const weaponTypeFilter = document.getElementById('weapon-type-filter');
-        const weaponListGrid = document.getElementById('weapon-list-grid');
-        const noWeaponsFound = document.getElementById('no-weapons-found');
-        const weaponDetailsModal = document.getElementById('weapon-details-modal');
-        const closeWeaponModalBtn = document.getElementById('close-weapon-modal');
-
-        const mockWeaponData = [
-            {
-                id: 'hammer_ar',
-                name: "Hammer Assault Rifle",
-                type: "Assault Rifle",
-                rarity: "Epic",
-                image: "https://image.fnbr.co/weapon/628c68670c3c5b8812613136/icon.png",
-                description: "A versatile assault rifle with a high rate of fire, great for sustained damage.",
-                damage: { body: 32, head: 64 },
-                dps: 224,
-                fireRate: 7,
-                magSize: 30,
-                reloadTime: 2.8,
-                structureDamage: 30
-            },
-            {
-                id: 'striker_pump',
-                name: "Striker Pump Shotgun",
-                type: "Shotgun",
-                rarity: "Rare",
-                image: "https://image.fnbr.co/weapon/61b7f16f5546294713c7908b/icon.png",
-                description: "Delivers a powerful blast at close range. High burst damage.",
-                damage: { body: 96, head: 192 },
-                dps: 80,
-                fireRate: 0.8,
-                magSize: 5,
-                reloadTime: 5.0,
-                structureDamage: 60
-            },
-            {
-                id: 'combat_smg',
-                name: "Combat SMG",
-                type: "SMG",
-                rarity: "Legendary",
-                image: "https://image.fnbr.co/weapon/61e053a9b3d0c300f8626c95/icon.png",
-                description: "Fast-firing SMG with surprising accuracy. Shreds opponents up close.",
-                damage: { body: 22, head: 44 },
-                dps: 264,
-                fireRate: 12,
-                magSize: 30,
-                reloadTime: 2.3,
-                structureDamage: 25
-            },
-            {
-                id: 'heavy_sniper',
-                name: "Heavy Sniper Rifle",
-                type: "Sniper Rifle",
-                rarity: "Exotic",
-                image: "https://image.fnbr.co/weapon/5c1a16691a8d50041694982e/icon.png",
-                description: "Devastating long-range rifle capable of one-shotting structures.",
-                damage: { body: 150, head: 300 },
-                dps: 37.5,
-                fireRate: 0.25,
-                magSize: 1,
-                reloadTime: 4.0,
-                structureDamage: 1000 // Can destroy any structure
-            },
-            {
-                id: 'ranger_pistol',
-                name: "Ranger Pistol",
-                type: "Pistol",
-                rarity: "Common",
-                image: "https://image.fnbr.co/weapon/61e0539bb3d0c36b8c626c94/icon.png",
-                description: "Reliable sidearm with good accuracy for mid-range engagements.",
-                damage: { body: 24, head: 48 },
-                dps: 120,
-                fireRate: 5,
-                magSize: 16,
-                reloadTime: 1.8,
-                structureDamage: 24
-            },
-            {
-                id: 'rocket_launcher',
-                name: "Rocket Launcher",
-                type: "Explosive",
-                rarity: "Legendary",
-                image: "https://image.fnbr.co/weapon/5ab1b7a647d1b30310246b12/icon.png",
-                description: "Launches explosive rockets. Great for destroying builds and splashing groups.",
-                damage: { body: 110, head: 0 }, // No headshot for explosives
-                dps: 27.5,
-                fireRate: 0.25,
-                magSize: 1,
-                reloadTime: 3.0,
-                structureDamage: 400
-            },
-            {
-                id: 'chug_jug',
-                name: "Chug Jug",
-                type: "Utility",
-                rarity: "Legendary",
-                image: "https://image.fnbr.co/item/5ab1b7f047d1b30310246bd6/icon.png",
-                description: "Fully restores health and shields. Takes time to consume.",
-                damage: { body: 0, head: 0 },
-                dps: 0,
-                fireRate: 0,
-                magSize: 1,
-                reloadTime: 15.0, // Consumption time
-                structureDamage: 0
-            },
-            {
-                id: 'shockwave_grenade',
-                name: "Shockwave Grenade",
-                type: "Utility",
-                rarity: "Epic",
-                image: "https://image.fnbr.co/item/5b7364cf28892120e2e15d8f/icon.png",
-                description: "Launches players and vehicles, destroying structures it passes through.",
-                damage: { body: 0, head: 0 },
-                dps: 0,
-                fireRate: 0,
-                magSize: 1,
-                reloadTime: 0,
-                structureDamage: 1000 // Instantly destroys any structure in path
-            }
-        ];
-
-        function renderWeapons() {
-            const searchTerm = weaponSearchInput.value.toLowerCase().trim();
-            const filterType = weaponTypeFilter.value.toLowerCase();
-            weaponListGrid.innerHTML = '';
-            let foundWeapons = 0;
-
-            mockWeaponData.forEach(weapon => {
-                const matchesSearch = weapon.name.toLowerCase().includes(searchTerm) || weapon.type.toLowerCase().includes(searchTerm);
-                const matchesType = filterType === 'all' || weapon.type.toLowerCase() === filterType;
-
-                if (matchesSearch && matchesType) {
-                    foundWeapons++;
-                    const weaponCard = document.createElement('div');
-                    weaponCard.classList.add('card', 'p-4', getRarityClass(weapon.rarity));
-                    weaponCard.innerHTML = `
-                        <div class="flex items-center space-x-4">
-                            <img src="${weapon.image}" alt="${weapon.name}" class="w-20 h-20 object-contain">
-                            <div class="flex-1">
-                                <h3 class="text-xl font-bold">${weapon.name}</h3>
-                                <p class="text-gray-400 text-sm">${weapon.type} - <span class="${getRarityClass(weapon.rarity).replace('rarity-', 'text-')}">${weapon.rarity}</span></p>
-                                <ul class="text-sm text-gray-300 mt-2">
-                                    <li>DPS: <span class="font-semibold">${weapon.dps}</span></li>
-                                    <li>Reload: <span class="font-semibold">${weapon.reloadTime}s</span></li>
-                                    <li>Structure Dmg: <span class="font-semibold">${weapon.structureDamage}</span></li>
-                                </ul>
-                                <button class="btn btn-secondary mt-3 px-4 py-1 text-sm view-weapon-details-btn" data-weapon-id="${weapon.id}"><i class="fas fa-info-circle mr-2"></i>Details</button>
-                            </div>
-                        </div>
-                    `;
-                    weaponListGrid.appendChild(weaponCard);
-                }
-            });
-
-            if (foundWeapons === 0) {
-                noWeaponsFound.classList.remove('hidden');
-            } else {
-                noWeaponsFound.classList.add('hidden');
-            }
-
-            // Add event listeners for weapon details
-            document.querySelectorAll('.view-weapon-details-btn').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const weaponId = event.target.dataset.weaponId;
-                    const weapon = mockWeaponData.find(w => w.id === weaponId);
-                    if (weapon) {
-                        document.getElementById('modal-weapon-image').src = weapon.image;
-                        document.getElementById('modal-weapon-name').textContent = weapon.name;
-                        document.getElementById('modal-weapon-type').textContent = `Type: ${weapon.type}`;
-                        document.getElementById('modal-weapon-rarity').textContent = `Rarity: ${weapon.rarity}`;
-                        document.getElementById('modal-weapon-damage').textContent = weapon.damage.body;
-                        document.getElementById('modal-weapon-headshot').textContent = weapon.damage.head;
-                        document.getElementById('modal-weapon-dps').textContent = weapon.dps;
-                        document.getElementById('modal-weapon-fire-rate').textContent = weapon.fireRate;
-                        document.getElementById('modal-weapon-mag-size').textContent = weapon.magSize;
-                        document.getElementById('modal-weapon-reload').textContent = `${weapon.reloadTime}s`;
-                        document.getElementById('modal-weapon-structure-damage').textContent = weapon.structureDamage;
-                        document.getElementById('modal-weapon-description').textContent = weapon.description;
-
-                        weaponDetailsModal.classList.add('active');
-                    }
-                });
-            });
-        }
-
-        // Initial render for weapons
-        renderWeapons();
-
-        // Event listeners for weapon search and filter
-        weaponSearchInput.addEventListener('input', renderWeapons);
-        weaponTypeFilter.addEventListener('change', renderWeapons);
-
-        // Close weapon details modal
-        closeWeaponModalBtn.addEventListener('click', () => {
-            weaponDetailsModal.classList.remove('active');
-        });
-        window.addEventListener('click', (event) => {
-            if (event.target == weaponDetailsModal) {
-                weaponDetailsModal.classList.remove('active');
-            }
-        });
-
-
-        // --- XP Calculator ---
-        const currentLevelInput = document.getElementById('current-level');
-        const targetLevelInput = document.getElementById('target-level');
-        const calculateXpBtn = document.getElementById('calculate-xp');
-        const xpResultDiv = document.getElementById('xp-result');
-
-        calculateXpBtn.addEventListener('click', () => {
-            const currentLevel = parseInt(currentLevelInput.value) || 0;
-            const targetLevel = parseInt(targetLevelInput.value) || 0;
-
-            if (isNaN(currentLevel) || isNaN(targetLevel) || currentLevel < 1 || targetLevel < 1 || currentLevel > 500 || targetLevel > 500) {
-                xpResultDiv.textContent = "Please enter valid levels between 1 and 500.";
-                xpResultDiv.classList.remove('text-green-400', 'text-yellow-400');
-                xpResultDiv.classList.add('text-red-400');
-                return;
-            }
-
-            if (currentLevel >= targetLevel) {
-                xpResultDiv.textContent = "You're already at or past your target level!";
-                xpResultDiv.classList.add('text-green-400');
-                xpResultDiv.classList.remove('text-yellow-400', 'text-red-400');
-                return;
-            }
-            
-            // Simplified XP calculation model (adjust as needed for specific seasons)
-            // Example: XP per level starts at 80k, increases by 250 for every 5 levels
-            const baseXP = 80000;
-            const xpIncrement = 250; // XP increases by this amount every 5 levels
-            let totalXpNeeded = 0;
-
-            for (let i = currentLevel; i < targetLevel; i++) {
-                const levelXp = baseXP + (Math.floor((i - 1) / 5) * xpIncrement);
-                totalXpNeeded += levelXp;
-            }
-
-            xpResultDiv.textContent = `You need ${totalXpNeeded.toLocaleString()} XP.`;
-            xpResultDiv.classList.add('text-yellow-400');
-            xpResultDiv.classList.remove('text-green-400', 'text-red-400');
-        });
-
-        // Set initial text for XP result
-        xpResultDiv.textContent = "Enter levels to calculate";
-
-    </script>
-
-</body>
-</html>
+        const infoModal = document.getElementById('info-modal');
