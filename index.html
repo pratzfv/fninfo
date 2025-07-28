@@ -1,606 +1,606 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FN HUB - The Ultimate Fortnite Companion [Chapter 6 Season 3]</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* CSS Variables for easier theming */
-        :root {
-            --fn-purple: #7b2ff7;
-            --fn-pink: #f92a7f;
-            --fn-yellow: #ffc94d;
-            --bg-dark: #121212;
-            --bg-light: #1a1a1a;
-            --border-color: #2a2a2a;
-            --text-color: #e0e0e0;
-            --vbucks-color: #ffcc00;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FN HUB - The Ultimate Fortnite Companion [Chapter 6 Season 3]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for easier theming */
+        :root {
+            --fn-purple: #7b2ff7;
+            --fn-pink: #f92a7f;
+            --fn-yellow: #ffc94d;
+            --bg-dark: #121212;
+            --bg-light: #1a1a1a;
+            --border-color: #2a2a2a;
+            --text-color: #e0e0e0;
+            --vbucks-color: #ffcc00;
+        }
 
-        /* Global styles */
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-color);
-            line-height: 1.6;
-            overflow-x: hidden; /* Prevent horizontal scroll from animations */
-        }
-        ::selection {
-            background-color: var(--fn-pink);
-            color: white;
-        }
+        /* Global styles */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+        ::selection {
+            background-color: var(--fn-pink);
+            color: white;
+        }
 
-        /* Fortnite Gradient Text */
-        .fortnite-gradient-text {
-            background: linear-gradient(to right, var(--fn-purple), var(--fn-pink), var(--fn-yellow));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        /* Fortnite Gradient Text */
+        .fortnite-gradient-text {
+            background: linear-gradient(to right, var(--fn-purple), var(--fn-pink), var(--fn-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        /* Card Styling with Hover Effects */
-        .card {
-            background-color: var(--bg-light);
-            border: 1px solid var(--border-color);
-            border-radius: 1rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden;
-            position: relative; /* For badges, overlays */
-        }
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
-        }
+        /* Card Styling with Hover Effects */
+        .card {
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            position: relative; /* For badges, overlays */
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+        }
 
-        /* Button Styling */
-        .btn {
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn-primary {
-            background-color: var(--fn-purple);
-            color: white;
-            box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4);
-        }
-        .btn-primary:hover {
-            background-color: #6a1fd1;
-            transform: scale(1.02);
-        }
-        .btn-secondary {
-            background-color: #3a3a3a;
-            color: var(--text-color);
-        }
-        .btn-secondary:hover {
-            background-color: #4a4a4a;
-            transform: scale(1.02);
-        }
+        /* Button Styling */
+        .btn {
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-primary {
+            background-color: var(--fn-purple);
+            color: white;
+            box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4);
+        }
+        .btn-primary:hover {
+            background-color: #6a1fd1;
+            transform: scale(1.02);
+        }
+        .btn-secondary {
+            background-color: #3a3a3a;
+            color: var(--text-color);
+        }
+        .btn-secondary:hover {
+            background-color: #4a4a4a;
+            transform: scale(1.02);
+        }
 
-        /* Section Title Styling */
-        .section-title {
-            font-weight: 900;
-            font-size: 2.8rem;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            margin-bottom: 2.5rem;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 2rem;
-            }
-        }
+        /* Section Title Styling */
+        .section-title {
+            font-weight: 900;
+            font-size: 2.8rem;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+        }
 
-        /* Navigation Link Underline Effect */
-        .nav-link {
-            position: relative;
-            padding-bottom: 4px;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--fn-pink), var(--fn-yellow));
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after {
-            width: 100%;
-        }
+        /* Navigation Link Underline Effect */
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--fn-pink), var(--fn-yellow));
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
 
-        /* Countdown Item Styling */
-        .countdown-item {
-            background: rgba(42, 42, 42, 0.8);
-            backdrop-filter: blur(5px);
-            border-radius: 0.75rem;
-            padding: 1.5rem 1rem;
-            text-align: center;
-            border: 1px solid #333;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
+        /* Countdown Item Styling */
+        .countdown-item {
+            background: rgba(42, 42, 42, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 0.75rem;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border: 1px solid #333;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
 
-        /* Item Rarity Borders */
-        .rarity-legendary { border-left: 5px solid #ffc94d; } /* Gold */
-        .rarity-epic { border-left: 5px solid #7b2ff7; } /* Purple */
-        .rarity-rare { border-left: 5px solid #2adcf9; } /* Blue */
-        .rarity-uncommon { border-left: 5px solid #50c878; } /* Green */
-        .rarity-common { border-left: 5px solid #9e9e9e; } /* Grey */
-        .rarity-mythic { border-left: 5px solid #d400d4; } /* Pink/Magenta */
-        .rarity-exotic { border-left: 5px solid #1abc9c; } /* Teal */
+        /* Item Rarity Borders */
+        .rarity-legendary { border-left: 5px solid #ffc94d; } /* Gold */
+        .rarity-epic { border-left: 5px solid #7b2ff7; } /* Purple */
+        .rarity-rare { border-left: 5px solid #2adcf9; } /* Blue */
+        .rarity-uncommon { border-left: 5px solid #50c878; } /* Green */
+        .rarity-common { border-left: 5px solid #9e9e9e; } /* Grey */
+        .rarity-mythic { border-left: 5px solid #d400d4; } /* Pink/Magenta */
+        .rarity-exotic { border-left: 5px solid #1abc9c; } /* Teal */
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-            animation: fadeIn 0.3s ease-out;
-        }
-        .modal.active { display: flex; }
-        .modal-content {
-            background-color: var(--bg-light);
-            padding: 2.5rem;
-            border-radius: 1rem;
-            max-width: 700px;
-            width: 100%;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            animation: slideIn 0.3s ease-out;
-            border: 1px solid var(--border-color);
-        }
-        .close-button {
-            position: absolute;
-            top: 1rem;
-            right: 1.5rem;
-            color: #aaa;
-            font-size: 2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-        .close-button:hover,
-        .close-button:focus {
-            color: var(--text-color);
-        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background-color: var(--bg-light);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            animation: slideIn 0.3s ease-out;
+            border: 1px solid var(--border-color);
+        }
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            color: #aaa;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--text-color);
+        }
 
-        /* Mobile Menu */
-        #mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-        }
-        #mobile-menu.active {
-            transform: translateX(0);
-        }
+        /* Mobile Menu */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #mobile-menu.active {
+            transform: translateX(0);
+        }
 
-        /* Stats & Dynamic Content Display Animations */
-        .content-transition {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.7s ease-in-out, opacity 0.5s ease-in-out;
-            opacity: 0;
-        }
-        .content-transition.active {
-            max-height: 1500px; /* Arbitrarily large value to ensure content fits */
-            opacity: 1;
-        }
+        /* Stats & Dynamic Content Display Animations */
+        .content-transition {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+        .content-transition.active {
+            max-height: 1500px; /* Arbitrarily large value to ensure content fits */
+            opacity: 1;
+        }
 
-        /* Item Shop Category Tabs */
-        .tab-button {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            background-color: #333;
-            color: #ccc;
-        }
-        .tab-button.active {
-            background: linear-gradient(to right, var(--fn-purple), var(--fn-pink));
-            color: white;
-            box-shadow: 0 3px 10px rgba(123, 47, 247, 0.3);
-        }
-        .tab-button:not(.active):hover {
-            background-color: #444;
-            color: #eee;
-        }
+        /* Item Shop Category Tabs */
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background-color: #333;
+            color: #ccc;
+        }
+        .tab-button.active {
+            background: linear-gradient(to right, var(--fn-purple), var(--fn-pink));
+            color: white;
+            box-shadow: 0 3px 10px rgba(123, 47, 247, 0.3);
+        }
+        .tab-button:not(.active):hover {
+            background-color: #444;
+            color: #eee;
+        }
 
-        /* Map Interaction Styles */
-        .map-container {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            overflow: hidden;
-            border-radius: 1rem;
-        }
-        .map-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .drop-spot-marker {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-color: rgba(255, 0, 0, 0.7);
-            border: 2px solid white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            transform: translate(-50%, -50%); /* Center the marker */
-        }
-        .drop-spot-marker:hover {
-            background-color: rgba(255, 0, 0, 1);
-            transform: translate(-50%, -50%) scale(1.2);
-        }
-        .drop-spot-tooltip {
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            min-width: 200px;
-            pointer-events: none; /* Allows clicks to pass through */
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            transform: translate(-50%, -10px);
-            z-index: 10;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            top: -100px; /* Position above marker */
-            left: 50%;
-        }
-        .drop-spot-marker:hover .drop-spot-tooltip {
-            opacity: 1;
-            transform: translate(-50%, -120px); /* Move up slightly on hover */
-        }
+        /* Map Interaction Styles */
+        .map-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+        .map-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .drop-spot-marker {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 0, 0, 0.7);
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            transform: translate(-50%, -50%); /* Center the marker */
+        }
+        .drop-spot-marker:hover {
+            background-color: rgba(255, 0, 0, 1);
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+        .drop-spot-tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            min-width: 200px;
+            pointer-events: none; /* Allows clicks to pass through */
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translate(-50%, -10px);
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            top: -100px; /* Position above marker */
+            left: 50%;
+        }
+        .drop-spot-marker:hover .drop-spot-tooltip {
+            opacity: 1;
+            transform: translate(-50%, -120px); /* Move up slightly on hover */
+        }
 
-        /* Pro Settings Filter */
-        .pro-filter-button {
-            padding: 0.6rem 1.2rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            background-color: #333;
-            color: #ccc;
-        }
-        .pro-filter-button.active {
-            background: linear-gradient(to right, #f92a7f, #ffc94d); /* Pink to Yellow */
-            color: white;
-            box-shadow: 0 3px 10px rgba(249, 42, 127, 0.3);
-        }
-        .pro-filter-button:not(.active):hover {
-            background-color: #444;
-            color: #eee;
-        }
+        /* Pro Settings Filter */
+        .pro-filter-button {
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background-color: #333;
+            color: #ccc;
+        }
+        .pro-filter-button.active {
+            background: linear-gradient(to right, #f92a7f, #ffc94d); /* Pink to Yellow */
+            color: white;
+            box-shadow: 0 3px 10px rgba(249, 42, 127, 0.3);
+        }
+        .pro-filter-button:not(.active):hover {
+            background-color: #444;
+            color: #eee;
+        }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-pulse-slow {
-            animation: pulse 2s infinite ease-in-out;
-        }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pulse-slow {
+            animation: pulse 2s infinite ease-in-out;
+        }
 
-        /* Tooltip for general use */
-        .info-tooltip {
-            position: relative;
-            cursor: help;
-        }
-        .info-tooltip .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%; /* Position above the text */
-            left: 50%;
-            margin-left: -100px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .info-tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
-        }
-        .info-tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
+        /* Tooltip for general use */
+        .info-tooltip {
+            position: relative;
+            cursor: help;
+        }
+        .info-tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position above the text */
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .info-tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+        }
+        .info-tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
 
-    </style>
+    </style>
 </head>
 <body class="overflow-x-hidden">
 
-    <header class="bg-black/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-800">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-3xl font-black uppercase fortnite-gradient-text">FN HUB</a>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#welcome" class="nav-link text-white font-semibold"><i class="fas fa-home mr-2"></i>Home</a>
-                <a href="#shop" class="nav-link text-white font-semibold"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
-                <a href="#maps" class="nav-link text-white font-semibold"><i class="fas fa-map-marked-alt mr-2"></i>Maps</a>
-                <a href="#tournaments" class="nav-link text-white font-semibold"><i class="fas fa-trophy mr-2"></i>Tournaments</a>
-                <a href="#pro-settings" class="nav-link text-white font-semibold"><i class="fas fa-cogs mr-2"></i>Pros</a>
-                <a href="#weapons" class="nav-link text-white font-semibold"><i class="fas fa-crosshairs mr-2"></i>Weapons</a>
-                <a href="#leaks" class="nav-link text-white font-semibold"><i class="fas fa-eye mr-2"></i>Leaks</a>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="hidden md:flex items-center bg-gray-800 rounded-full px-3 py-1 text-sm">
-                    <i class="fas fa-users text-purple-400 mr-2"></i>
-                    <span id="player-count" class="font-semibold text-green-400">Loading...</span>
-                </div>
-                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl z-50">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </nav>
-    </header>
+    <header class="bg-black/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-800">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-3xl font-black uppercase fortnite-gradient-text">FN HUB</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#welcome" class="nav-link text-white font-semibold"><i class="fas fa-home mr-2"></i>Home</a>
+                <a href="#shop" class="nav-link text-white font-semibold"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
+                <a href="#maps" class="nav-link text-white font-semibold"><i class="fas fa-map-marked-alt mr-2"></i>Maps</a>
+                <a href="#tournaments" class="nav-link text-white font-semibold"><i class="fas fa-trophy mr-2"></i>Tournaments</a>
+                <a href="#pro-settings" class="nav-link text-white font-semibold"><i class="fas fa-cogs mr-2"></i>Pros</a>
+                <a href="#weapons" class="nav-link text-white font-semibold"><i class="fas fa-crosshairs mr-2"></i>Weapons</a>
+                <a href="#leaks" class="nav-link text-white font-semibold"><i class="fas fa-eye mr-2"></i>Leaks</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center bg-gray-800 rounded-full px-3 py-1 text-sm">
+                    <i class="fas fa-users text-purple-400 mr-2"></i>
+                    <span id="player-count" class="font-semibold text-green-400">Loading...</span>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-white text-2xl z-50">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
 
-    <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-40 flex flex-col items-center justify-center space-y-8 text-2xl md:hidden">
-        <button id="close-mobile-menu" class="absolute top-6 right-6 text-white text-4xl">&times;</button>
-        <a href="#welcome" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-home mr-2"></i>Home</a>
-        <a href="#shop" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
-        <a href="#maps" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-map-marked-alt mr-2"></i>Maps</a>
-        <a href="#tournaments" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-trophy mr-2"></i>Tournaments</a>
-        <a href="#pro-settings" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-cogs mr-2"></i>Pros</a>
-        <a href="#weapons" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-crosshairs mr-2"></i>Weapons</a>
-        <a href="#leaks" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-eye mr-2"></i>Leaks</a>
-    </div>
+    <div id="mobile-menu" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-40 flex flex-col items-center justify-center space-y-8 text-2xl md:hidden">
+        <button id="close-mobile-menu" class="absolute top-6 right-6 text-white text-4xl">×</button>
+        <a href="#welcome" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-home mr-2"></i>Home</a>
+        <a href="#shop" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-shopping-cart mr-2"></i>Shop</a>
+        <a href="#maps" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-map-marked-alt mr-2"></i>Maps</a>
+        <a href="#tournaments" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-trophy mr-2"></i>Tournaments</a>
+        <a href="#pro-settings" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-cogs mr-2"></i>Pros</a>
+        <a href="#weapons" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-crosshairs mr-2"></i>Weapons</a>
+        <a href="#leaks" class="nav-link text-white font-semibold mobile-nav-link"><i class="fas fa-eye mr-2"></i>Leaks</a>
+    </div>
 
-    <main class="container mx-auto px-6 py-12">
+    <main class="container mx-auto px-6 py-12">
 
-        <section id="welcome" class="relative h-[70vh] rounded-2xl overflow-hidden mb-24 flex items-center justify-center text-center text-white" style="background: url('https://image.api.playstation.com/vulcan/ap/rnd/202404/2311/f7edb8a9757f5c786a3d6d58ee76a77d73012920807b0eb8.jpg') no-repeat center center/cover;">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-            <div class="relative z-10 p-8">
-                <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none fortnite-gradient-text">Welcome to FN HUB</h1>
-                <p class="text-xl md:text-2xl font-light mt-4 mb-8 max-w-3xl mx-auto">Your ultimate companion for everything Fortnite Battle Royale Chapter 6 Season 3! Dive into the latest updates, shop items, pro stats, and more!</p>
-                <button class="btn btn-primary px-10 py-4 text-lg animate-pulse-slow">Drop In Now!</button>
-            </div>
-        </section>
+        <section id="welcome" class="relative h-[70vh] rounded-2xl overflow-hidden mb-24 flex items-center justify-center text-center text-white" style="background: url('https://image.api.playstation.com/vulcan/ap/rnd/202404/2311/f7edb8a9757f5c786a3d6d58ee76a77d73012920807b0eb8.jpg') no-repeat center center/cover;">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <div class="relative z-10 p-8">
+                <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none fortnite-gradient-text">Welcome to FN HUB</h1>
+                <p class="text-xl md:text-2xl font-light mt-4 mb-8 max-w-3xl mx-auto">Your ultimate companion for everything Fortnite Battle Royale Chapter 6 Season 3! Dive into the latest updates, shop items, pro stats, and more!</p>
+                <button class="btn btn-primary px-10 py-4 text-lg animate-pulse-slow">Drop In Now!</button>
+            </div>
+        </section>
 
-        <section id="season-countdown" class="mb-24 text-center">
-            <h2 class="section-title fortnite-gradient-text">Chapter 6 Season 3 Ends In</h2>
-            <div id="countdown-timer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto">
-                <div class="countdown-item"><div id="days" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Days</div></div>
-                <div class="countdown-item"><div id="hours" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Hours</div></div>
-                <div class="countdown-item"><div id="minutes" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Minutes</div></div>
-                <div class="countdown-item"><div id="seconds" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Seconds</div></div>
-            </div>
-            <p id="season-progress" class="text-xl font-semibold mt-8 text-yellow-400">Season Progress: <span id="progress-percent">0%</span> Complete</p>
-            <div class="w-full bg-gray-700 rounded-full h-4 mt-4 max-w-3xl mx-auto">
-                <div id="progress-bar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%;"></div>
-            </div>
-        </section>
+        <section id="season-countdown" class="mb-24 text-center">
+            <h2 class="section-title fortnite-gradient-text">Chapter 6 Season 3 Ends In</h2>
+            <div id="countdown-timer" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto">
+                <div class="countdown-item"><div id="days" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Days</div></div>
+                <div class="countdown-item"><div id="hours" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Hours</div></div>
+                <div class="countdown-item"><div id="minutes" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Minutes</div></div>
+                <div class="countdown-item"><div id="seconds" class="text-5xl font-bold">00</div><div class="text-sm uppercase">Seconds</div></div>
+            </div>
+            <p id="season-progress" class="text-xl font-semibold mt-8 text-yellow-400">Season Progress: <span id="progress-percent">0%</span> Complete</p>
+            <div class="w-full bg-gray-700 rounded-full h-4 mt-4 max-w-3xl mx-auto">
+                <div id="progress-bar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%;"></div>
+            </div>
+        </section>
 
-        <section id="shop" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Today's Item Shop</h2>
-            <div class="flex justify-center flex-wrap gap-4 mb-8">
-                <button class="tab-button active" data-category="featured">Featured</button>
-                <button class="tab-button" data-category="daily">Daily</button>
-                <button class="tab-button" data-category="bundles">Bundles</button>
-                <button class="tab-button" data-category="emotes">Emotes</button>
-            </div>
-            <div id="item-shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                </div>
-        </section>
+        <section id="shop" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Today's Item Shop</h2>
+            <div class="flex justify-center flex-wrap gap-4 mb-8">
+                <button class="tab-button active" data-category="featured">Featured</button>
+                <button class="tab-button" data-category="daily">Daily</button>
+                <button class="tab-button" data-category="bundles">Bundles</button>
+                <button class="tab-button" data-category="emotes">Emotes</button>
+            </div>
+            <div id="item-shop-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                </div>
+        </section>
 
-        <div id="item-details-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" id="close-modal">&times;</span>
-                <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
-                    <img id="modal-item-image" src="" alt="Item Image" class="w-48 h-48 rounded-lg object-cover border-2 border-gray-700 flex-shrink-0">
-                    <div class="flex-1 text-center md:text-left">
-                        <h3 id="modal-item-name" class="text-3xl font-bold mb-2 fortnite-gradient-text"></h3>
-                        <p id="modal-item-rarity" class="text-lg font-semibold text-gray-400 mb-2"></p>
-                        <p id="modal-item-type" class="text-md text-gray-500 mb-4"></p>
-                        <p id="modal-item-description" class="text-gray-300 text-sm mb-6"></p>
-                        <div class="flex items-center justify-center md:justify-start mb-6">
-                            <img src="https://image.fnbr.co/price/vbucks.png" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks Icon">
-                            <span id="modal-item-price" class="text-2xl font-bold" style="color: var(--vbucks-color);"></span>
-                        </div>
-                        <button class="btn btn-primary w-full py-3 text-lg"><i class="fas fa-shopping-bag mr-2"></i>Purchase</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="item-details-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="close-modal">×</span>
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                    <img id="modal-item-image" src="" alt="Item Image" class="w-48 h-48 rounded-lg object-cover border-2 border-gray-700 flex-shrink-0">
+                    <div class="flex-1 text-center md:text-left">
+                        <h3 id="modal-item-name" class="text-3xl font-bold mb-2 fortnite-gradient-text"></h3>
+                        <p id="modal-item-rarity" class="text-lg font-semibold text-gray-400 mb-2"></p>
+                        <p id="modal-item-type" class="text-md text-gray-500 mb-4"></p>
+                        <p id="modal-item-description" class="text-gray-300 text-sm mb-6"></p>
+                        <div class="flex items-center justify-center md:justify-start mb-6">
+                            <img src="https://image.fnbr.co/price/vbucks.png" class="w-6 h-6 mr-2 rounded-full" alt="V-Bucks Icon">
+                            <span id="modal-item-price" class="text-2xl font-bold" style="color: var(--vbucks-color);"></span>
+                        </div>
+                        <button class="btn btn-primary w-full py-3 text-lg"><i class="fas fa-shopping-bag mr-2"></i>Purchase</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <section id="maps" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Explore The Maps</h2>
-            <div class="flex justify-center flex-wrap gap-4 mb-8">
-                <button class="tab-button active" data-map-type="br">Battle Royale (Ch6 S3)</button>
-                <button class="tab-button" data-map-type="reload">Reload Maps</button>
-            </div>
+        <section id="maps" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Explore The Maps</h2>
+            <div class="flex justify-center flex-wrap gap-4 mb-8">
+                <button class="tab-button active" data-map-type="br">Battle Royale (Ch6 S3)</button>
+                <button class="tab-button" data-map-type="reload">Reload Maps</button>
+            </div>
 
-            <div id="br-map-content" class="map-content content-transition active">
-                <div class="card p-6 max-w-6xl mx-auto">
-                    <div class="relative map-container">
-                        <img id="current-br-map-image" src="https://fortnite.gamepedia.com/media/thumb/f/fa/Chapter_5_Season_3_Map.jpg/1200px-Chapter_5_Season_3_Map.jpg" alt="Fortnite Battle Royale Chapter 6 Season 3 Map" class="map-image">
-                        <div class="drop-spot-marker" style="top: 30%; left: 40%;" data-spot-name="Pleasant Park (Contested)" data-tourney-info="High contest, good loot, central for rotates. Common pro drop.">A</div>
-                        <div class="drop-spot-marker" style="top: 60%; left: 25%;" data-spot-name="Salty Springs (Mid-Contest)" data-tourney-info="Decent mats, good for early fights. Watch for third parties.">B</div>
-                        <div class="drop-spot-marker" style="top: 75%; left: 70%;" data-spot-name="Retail Row (Low-Contest)" data-tourney-info="Reliable loot, safe zone. Good for consistent placement.">C</div>
+            <div id="br-map-content" class="map-content content-transition active">
+                <div class="card p-6 max-w-6xl mx-auto">
+                    <div class="relative map-container">
+                        <img id="current-br-map-image" src="https://fortnite.gamepedia.com/media/thumb/f/fa/Chapter_5_Season_3_Map.jpg/1200px-Chapter_5_Season_3_Map.jpg" alt="Fortnite Battle Royale Chapter 6 Season 3 Map" class="map-image">
+                        <div class="drop-spot-marker" style="top: 30%; left: 40%;" data-spot-name="Pleasant Park (Contested)" data-tourney-info="High contest, good loot, central for rotates. Common pro drop.">A</div>
+                        <div class="drop-spot-marker" style="top: 60%; left: 25%;" data-spot-name="Salty Springs (Mid-Contest)" data-tourney-info="Decent mats, good for early fights. Watch for third parties.">B</div>
+                        <div class="drop-spot-marker" style="top: 75%; left: 70%;" data-spot-name="Retail Row (Low-Contest)" data-tourney-info="Reliable loot, safe zone. Good for consistent placement.">C</div>
 
-                        <div class="absolute bottom-4 left-4 right-4">
-                            <h3 class="text-2xl font-bold text-white text-center mb-4">Fortnite Battle Royale Map</h3>
-                            <button class="btn btn-primary w-full py-3 text-lg"><i class="fas fa-plane-departure mr-2"></i>Drop In Now!</button>
-                        </div>
-                    </div>
-                    <div class="mt-8">
-                        <h3 class="text-2xl font-bold fortnite-gradient-text mb-4">Tournament Drop Recommendations</h3>
-                        <p class="text-gray-400 mb-4">Based on current Chapter 6 Season 3 meta and pro strategies:</p>
-                        <ul class="list-disc list-inside space-y-2">
-                            <li><span class="font-bold text-white">"A" (Pleasant Park):</span> High-tier loot, central rotations. Expect early fights. Ideal for aggressive teams seeking eliminations and good positioning.</li>
-                            <li><span class="font-bold text-white">"B" (Salty Springs):</span> Balanced loot and good for mid-game rotations. Often contested but can be an easier initial fight than Pleasant.</li>
-                            <li><span class="font-bold text-white">"C" (Retail Row):</span> Consistent loot, edge of map. Good for teams who prioritize farming and late-game rotations. Lower contest.</li>
-                            <li class="text-sm text-gray-500">Note: These are general recommendations. Always scout bus path and adjust!</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="text-2xl font-bold text-white text-center mb-4">Fortnite Battle Royale Map</h3>
+                            <button class="btn btn-primary w-full py-3 text-lg"><i class="fas fa-plane-departure mr-2"></i>Drop In Now!</button>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <h3 class="text-2xl font-bold fortnite-gradient-text mb-4">Tournament Drop Recommendations</h3>
+                        <p class="text-gray-400 mb-4">Based on current Chapter 6 Season 3 meta and pro strategies:</p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><span class="font-bold text-white">"A" (Pleasant Park):</span> High-tier loot, central rotations. Expect early fights. Ideal for aggressive teams seeking eliminations and good positioning.</li>
+                            <li><span class="font-bold text-white">"B" (Salty Springs):</span> Balanced loot and good for mid-game rotations. Often contested but can be an easier initial fight than Pleasant.</li>
+                            <li><span class="font-bold text-white">"C" (Retail Row):</span> Consistent loot, edge of map. Good for teams who prioritize farming and late-game rotations. Lower contest.</li>
+                            <li class="text-sm text-gray-500">Note: These are general recommendations. Always scout bus path and adjust!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-            <div id="reload-map-content" class="map-content content-transition">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    <div class="card p-4 text-center">
-                        <img src="https://i.ytimg.com/vi/b6S9T0d8gC4/maxresdefault.jpg" alt="Squid Game Reload Map" class="rounded-lg mb-4 object-cover w-full h-48">
-                        <h3 class="text-xl font-bold fortnite-gradient-text mb-2">Squid Game Reload</h3>
-                        <p class="text-gray-400 text-sm mb-4">Survival of the fittest in a series of deadly games. Intense, fast-paced action!</p>
-                        <button class="btn btn-primary w-full py-2"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <img src="https://i.ytimg.com/vi/k5L2sFw4g70/hq720.jpg" alt="Venture Reload Map" class="rounded-lg mb-4 object-cover w-full h-48">
-                        <h3 class="text-xl font-bold fortnite-gradient-text mb-2">Venture Reload</h3>
-                        <p class="text-gray-400 text-sm mb-4">Embark on an epic adventure, complete quests, and face unique challenges!</p>
-                        <button class="btn btn-primary w-full py-2"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <img src="https://i.ytimg.com/vi/a_Y_V-fQYjQ/maxresdefault.jpg" alt="Slurp Rush Reload Map" class="rounded-lg mb-4 object-cover w-full h-48">
-                        <h3 class="text-xl font-bold fortnite-gradient-text mb-2">Slurp Rush Reload</h3>
-                        <p class="text-gray-400 text-sm mb-4">Health and shields are plentiful, but so are the enemies. Non-stop healing and fighting!</p>
-                        <button class="btn btn-primary w-full py-2"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="tournaments" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Live Tournaments & Events</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="card p-6 border-l-4 border-green-500">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-2xl font-bold fortnite-gradient-text">FNCS Major 3 - EU</h3>
-                        <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full animate-pulse-slow">LIVE</span>
-                    </div>
-                    <p class="text-gray-300 mb-2">Grand Finals Day 2: Europe's best battle for the axe!</p>
-                    <p class="text-sm text-gray-500 mb-2"><i class="fas fa-globe mr-2"></i>Region: EU</p>
-                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Jul 24, 2025 - 12:00 PM CEST</p>
-                    <div class="bg-gray-800 p-3 rounded-lg mb-4">
-                        <p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><i class="fas fa-dollar-sign mr-2"></i>Prize Pool: $5,000,000 USD</p>
-                        <p class="text-md text-gray-300">1st Place: $300,000 | Qualify for Global Championship</p>
-                        <p class="text-md text-gray-300">Top 50: Minimum $5,000</p>
-                    </div>
-                    <button class="btn btn-primary w-full py-2 text-md"><i class="fas fa-tv mr-2"></i>Watch Live</button>
-                </div>
-                <div class="card p-6 border-l-4 border-blue-500">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-2xl font-bold fortnite-gradient-text">Cash Cup - NA East</h3>
-                        <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPCOMING</span>
-                    </div>
-                    <p class="text-gray-300 mb-2">Weekly Solo Cash Cup for NA East competitors.</p>
-                    <p class="text-sm text-gray-500 mb-2"><i class="fas fa-globe mr-2"></i>Region: NA East</p>
-                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Jul 26, 2025 - 6:00 PM EST</p>
-                    <div class="bg-gray-800 p-3 rounded-lg mb-4">
-                        <p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><i class="fas fa-dollar-sign mr-2"></i>Prize Pool: $10,000 USD</p>
-                        <p class="text-md text-gray-300">1st Place: $1,000 | Top 10: $100</p>
-                        <p class="text-md text-gray-300">Top 100: Place to get prize</p>
-                    </div>
-                    <button class="btn btn-secondary w-full py-2 text-md"><i class="fas fa-info-circle mr-2"></i>Details</button>
-                </div>
-                <div class="card p-6 border-l-4 border-orange-500">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-2xl font-bold fortnite-gradient-text">OCE FNCSTycoons Cup</h3>
-                        <span class="bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPCOMING</span>
-                    </div>
-                    <p class="text-gray-300 mb-2">Fast-paced format for OCE region. Dominate for V-Bucks!</p>
-                    <p class="text-sm text-gray-500 mb-2"><i class="fas fa-globe mr-2"></i>Region: OCE</p>
-                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Aug 1, 2025 - 4:00 PM AEST</p>
-                    <div class="bg-gray-800 p-3 rounded-lg mb-4">
-                        <p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><img src="https://image.fnbr.co/price/vbucks.png" class="w-5 h-5 mr-2" alt="V-Bucks Icon">Prize Pool: 100,000 V-Bucks</p>
-                        <p class="text-md text-gray-300">1st Place: 10,000 V-Bucks</p>
-                        <p class="text-md text-gray-300">Top 50: Minimum 500 V-Bucks</p>
-                    </div>
-                    <button class="btn btn-secondary w-full py-2 text-md"><i class="fas fa-user-plus mr-2"></i>Register</button>
-                </div>
-            </div>
-            <div class="text-center mt-12">
-                <button class="btn btn-secondary px-8 py-3"><i class="fas fa-chevron-circle-right mr-2"></i>View All Tournaments</button>
-            </div>
-        </section>
+            <div id="reload-map-content" class="map-content content-transition">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    <div class="card p-4 text-center">
+                        <img src="https://i.ytimg.com/vi/b6S9T0d8gC4/maxresdefault.jpg" alt="Squid Game Reload Map" class="rounded-lg mb-4 object-cover w-full h-48">
+                        <h3 class="text-xl font-bold fortnite-gradient-text mb-2">Squid Game Reload</h3>
+                        <p class="text-gray-400 text-sm mb-4">Survival of the fittest in a series of deadly games. Intense, fast-paced action!</p>
+                        <button class="btn btn-primary w-full py-2"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button>
+                    </div>
+                    <div class="card p-4 text-center">
+                        <img src="https://i.ytimg.com/vi/k5L2sFw4g70/hq720.jpg" alt="Venture Reload Map" class="rounded-lg mb-4 object-cover w-full h-48">
+                        <h3 class="text-xl font-bold fortnite-gradient-text mb-2">Venture Reload</h3>
+                        <p class="text-gray-400 text-sm mb-4">Embark on an epic adventure, complete quests, and face unique challenges!</p>
+                        <button class="btn btn-primary w-full py-2"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button>
+                    </div>
+                    <div class="card p-4 text-center">
+                        <img src="https://i.ytimg.com/vi/a_Y_V-fQYjQ/maxresdefault.jpg" alt="Slurp Rush Reload Map" class="rounded-lg mb-4 object-cover w-full h-48">
+                        <h3 class="text-xl font-bold fortnite-gradient-text mb-2">Slurp Rush Reload</h3>
+                        <p class="text-gray-400 text-sm mb-4">Health and shields are plentiful, but so are the enemies. Non-stop healing and fighting!</p>
+                        <button class="btn btn-primary w-full py-2"><i class="fas fa-sign-in-alt mr-2"></i>Drop In!</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="tournaments" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Live Tournaments & Events</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6 border-l-4 border-green-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-2xl font-bold fortnite-gradient-text">FNCS Major 3 - EU</h3>
+                        <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full animate-pulse-slow">LIVE</span>
+                    </div>
+            _B_i_ _c_l_a_s_s_=_"_t_e_x_t_-_g_r_a_y_-_3_0_0_ _m_b_-_2_">_G_r_a_n_d_ _F_i_n_a_l_s_ _D_a_y_ _2_:_ _E_u_r_o_p_e_'_s_ _b_e_s_t_ _b_a_t_t_l_e_ _f_o_r_ _t_h_e_ _a_x_e_!_<_/_p_>_
+                    <p class="text-sm text-gray-500 mb-2"><i class="fas fa-globe mr-2"></i>Region: EU</p>
+                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Jul 24, 2025 - 12:00 PM CEST</p>
+                    <div class="bg-gray-800 p-3 rounded-lg mb-4">
+                        <p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><i class="fas fa-dollar-sign mr-2"></i>Prize Pool: $5,000,000 USD</p>
+                        <p class="text-md text-gray-300">1st Place: $300,000 | Qualify for Global Championship</p>
+                        <p class="text-md text-gray-300">Top 50: Minimum $5,000</p>
+                    </div>
+                    <button class="btn btn-primary w-full py-2 text-md"><i class="fas fa-tv mr-2"></i>Watch Live</button>
+                </div>
+                <div class="card p-6 border-l-4 border-blue-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-2xl font-bold fortnite-gradient-text">Cash Cup - NA East</h3>
+                        <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPCOMING</span>
+                    </div>
+                    <p class="text-gray-300 mb-2">Weekly Solo Cash Cup for NA East competitors.</p>
+                    <p class="text-sm text-gray-500 mb-2"><i class="fas fa-globe mr-2"></i>Region: NA East</p>
+                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Jul 26, 2025 - 6:00 PM EST</p>
+                    <div class="bg-gray-800 p-3 rounded-lg mb-4">
+                        <p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><i class="fas fa-dollar-sign mr-2"></i>Prize Pool: $10,000 USD</p>
+                        <p class="text-md text-gray-300">1st Place: $1,000 | Top 10: $100</p>
+                        <p class="text-md text-gray-300">Top 100: Place to get prize</p>
+                    </div>
+                    <button class="btn btn-secondary w-full py-2 text-md"><i class="fas fa-info-circle mr-2"></i>Details</button>
+                </div>
+                <div class="card p-6 border-l-4 border-orange-500">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-2xl font-bold fortnite-gradient-text">OCE FNCSTycoons Cup</h3>
+                        <span class="bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full">UPCOMING</span>
+                    </div>
+                    <p class="text-gray-300 mb-2">Fast-paced format for OCE region. Dominate for V-Bucks!</p>
+                    <p class="text-sm text-gray-500 mb-2"><i class="fas fa-globe mr-2"></i>Region: OCE</p>
+                    <p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt mr-2"></i>Aug 1, 2025 - 4:00 PM AEST</p>
+                    <div class="bg-gray-800 p-3 rounded-lg mb-4">
+                        <p class="text-lg font-bold text-yellow-400 flex items-center mb-1"><img src="https://image.fnbr.co/price/vbucks.png" class="w-5 h-5 mr-2" alt="V-Bucks Icon">Prize Pool: 100,000 V-Bucks</p>
+                        <p class="text-md text-gray-300">1st Place: 10,000 V-Bucks</p>
+                        <p class="text-md text-gray-300">Top 50: Minimum 500 V-Bucks</p>
+                    </div>
+                    <button class="btn btn-secondary w-full py-2 text-md"><i class="fas fa-user-plus mr-2"></i>Register</button>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <button class="btn btn-secondary px-8 py-3"><i class="fas fa-chevron-circle-right mr-2"></i>View All Tournaments</button>
+            </div>
+        </section>
 
-        <section id="pro-settings" class="mb-24">
-            <h2 class="section-title fortnite-gradient-text text-center">Pro Player Settings</h2>
-            <div class="card p-6 max-w-6xl mx-auto">
-                <div class="flex justify-center flex-wrap gap-3 mb-6">
-                    <button class="pro-filter-button active" data-pro="peterbot">Peterbot</button>
-                    <button class="pro-filter-button" data-pro="mero">Mero</button>
-                    <button class="pro-filter-button" data-pro="cooper">Cooper</button>
-                    <button class="pro-filter-button" data-pro="swizzy">Swizzy</button>
-                    <button class="pro-filter-button" data-pro="teeny">Teeny</button>
-                    <button class="pro-filter-button" data-pro="clix">Clix</button>
-                    <button class="pro-filter-button" data-pro="pollo">Pollo</button>
-                    <button class="pro-filter-button" data-pro="ritual">Ritual</button>
-                    <button class="pro-filter-button" data-pro="premfn">PremFN</button>
-                    <button class="pro-filter-button" data-pro="pwr_alex">PWR Alex</button>
-                    <button class="pro-filter-button" data-pro="pwr_volx">PWR Volx</button>
-                    <button class="pro-filter-button" data-pro="pwr_worthy">PWR Worthy</button>
-                </div>
-                <div id="pro-settings-display" class="content-transition active">
-                    </div>
-            </div>
-        </section>
+        <section id="pro-settings" class="mb-24">
+            <h2 class="section-title fortnite-gradient-text text-center">Pro Player Settings</h2>
+            <div class="card p-6 max-w-6xl mx-auto">
+                <div class="flex justify-center flex-wrap gap-3 mb-6">
+                    <button class="pro-filter-button active" data-pro="peterbot">Peterbot</button>
+                    <button class="pro-filter-button" data-pro="mero">Mero</button>
+                    <button class="pro-filter-button" data-pro="cooper">Cooper</button>
+              _B_u_t_t_o_n_ _c_l_a_s_s_=_"_p_r_o_-_f_i_l_t_e_r_-_b_u_t_t_o_n_"_ _d_a_t_a_-_p_r_o_=_"_s_w_i_z_z_y_">_S_w_i_z_z_y_<_/_b_u_t_t_o_n_>_
+                    <button class="pro-filter-button" data-pro="teeny">Teeny</button>
+                    <button class="pro-filter-button" data-pro="clix">Clix</button>
+                    <button class="pro-filter-button" data-pro="pollo">Pollo</button>
+                    <button class="pro-filter-button" data-pro="ritual">Ritual</button>
+                    <button class="pro-filter-button" data-pro="premfn">PremFN</button>
+                    <button class="pro-filter-button" data-pro="pwr_alex">PWR Alex</button>
+                    <button class="pro-filter-button" data-pro="pwr_volx">PWR Volx</button>
+                    <button class="pro-filter-button" data-pro="pwr_worthy">PWR Worthy</button>
+                </div>
+                <div id="pro-settings-display" class="content-transition active">
+                    </div>
+            </div>
+        </section>
 
-    </main>
+    </main>
 
-    <footer class="bg-black border-t border-gray-800 py-8">
-        <div class="container mx-auto px-6 text-center text-gray-400">
-            <div class="flex justify-center space-x-6 mb-4">
-                <a href="youtube.com/@Pratzhimself" target="_blank" rel="noopener noreferrer" class="text-red-600 hover:text-red-500 transition-colors duration-300">
-                    <i class="fab fa-youtube fa-2x"></i>
-                </a>
-                <a href="https://twitch.com/pratzplays23" target="_blank" rel="noopener noreferrer" class="text-purple-500 hover:text-purple-400 transition-colors duration-300">
-                    <i class="fab fa-twitch fa-2x"></i>
-                </a>
-            </div>
-            <p class="text-sm">&copy; 2025 FN HUB. Not affiliated with Epic Games, Inc.</p>
-        </div>
-    </footer>
+    <footer class="bg-black border-t border-gray-800 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="youtube.com/@Pratzhimself" target="_blank" rel="noopener noreferrer" class="text-red-600 hover:text-red-500 transition-colors duration-300">
+                    <i class="fab fa-youtube fa-2x"></i>
+                </a>
+                <a href="https://twitch.com/pratzplays23" target="_blank" rel="noopener noreferrer" class="text-purple-500 hover:text-purple-400 transition-colors duration-300">
+                    <i class="fab fa-twitch fa-2x"></i>
+                </a>
+            </div>
+            <p class="text-sm">© 2025 FN HUB. Not affiliated with Epic Games, Inc.</p>
+        </div>
+    </footer>
 
 </body>
 </html>
